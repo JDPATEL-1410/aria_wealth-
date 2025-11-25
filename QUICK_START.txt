@@ -1,0 +1,52 @@
+╔══════════════════════════════════════════════════════════════╗
+║          🚀 QUICK DEPLOYMENT COMMANDS                        ║
+╚══════════════════════════════════════════════════════════════╝
+
+📝 STEP 1: Create GitHub Repository
+   → Go to: https://github.com/new
+   → Name: aria-wealth (or your choice)
+   → DO NOT initialize with README
+   → Click "Create repository"
+
+📤 STEP 2: Push to GitHub (Run these commands)
+   
+   git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
+   git push -u origin main
+
+   ⚠️  REPLACE: YOUR_USERNAME and YOUR_REPO_NAME with actual values!
+
+🌐 STEP 3: Deploy to Vercel
+   → Go to: https://vercel.com
+   → Sign in with GitHub
+   → Click "Add New" → "Project"
+   → Import your repository
+   → Click "Deploy"
+   → Done! 🎉
+
+═══════════════════════════════════════════════════════════════
+
+✅ WHAT'S ALREADY DONE:
+   ✓ Git repository initialized
+   ✓ All files committed
+   ✓ .gitignore created (excludes node_modules)
+   ✓ vercel.json configured
+   ✓ Build tested successfully
+   ✓ Branch renamed to 'main'
+
+📋 WHAT YOU NEED TO DO:
+   1. Create GitHub repository
+   2. Run the git remote add command (with YOUR details)
+   3. Run git push -u origin main
+   4. Import to Vercel and deploy
+
+═══════════════════════════════════════════════════════════════
+
+💡 TIPS:
+   • If git push asks for password, use Personal Access Token
+   • Vercel auto-detects Create React App settings
+   • Future updates: just git add, commit, and push!
+   • Vercel auto-deploys on every push to main
+
+═══════════════════════════════════════════════════════════════
+
+📚 For detailed instructions, see: DEPLOYMENT_GUIDE.md

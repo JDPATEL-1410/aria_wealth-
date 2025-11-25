@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { BookOpen, Clock, Calendar, ArrowRight, Filter, Search, TrendingUp, Sparkles, ExternalLink, Target, DollarSign, Loader } from 'lucide-react';
+import { BookOpen, Clock, Calendar, ArrowRight, Filter, Search, TrendingUp, Sparkles, ExternalLink, Target, DollarSign, Loader, RefreshCw } from 'lucide-react';
 import { financialWisdomData } from '../data/mock';
 import CTASection from '../components/CTASection';
 
@@ -9,57 +9,159 @@ const FinancialWisdom = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [liveArticles, setLiveArticles] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+  const [refreshing, setRefreshing] = useState(false);
+  const [lastRefreshTime, setLastRefreshTime] = useState(null);
+
   const heroRef = useRef(null);
   const articlesRef = useRef(null);
-  
+
   const heroInView = useInView(heroRef, { once: true });
   const articlesInView = useInView(articlesRef, { once: true, margin: "-100px" });
 
   const categories = ['All', 'Beginner', 'Wealth Builder', 'Freedom Seeker', 'Live Articles'];
 
+  // Categorize article based on keywords
+  const categorizeArticle = (title, description) => {
+    const content = `${title} ${description}`.toLowerCase();
+
+    // Beginner keywords
+    const beginnerKeywords = ['beginner', 'basics', 'introduction', 'getting started', 'guide', 'how to start', 'first time', 'learn', 'understanding', 'explained'];
+    // Wealth Builder keywords
+    const wealthKeywords = ['investment', 'portfolio', 'stocks', 'mutual fund', 'sip', 'diversification', 'asset allocation', 'growth', 'compound', 'wealth building'];
+    // Freedom Seeker keywords
+    const freedomKeywords = ['retirement', 'financial freedom', 'passive income', 'fire', 'early retirement', 'financial independence', 'long-term', 'legacy', 'estate planning'];
+
+    if (beginnerKeywords.some(keyword => content.includes(keyword))) {
+      return 'Beginner';
+    } else if (freedomKeywords.some(keyword => content.includes(keyword))) {
+      return 'Freedom Seeker';
+    } else if (wealthKeywords.some(keyword => content.includes(keyword))) {
+      return 'Wealth Builder';
+    }
+
+    return 'Live Articles';
+  };
+
   // Fetch financial articles from multiple sources
-  useEffect(() => {
-    const fetchFinancialArticles = async () => {
+  const fetchFinancialArticles = async (isManualRefresh = false) => {
+    if (isManualRefresh) {
+      setRefreshing(true);
+    } else {
       setLoading(true);
-      try {
-        const mediumTags = ['finance', 'investment', 'mutual-funds', 'personal-finance', 'wealth-management'];
-        const mediumPromises = mediumTags.slice(0, 2).map(tag =>
-          fetch(`https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/tag/${tag}/feed`)
-            .then(res => res.json())
+    }
+
+    try {
+      // Multiple RSS sources for diverse content
+      const sources = [
+        // Medium finance tags
+        { type: 'medium', tag: 'finance', limit: 4 },
+        { type: 'medium', tag: 'investment', limit: 4 },
+        { type: 'medium', tag: 'personal-finance', limit: 3 },
+        { type: 'medium', tag: 'wealth-management', limit: 3 },
+        { type: 'medium', tag: 'mutual-funds', limit: 2 },
+        { type: 'medium', tag: 'retirement-planning', limit: 2 },
+      ];
+
+      const fetchPromises = sources.map(async (source) => {
+        try {
+          if (source.type === 'medium') {
+            const response = await fetch(
+              `https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/tag/${source.tag}/feed&count=${source.limit}`
+            );
+            const data = await response.json();
+
+            return (data.items || []).map((article) => {
+              const cleanDescription = article.description?.replace(/<[^>]*>/g, '').trim() || '';
+              const excerpt = cleanDescription.substring(0, 200) + (cleanDescription.length > 200 ? '...' : '');
+
+              // Intelligent categorization
+              const category = categorizeArticle(article.title, cleanDescription);
+
+              // Better thumbnail handling
+              let thumbnail = article.thumbnail || article.enclosure?.link;
+
+              // If no thumbnail, use category-specific fallback
+              if (!thumbnail) {
+                const fallbacks = {
+                  'Beginner': 'https://images.unsplash.com/photo-1434626881859-194d67b2b86f?auto=format&fit=crop&w=800&q=80',
+                  'Wealth Builder': 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&w=800&q=80',
+                  'Freedom Seeker': 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=800&q=80',
+                  'Live Articles': 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80'
+                };
+                thumbnail = fallbacks[category];
+              }
+
+              return {
+                id: `medium-${source.tag}-${article.guid}`,
+                title: article.title,
+                excerpt: excerpt || 'Read the full article to learn more about this financial topic.',
+                image: thumbnail,
+                category: category,
+                readTime: Math.max(3, Math.min(10, Math.ceil(cleanDescription.split(' ').length / 200))) + ' min read',
+                publishDate: article.pubDate,
+                externalUrl: article.link,
+                source: 'Medium',
+                author: article.author || 'Financial Expert'
+              };
+            });
+          }
+          return [];
+        } catch (error) {
+          console.error(`Error fetching from ${source.type}:`, error);
+          return [];
+        }
+      });
+
+      const results = await Promise.all(fetchPromises);
+      const allArticles = results.flat();
+
+      // Remove duplicates based on title similarity
+      const uniqueArticles = allArticles.reduce((acc, current) => {
+        const isDuplicate = acc.some(item =>
+          item.title.toLowerCase() === current.title.toLowerCase() ||
+          item.externalUrl === current.externalUrl
         );
+        if (!isDuplicate) {
+          acc.push(current);
+        }
+        return acc;
+      }, []);
 
-        const mediumResults = await Promise.all(mediumPromises);
-        
-        const mediumArticles = mediumResults.flatMap(result => 
-          (result.items || []).slice(0, 5).map((article, index) => ({
-            id: `medium-${article.guid}`,
-            title: article.title,
-            excerpt: article.description?.replace(/<[^>]*>/g, '').substring(0, 200) + '...' || 'Read the full article on Medium',
-            image: article.thumbnail || article.enclosure?.link || 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&w=800&q=80',
-            category: 'Live Articles',
-            readTime: '5 min read',
-            publishDate: article.pubDate,
-            externalUrl: article.link,
-            source: 'Medium',
-            author: article.author || 'Financial Expert'
-          }))
-        );
+      // Sort by publish date and limit
+      const sortedArticles = uniqueArticles
+        .sort((a, b) => new Date(b.publishDate) - new Date(a.publishDate))
+        .slice(0, 18);
 
-        const allLiveArticles = [...mediumArticles]
-          .sort((a, b) => new Date(b.publishDate) - new Date(a.publishDate))
-          .slice(0, 12);
+      setLiveArticles(sortedArticles);
+      setLastRefreshTime(new Date());
+      console.log(`✅ Fetched ${sortedArticles.length} financial articles`);
+    } catch (error) {
+      console.error('Error fetching financial articles:', error);
+      setLiveArticles([]);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
 
-        setLiveArticles(allLiveArticles);
-      } catch (error) {
-        console.error('Error fetching financial articles:', error);
-        setLiveArticles([]);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // Manual refresh handler
+  const handleManualRefresh = () => {
+    fetchFinancialArticles(true);
+  };
 
+  // Fetch financial articles with auto-refresh
+  useEffect(() => {
+    // Initial fetch
     fetchFinancialArticles();
+
+    // Auto-refresh every 5 minutes (300000ms)
+    const refreshInterval = setInterval(() => {
+      console.log('🔄 Auto-refreshing financial articles...');
+      fetchFinancialArticles();
+    }, 300000);
+
+    // Cleanup interval on unmount
+    return () => clearInterval(refreshInterval);
   }, []);
 
   const allArticles = [...liveArticles, ...financialWisdomData];
@@ -67,7 +169,7 @@ const FinancialWisdom = () => {
   const filteredArticles = allArticles.filter(article => {
     const matchesCategory = selectedCategory === 'All' || article.category === selectedCategory;
     const matchesSearch = article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         article.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
+      article.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
@@ -131,7 +233,7 @@ const FinancialWisdom = () => {
             />
           </picture>
           <div className="absolute inset-0 bg-gradient-to-br from-black/75 via-black/65 to-[#7A1616]/50" />
-          
+
           <div className="absolute inset-0 opacity-10 hidden md:block">
             <div className="absolute inset-0" style={{
               backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
@@ -213,12 +315,31 @@ const FinancialWisdom = () => {
       {liveArticles.length > 0 && (
         <section className="py-3 sm:py-4 bg-gradient-to-r from-[#C9A635] via-[#E7C76A] to-[#C9A635]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-center gap-2 sm:gap-3 text-white">
-              <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 animate-pulse" />
-              <p className="font-bold text-xs sm:text-sm md:text-base">
-                🔥 {liveArticles.length} Fresh Financial Articles Loaded
-              </p>
-              <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 animate-pulse" />
+            <div className="flex items-center justify-between gap-2 sm:gap-4">
+              <div className="flex items-center gap-2 sm:gap-3 text-white flex-1 justify-center">
+                <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 animate-pulse" />
+                <p className="font-bold text-xs sm:text-sm md:text-base">
+                  🔥 {liveArticles.length} Fresh Financial Articles Loaded
+                </p>
+                <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 animate-pulse" />
+              </div>
+
+              <div className="flex items-center gap-2 sm:gap-3">
+                {lastRefreshTime && (
+                  <span className="text-white/90 text-xs hidden sm:block">
+                    Updated: {lastRefreshTime.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
+                  </span>
+                )}
+                <button
+                  onClick={handleManualRefresh}
+                  disabled={refreshing}
+                  className="flex items-center gap-1 sm:gap-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  title="Refresh articles"
+                >
+                  <RefreshCw className={`w-3 h-3 sm:w-4 sm:h-4 ${refreshing ? 'animate-spin' : ''}`} />
+                  <span className="hidden sm:inline">{refreshing ? 'Refreshing...' : 'Refresh'}</span>
+                </button>
+              </div>
             </div>
           </div>
         </section>
@@ -253,11 +374,10 @@ const FinancialWisdom = () => {
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-3 sm:px-5 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 transform hover:scale-105 ${
-                    selectedCategory === category
-                      ? 'bg-gradient-to-r from-[#7A1616] to-[#A12424] text-white shadow-lg'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border-2 border-gray-200'
-                  }`}
+                  className={`px-3 sm:px-5 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 transform hover:scale-105 ${selectedCategory === category
+                    ? 'bg-gradient-to-r from-[#7A1616] to-[#A12424] text-white shadow-lg'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border-2 border-gray-200'
+                    }`}
                 >
                   {category}
                   {category === 'Live Articles' && liveArticles.length > 0 && (
@@ -345,7 +465,7 @@ const FinancialWisdom = () => {
                         </div>
                       )}
                     </div>
-                    
+
                     <div className="p-5 sm:p-6">
                       {/* Category & Read Time */}
                       <div className="flex items-center justify-between mb-3 sm:mb-4">
@@ -357,24 +477,24 @@ const FinancialWisdom = () => {
                           <span>{article.readTime}</span>
                         </div>
                       </div>
-                      
+
                       {/* Article Title */}
                       <h3 className="text-lg sm:text-xl font-extrabold text-gray-900 mb-2 sm:mb-3 group-hover:text-[#7A1616] transition-colors duration-300 line-clamp-2">
                         {article.title}
                       </h3>
-                      
+
                       {/* Article Excerpt */}
                       <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-3 sm:mb-4 line-clamp-3">
                         {article.excerpt}
                       </p>
-                      
+
                       {/* Footer */}
                       <div className="flex items-center justify-between pt-3 sm:pt-4 border-t border-gray-100">
                         <div className="flex items-center space-x-1 text-gray-500 text-xs sm:text-sm">
                           <Calendar className="w-3 h-3 sm:w-4 sm:h-4" />
                           <span>{new Date(article.publishDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
                         </div>
-                        
+
                         <div className="inline-flex items-center space-x-1 sm:space-x-2 text-[#7A1616] hover:text-[#A12424] font-bold text-xs sm:text-sm transition-colors duration-200">
                           <span>Read</span>
                           <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform duration-200" />
@@ -460,7 +580,7 @@ const FinancialWisdom = () => {
                 >
                   <div className="bg-white rounded-2xl sm:rounded-3xl shadow-xl border-2 border-gray-100 p-5 sm:p-6 md:p-8 text-center group hover:shadow-2xl hover:border-[#C9A635]/40 transition-all duration-500 cursor-pointer relative overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-br from-[#7A1616]/5 to-[#C9A635]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    
+
                     <div className="relative z-10">
                       <div className={`w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 bg-gradient-to-r ${topic.color} rounded-xl sm:rounded-2xl mx-auto mb-4 sm:mb-6 flex items-center justify-center group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 shadow-2xl`}>
                         <Icon className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 text-white" />
@@ -529,7 +649,7 @@ const FinancialWisdom = () => {
       </section>
 
       {/* CTA Section */}
-      <CTASection 
+      <CTASection
         title="Need Personalized Financial Advice?"
         subtitle="Our expert advisors are here to help you make informed financial decisions"
         primaryCta={{ text: "Schedule Consultation", link: "/contact" }}
