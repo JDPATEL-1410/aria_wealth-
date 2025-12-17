@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { 
-  Calculator, 
-  ArrowLeft, 
+import {
+  Calculator,
+  ArrowLeft,
   TrendingUp,
   PiggyBank,
   GraduationCap,
@@ -54,7 +54,7 @@ const CalculatorLayout = ({ children, title }) => {
               <span>Back to Calculators</span>
             </Link>
           </motion.div>
-          
+
           <motion.div
             className="text-center"
             initial={{ opacity: 0, y: 20 }}
@@ -237,7 +237,7 @@ const CalculatorsHome = () => {
             />
           </picture>
           <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/60 to-[#7A1616]/40" />
-          
+
           {/* Pattern - Hidden on mobile */}
           <div className="absolute inset-0 opacity-10 hidden md:block">
             <div className="absolute inset-0" style={{
@@ -345,7 +345,7 @@ const CalculatorsHome = () => {
               </div>
             </motion.div>
 
-            <motion.h2 
+            <motion.h2
               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-4 sm:mb-6 px-4"
               variants={itemVariants}
             >
@@ -354,7 +354,7 @@ const CalculatorsHome = () => {
                 Financial Goals
               </span>
             </motion.h2>
-            <motion.p 
+            <motion.p
               className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto px-4"
               variants={itemVariants}
             >
@@ -363,7 +363,7 @@ const CalculatorsHome = () => {
           </motion.div>
 
           <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 md:gap-8"
+            className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8"
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
@@ -383,11 +383,11 @@ const CalculatorsHome = () => {
                       <div className={`inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br ${calculator.color} rounded-xl sm:rounded-2xl shadow-xl mb-5 sm:mb-6 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500`}>
                         <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
                       </div>
-                      
+
                       <h3 className="text-xl sm:text-2xl font-extrabold text-gray-900 mb-2 sm:mb-3 group-hover:text-[#7A1616] transition-colors duration-300">
                         {calculator.title}
                       </h3>
-                      
+
                       <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-5 sm:mb-6 flex-1">
                         {calculator.description}
                       </p>
@@ -555,102 +555,102 @@ const Calculators = () => {
   return (
     <Routes>
       <Route path="/" element={<CalculatorsHome />} />
-      <Route 
-        path="/sip" 
+      <Route
+        path="/sip"
         element={
           <CalculatorLayout title="SIP Calculator">
             <SIPCalculator />
           </CalculatorLayout>
-        } 
+        }
       />
-      <Route 
-        path="/lumpsum" 
+      <Route
+        path="/lumpsum"
         element={
           <CalculatorLayout title="Lumpsum Calculator">
             <LumpsumCalculator />
           </CalculatorLayout>
-        } 
+        }
       />
-      <Route 
-        path="/retirement" 
+      <Route
+        path="/retirement"
         element={
           <CalculatorLayout title="Retirement Goal Calculator">
             <RetirementCalculator />
           </CalculatorLayout>
-        } 
+        }
       />
-      <Route 
-        path="/inflation" 
+      <Route
+        path="/inflation"
         element={
           <CalculatorLayout title="Inflation Calculator">
             <InflationCalculator />
           </CalculatorLayout>
-        } 
+        }
       />
-      <Route 
-        path="/dream-goal" 
+      <Route
+        path="/dream-goal"
         element={
           <CalculatorLayout title="Dream Goal Calculator">
             <DreamGoalCalculator />
           </CalculatorLayout>
-        } 
+        }
       />
-      <Route 
-        path="/child-education" 
+      <Route
+        path="/child-education"
         element={
           <CalculatorLayout title="Child Education Calculator">
             <ChildEducationCalculator />
           </CalculatorLayout>
-        } 
+        }
       />
-      <Route 
-        path="/home-purchase" 
+      <Route
+        path="/home-purchase"
         element={
           <CalculatorLayout title="Home Purchase Calculator">
             <HomePurchaseCalculator />
           </CalculatorLayout>
-        } 
+        }
       />
-      <Route 
-        path="/marriage" 
+      <Route
+        path="/marriage"
         element={
           <CalculatorLayout title="Marriage Calculator">
             <MarriageCalculator />
           </CalculatorLayout>
-        } 
+        }
       />
-      <Route 
-        path="/vacation" 
+      <Route
+        path="/vacation"
         element={
           <CalculatorLayout title="Vacation Calculator">
             <VacationCalculator />
           </CalculatorLayout>
-        } 
+        }
       />
-      <Route 
-        path="/sip-delay" 
+      <Route
+        path="/sip-delay"
         element={
           <CalculatorLayout title="SIP Delay Calculator">
             <SIPDelayCalculator />
           </CalculatorLayout>
-        } 
+        }
       />
-      <Route 
-        path="/sip-step-up" 
+      <Route
+        path="/sip-step-up"
         element={
           <CalculatorLayout title="SIP Step Up Calculator">
             <SIPStepUpCalculator />
           </CalculatorLayout>
-        } 
+        }
       />
-      <Route 
-        path="/child-birth" 
+      <Route
+        path="/child-birth"
         element={
           <CalculatorLayout title="Child Birth Planning Calculator">
             <ChildBirthCalculator />
           </CalculatorLayout>
-        } 
-      />    
+        }
+      />
     </Routes>
   );
 };

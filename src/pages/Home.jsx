@@ -57,80 +57,6 @@ const Home = () => {
       {/* Hero Section */}
       <Hero />
 
-      {/* Services Preview Section */}
-      <section ref={servicesRef} className="relative min-h-[500px] flex items-center justify-center overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0">
-          <img
-            src={require('../assets/services_header.png')}
-            alt="Financial Advisory Services"
-            className="w-full h-full object-cover"
-          />
-          {/* Overlay to match the warm/dark tone of the original design */}
-          <div className="absolute inset-0 bg-black/40 mix-blend-multiply" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-        </div>
-
-        <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full py-20">
-          <motion.div
-            className="max-w-4xl"
-            variants={containerVariants}
-            initial="hidden"
-            animate={servicesInView ? "visible" : "hidden"}
-          >
-            <motion.h2
-              className="text-5xl md:text-7xl font-serif text-white mb-6 drop-shadow-lg"
-              variants={itemVariants}
-            >
-              Our Services.
-            </motion.h2>
-
-            <motion.p
-              className="text-xl md:text-2xl text-white/90 mb-16 max-w-2xl font-light leading-relaxed drop-shadow-md"
-              variants={itemVariants}
-            >
-              From portfolio management to legacy planning, we support
-              every step of your financial journey.
-            </motion.p>
-
-            <motion.div
-              className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12"
-              variants={containerVariants}
-            >
-              {/* Service 1 */}
-              <motion.div className="flex flex-col items-start space-y-4 group" variants={itemVariants}>
-                <div className="p-4 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 group-hover:bg-white/20 transition-all duration-300">
-                  <LucideIcons.BarChart2 className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-xl font-medium text-white group-hover:text-[#E7C76A] transition-colors">
-                  Comprehensive<br />Financial Planning
-                </h3>
-              </motion.div>
-
-              {/* Service 2 */}
-              <motion.div className="flex flex-col items-start space-y-4 group" variants={itemVariants}>
-                <div className="p-4 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 group-hover:bg-white/20 transition-all duration-300">
-                  <LucideIcons.Sprout className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-xl font-medium text-white group-hover:text-[#E7C76A] transition-colors">
-                  Legacy Planning<br />& Will Writing
-                </h3>
-              </motion.div>
-
-              {/* Service 3 */}
-              <motion.div className="flex flex-col items-start space-y-4 group" variants={itemVariants}>
-                <div className="p-4 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 group-hover:bg-white/20 transition-all duration-300">
-                  <LucideIcons.ShieldCheck className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-xl font-medium text-white group-hover:text-[#E7C76A] transition-colors">
-                  Risk Management<br />(insurance)
-                </h3>
-              </motion.div>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
       {/* Values Section */}
       <section ref={valuesRef} className="relative py-16 sm:py-20 md:py-24 lg:py-28 bg-gradient-to-br from-white via-gray-50 to-white overflow-hidden">
         {/* Background Pattern - Hidden on mobile */}
@@ -180,7 +106,7 @@ const Home = () => {
           </motion.div>
 
           <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 md:gap-8"
+            className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 md:gap-8"
             variants={containerVariants}
             initial="hidden"
             animate={valuesInView ? "visible" : "hidden"}

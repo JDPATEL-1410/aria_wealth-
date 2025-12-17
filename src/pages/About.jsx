@@ -428,7 +428,7 @@ const About = () => {
 
           {/* Pillars Grid */}
           <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6"
+            className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6"
             variants={containerVariants}
             initial="hidden"
             animate={philosophyInView ? "visible" : "hidden"}
@@ -531,7 +531,7 @@ const About = () => {
             <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-[#C9A635] via-[#E7C76A] to-[#C9A635] transform -translate-y-1/2 z-0" />
 
             {/* Steps Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 relative z-10">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8 relative z-10">
               {JOURNEY_STEPS.map((step, idx) => {
                 const Icon = step.icon;
                 return (
@@ -603,7 +603,7 @@ const About = () => {
 
           {/* Grid - Equal Height Boxes */}
           <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 md:gap-8"
+            className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8"
             variants={containerVariants}
             initial="hidden"
             animate={whyChooseInView ? "visible" : "hidden"}
@@ -680,7 +680,7 @@ const About = () => {
 
           {/* Values Grid */}
           <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 md:gap-8"
+            className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8"
             variants={containerVariants}
             initial="hidden"
             animate={valuesInView ? "visible" : "hidden"}

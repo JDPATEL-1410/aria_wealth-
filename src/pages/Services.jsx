@@ -1,10 +1,10 @@
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { 
-  TrendingUp, 
-  Shield, 
-  Target, 
+import {
+  TrendingUp,
+  Shield,
+  Target,
   Users,
   FileText,
   Globe,
@@ -19,7 +19,7 @@ const Services = () => {
   const servicesRef = useRef(null);
   const processRef = useRef(null);
   const whyChooseRef = useRef(null);
-  
+
   const heroInView = useInView(heroRef, { once: true });
   const servicesInView = useInView(servicesRef, { once: true, margin: "-50px" });
   const processInView = useInView(processRef, { once: true, margin: "-50px" });
@@ -184,25 +184,17 @@ const Services = () => {
         className="relative min-h-[70vh] sm:min-h-[80vh] md:min-h-[90vh] flex items-center overflow-hidden"
       >
         <div className="absolute inset-0">
-          <picture>
-            <source
-              media="(max-width: 768px)"
-              srcSet="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80"
-            />
-            <img
-              src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1920&q=80"
-              alt="Indian professionals roundtable meeting"
-              className="w-full h-full object-cover object-center"
-              loading="eager"
-              onError={(e) => {
-                e.target.onerror = null;
-                e.target.src = 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1920&q=80';
-              }}
-            />
-          </picture>
+          {/* Custom Background Image */}
+          <img
+            src={require('../assets/services_hero_bg.jpg')}
+            alt="Comprehensive Financial Solutions"
+            className="w-full h-full object-cover object-center"
+            loading="eager"
+          />
 
+          {/* Gradient Overlay for Text Readability */}
           <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/60 to-[#7A1616]/40" />
-          
+
           <div className="absolute inset-0 opacity-10 hidden md:block">
             <div className="absolute inset-0" style={{
               backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
@@ -312,7 +304,7 @@ const Services = () => {
               </div>
             </motion.div>
 
-            <motion.h2 
+            <motion.h2
               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-4 sm:mb-6 px-4"
               variants={itemVariants}
             >
@@ -321,7 +313,7 @@ const Services = () => {
                 Services
               </span>
             </motion.h2>
-            <motion.p 
+            <motion.p
               className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto px-4"
               variants={itemVariants}
             >
@@ -330,7 +322,7 @@ const Services = () => {
           </motion.div>
 
           <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 md:gap-8"
+            className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8"
             variants={containerVariants}
             initial="hidden"
             animate={servicesInView ? "visible" : "hidden"}
@@ -366,7 +358,7 @@ const Services = () => {
                           />
                         </picture>
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                        
+
                         {/* Icon Badge */}
                         <div className={`absolute top-3 sm:top-4 right-3 sm:right-4 w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br ${category.color} rounded-xl sm:rounded-2xl flex items-center justify-center shadow-2xl group-hover:scale-110 group-hover:rotate-12 transition-all duration-500`}>
                           <IconComponent className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
@@ -443,7 +435,7 @@ const Services = () => {
               </div>
             </motion.div>
 
-            <motion.h2 
+            <motion.h2
               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-4 sm:mb-6 px-4"
               variants={itemVariants}
             >
@@ -452,7 +444,7 @@ const Services = () => {
                 Process
               </span>
             </motion.h2>
-            <motion.p 
+            <motion.p
               className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto px-4"
               variants={itemVariants}
             >
@@ -469,7 +461,7 @@ const Services = () => {
             {/* Timeline connector - Desktop only */}
             <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-[#C9A635] via-[#E7C76A] to-[#C9A635] transform -translate-y-1/2 z-0" />
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 relative z-10">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8 relative z-10">
               {processSteps.map((step, index) => {
                 const IconComponent = step.icon;
                 return (
@@ -536,7 +528,7 @@ const Services = () => {
                   ARIA WEALTH
                 </span>
               </h2>
-              
+
               <div className="space-y-5 sm:space-y-6">
                 {whyChoosePoints.map((point, idx) => {
                   const IconComponent = point.icon;
@@ -576,7 +568,7 @@ const Services = () => {
 
                 <div className="relative z-10">
                   <h3 className="text-2xl sm:text-3xl font-extrabold mb-6 sm:mb-8 text-center text-white">Service Highlights</h3>
-                  
+
                   <div className="space-y-3 sm:space-y-4">
                     <div className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-5 border border-white/20 hover:bg-white/15 transition-all duration-300">
                       <div className="flex justify-between items-center gap-2">
@@ -584,21 +576,21 @@ const Services = () => {
                         <span className="text-[#E7C76A] font-bold text-base sm:text-lg">ARN 100804</span>
                       </div>
                     </div>
-                    
+
                     <div className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-5 border border-white/20 hover:bg-white/15 transition-all duration-300">
                       <div className="flex justify-between items-center gap-2">
                         <span className="font-semibold text-sm sm:text-base">Portfolio Review</span>
                         <span className="text-[#E7C76A] font-bold text-base sm:text-lg">Quarterly</span>
                       </div>
                     </div>
-                    
+
                     <div className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-5 border border-white/20 hover:bg-white/15 transition-all duration-300">
                       <div className="flex justify-between items-center gap-2">
                         <span className="font-semibold text-sm sm:text-base">Investment Options</span>
                         <span className="text-[#E7C76A] font-bold text-base sm:text-lg">500+ Funds</span>
                       </div>
                     </div>
-                    
+
                     <div className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-5 border border-white/20 hover:bg-white/15 transition-all duration-300">
                       <div className="flex justify-between items-center gap-2">
                         <span className="font-semibold text-sm sm:text-base">Client Support</span>
