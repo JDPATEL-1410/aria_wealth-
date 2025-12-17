@@ -24,9 +24,9 @@ const Hero = () => {
   };
 
   const statsData = [
-    { icon: Users, value: '2000+', label: 'Happy Clients' },
-    { icon: TrendingUp, value: '₹50Cr+', label: 'Assets Managed' },
-    { icon: Shield, value: '15+', label: 'Years Experience' },
+    { icon: Users, value: '200+', label: 'Families on the Path to Financial Freedom' },
+    { icon: TrendingUp, value: '₹50Cr+', label: 'Assets Under Management' },
+    { icon: Shield, value: '15+', label: 'Years of Creating Wealth' },
   ];
 
   return (
@@ -64,13 +64,13 @@ const Hero = () => {
             variants={itemVariants}
           >
             <span className="bg-gradient-to-r from-[#7A1616] to-[#8B1A1A] bg-clip-text text-transparent">
-              Authentic Relationships
+              Your Goals Stay
             </span>
             <br />
             <span className="text-gray-800">
-              Inspiring{' '}
+              the{' '}
               <span className="bg-gradient-to-r from-[#C9A635] to-[#D4B547] bg-clip-text text-transparent">
-                Abundance
+                Course
               </span>
             </span>
           </motion.h1>

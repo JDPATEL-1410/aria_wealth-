@@ -10,9 +10,9 @@ export const navigationLinks = [
 ];
 
 export const heroData = {
-  title: 'Authentic Relationships Inspiring Abundance',
+  title: 'Your Goals Stay the Course',
   subtitle: 'AMFI Registered Mutual Fund Distributor',
-  description: 'Building wealth through trusted relationships and smart investment strategies. Your financial freedom starts with the right guidance.',
+  description: 'Clarity, discipline, and guidance — helping you stay aligned with what truly matters.',
   ctaText: 'Start Your SIP Journey',
   ctaLink: '/calculators'
 };
@@ -34,7 +34,7 @@ export const servicesData = [
   },
   {
     id: 3,
-    title: 'Insurance & Protection',
+    title: 'Insurance Solutions',
     description: 'Complete insurance solutions to protect your family and assets from unforeseen circumstances.',
     icon: 'Shield',
     features: ['Life insurance', 'Health coverage', 'Critical illness', 'Disability protection']
@@ -52,13 +52,6 @@ export const servicesData = [
     description: 'Secure your golden years with systematic retirement corpus building and income planning.',
     icon: 'PiggyBank',
     features: ['Pension planning', 'Corpus calculation', 'Income strategy', 'Post-retirement planning']
-  },
-  {
-    id: 6,
-    title: 'Tax Planning',
-    description: 'Optimize your tax liability while maximizing wealth creation through smart investments.',
-    icon: 'Receipt',
-    features: ['80C investments', 'Tax-free bonds', 'ELSS planning', 'Capital gains optimization']
   }
 ];
 
@@ -123,19 +116,44 @@ export const teamData = [
 
 export const companyValues = [
   {
-    title: 'Authenticity',
-    description: 'We believe in transparent and honest financial advice tailored to your unique situation.',
-    icon: 'Heart'
+    title: 'We Listen Before We Guide',
+    description: 'Your story, your concerns, and your aspirations come first. Meaningful planning begins with understanding — not assumptions. We take time to know what truly matters to you, so every decision stays aligned with your life goals.',
+    icon: 'Ear'
   },
   {
-    title: 'Abundance',
-    description: 'Our goal is to help you create abundant wealth through systematic and disciplined investing.',
-    icon: 'Trophy'
+    title: 'Transparent & Honest Communication',
+    description: 'No confusion. No hidden agendas. We simplify concepts, explain risks clearly, and help you make informed choices. Transparency is our foundation — always.',
+    icon: 'MessageSquare'
   },
   {
-    title: 'Integrity',
-    description: 'We maintain the highest standards of integrity in all our client relationships and recommendations.',
+    title: 'A Disciplined, Process-Driven Approach',
+    description: 'We don\'t chase trends or react to noise. Our approach is structured, long-term, and rooted in suitability, asset allocation, and risk awareness. This discipline helps you stay focused through market movements.',
+    icon: 'Target'
+  },
+  {
+    title: 'Guidance That Supports Every Life Stage',
+    description: 'Your financial journey evolves with life — career, family, responsibilities, and retirement. We help you stay prepared and aligned at every stage with clarity and purpose.',
+    icon: 'Users'
+  },
+  {
+    title: 'Behavioural Support During Market Ups & Downs',
+    description: 'Markets fluctuate — emotions do too. We help you avoid impulsive decisions and stay grounded in your long-term plan, especially during periods of uncertainty.',
+    icon: 'TrendingUp'
+  },
+  {
+    title: 'Ethical Standards & Complete Integrity',
+    description: 'Your trust is our biggest responsibility. We maintain strict confidentiality, follow all regulatory guidelines, and ensure every recommendation is suitability-based.',
     icon: 'Shield'
+  },
+  {
+    title: 'Simplified Guidance for Complex Decisions',
+    description: 'From investment categories to risk profiling, from documentation to planning — we break things down in a way that feels simple, clear, and easy to act on.',
+    icon: 'Lightbulb'
+  },
+  {
+    title: 'Long-Term Partnership, Not One-Time Transactions',
+    description: 'We walk with you — reviewing progress, checking suitability, understanding changing needs, and staying available whenever you need support. Your journey matters to us, not just your investments.',
+    icon: 'Handshake'
   }
 ];
 
@@ -177,7 +195,7 @@ export const contactInfo = {
   phone: '+91 79775 23663',
   email: 'info@ariawealth.com',
   whatsapp: '+91 79775 23663',
-  office_hours: 'Monday - Friday: 9:00 AM - 6:00 PM\nSaturday: 9:00 AM - 2:00 PM',
+  office_hours: 'Monday - Friday: 10:00 AM - 6:00 PM\nSaturday: 10:00 AM - 2:00 PM',
   map_embed: 'https://maps.app.goo.gl/3yS8A1LvgeU4EjBKAhttps://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2319.3353290420496!2d72.89046898484229!3d19.114661531263266!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c80be52e9935%3A0xe3e4e5bfc340be44!2sOberoi%20Garden!5e1!3m2!1sen!2sin!4v1763114594882!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade'
 };
 

@@ -90,33 +90,33 @@ const VALUES = [
 ];
 
 const STATS = [
-  { 
-    icon: Users, 
-    value: "2000+", 
-    label: "Happy Clients", 
+  {
+    icon: Users,
+    value: "200+",
+    label: "Families on the Path to Financial Freedom",
     color: "from-blue-500 to-blue-600",
-    subtext: "Across India" 
+    subtext: "Across India"
   },
-  { 
-    icon: TrendingUp, 
-    value: "₹50Cr+", 
-    label: "Assets Under Management", 
+  {
+    icon: TrendingUp,
+    value: "₹50Cr+",
+    label: "Assets Under Management",
     color: "from-green-500 to-green-600",
-    subtext: "Growing steadily" 
+    subtext: "Growing steadily"
   },
-  { 
-    icon: Award, 
-    value: "15+", 
-    label: "Years of Excellence", 
+  {
+    icon: Award,
+    value: "15+",
+    label: "Years of Creating Wealth",
     color: "from-purple-500 to-purple-600",
-    subtext: "In financial advisory" 
+    subtext: "In financial advisory"
   },
-  { 
-    icon: Shield, 
-    value: "100%", 
-    label: "Client Satisfaction", 
+  {
+    icon: Shield,
+    value: "100%",
+    label: "Client Satisfaction",
     color: "from-red-500 to-red-600",
-    subtext: "Verified reviews" 
+    subtext: "Verified reviews"
   },
 ];
 
@@ -194,11 +194,6 @@ const WHY_CHOOSE = [
     description: "Comprehensive wealth management across all life stages",
     icon: Briefcase,
   },
-  {
-    title: "Transparent Pricing",
-    description: "Clear, upfront fee structure with no hidden costs",
-    icon: LineChart,
-  },
 ];
 
 const About = () => {
@@ -245,7 +240,7 @@ const About = () => {
           </picture>
 
           <div className="absolute inset-0 bg-gradient-to-br from-black/75 via-black/65 to-[#7A1616]/45" />
-          
+
           {/* Animated overlay pattern - Hidden on mobile for performance */}
           <div className="absolute inset-0 opacity-10 hidden md:block">
             <div className="absolute inset-0" style={{
@@ -367,7 +362,7 @@ const About = () => {
                 >
                   {/* Glow effect */}
                   <div className="absolute inset-0 bg-gradient-to-r from-[#C9A635]/10 to-[#7A1616]/10 md:from-[#C9A635]/20 md:to-[#7A1616]/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  
+
                   <div className="relative bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-lg border border-gray-100 group-hover:shadow-2xl group-hover:border-[#C9A635]/30 transition-all duration-300">
                     <div
                       className={`inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-gradient-to-br ${s.color} rounded-xl sm:rounded-2xl mb-3 sm:mb-4 md:mb-5 group-hover:scale-110 transition-transform duration-300 shadow-lg`}
@@ -719,89 +714,89 @@ const About = () => {
         </div>
       </section>
 
-     {/* Team Section */}
-<section
-  ref={teamRef}
-  className="py-14 sm:py-18 md:py-22 bg-gradient-to-br from-white to-gray-50 relative"
->
-  {/* Soft background texture */}
-  <div className="absolute inset-0 opacity-[0.02] sm:opacity-5 pointer-events-none">
-    <img
-      src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1920&q=60"
-      alt="Team background"
-      className="w-full h-full object-cover"
-      loading="lazy"
-    />
-  </div>
-
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-    {/* Heading */}
-    <motion.div
-      className="text-center mb-10 sm:mb-14 md:mb-16"
-      variants={containerVariants}
-      initial="hidden"
-      animate={teamInView ? "visible" : "hidden"}
-    >
-      <motion.div
-        className="inline-block mb-4 sm:mb-5"
-        variants={itemVariants}
+      {/* Team Section */}
+      <section
+        ref={teamRef}
+        className="py-14 sm:py-18 md:py-22 bg-gradient-to-br from-white to-gray-50 relative"
       >
-        <div className="inline-flex items-center space-x-2 bg-[#7A1616]/10 px-4 sm:px-5 py-2 rounded-full">
-          <Users className="w-3 h-3 sm:w-4 sm:h-4 text-[#7A1616]" />
-          <span className="text-xs sm:text-sm font-semibold text-[#7A1616]">
-            LEADERSHIP
-          </span>
+        {/* Soft background texture */}
+        <div className="absolute inset-0 opacity-[0.02] sm:opacity-5 pointer-events-none">
+          <img
+            src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1920&q=60"
+            alt="Team background"
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
         </div>
-      </motion.div>
 
-      <motion.h2
-        className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 mb-3 sm:mb-4 px-4"
-        variants={itemVariants}
-      >
-        Meet Our{" "}
-        <span className="bg-gradient-to-r from-[#7A1616] via-[#A12424] to-[#8B1A1A] bg-clip-text text-transparent">
-          Team
-        </span>
-      </motion.h2>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* Heading */}
+          <motion.div
+            className="text-center mb-10 sm:mb-14 md:mb-16"
+            variants={containerVariants}
+            initial="hidden"
+            animate={teamInView ? "visible" : "hidden"}
+          >
+            <motion.div
+              className="inline-block mb-4 sm:mb-5"
+              variants={itemVariants}
+            >
+              <div className="inline-flex items-center space-x-2 bg-[#7A1616]/10 px-4 sm:px-5 py-2 rounded-full">
+                <Users className="w-3 h-3 sm:w-4 sm:h-4 text-[#7A1616]" />
+                <span className="text-xs sm:text-sm font-semibold text-[#7A1616]">
+                  LEADERSHIP
+                </span>
+              </div>
+            </motion.div>
 
-      <motion.p
-        className="text-sm sm:text-lg text-gray-600 max-w-3xl mx-auto px-4"
-        variants={itemVariants}
-      >
-        Experienced professionals dedicated to your financial success.
-      </motion.p>
-    </motion.div>
+            <motion.h2
+              className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 mb-3 sm:mb-4 px-4"
+              variants={itemVariants}
+            >
+              Meet Our{" "}
+              <span className="bg-gradient-to-r from-[#7A1616] via-[#A12424] to-[#8B1A1A] bg-clip-text text-transparent">
+                Team
+              </span>
+            </motion.h2>
 
-    {/* Team Grid */}
-    <motion.div
-      className="grid grid-cols-1 lg:grid-cols-2 gap-7 sm:gap-8 md:gap-10 max-w-5xl mx-auto"
-      variants={containerVariants}
-      initial="hidden"
-      animate={teamInView ? "visible" : "hidden"}
-    >
-      {TEAM.map((m, index) => (
-        <motion.div
-          key={m.id}
-          className="h-full flex flex-col bg-white rounded-3xl 
+            <motion.p
+              className="text-sm sm:text-lg text-gray-600 max-w-3xl mx-auto px-4"
+              variants={itemVariants}
+            >
+              Experienced professionals dedicated to your financial success.
+            </motion.p>
+          </motion.div>
+
+          {/* Team Grid */}
+          <motion.div
+            className="grid grid-cols-1 lg:grid-cols-2 gap-7 sm:gap-8 md:gap-10 max-w-5xl mx-auto"
+            variants={containerVariants}
+            initial="hidden"
+            animate={teamInView ? "visible" : "hidden"}
+          >
+            {TEAM.map((m, index) => (
+              <motion.div
+                key={m.id}
+                className="h-full flex flex-col bg-white rounded-3xl 
                      shadow-[0_4px_20px_rgba(0,0,0,0.08)] 
                      overflow-hidden group transition-all duration-500 
                      hover:shadow-[0_8px_32px_rgba(0,0,0,0.12)]
                      hover:-translate-y-1"
-          variants={scaleUpVariants}
-        >
-          {/* Portrait block with circular image */}
-          <div className="relative flex flex-col items-center justify-center pt-10 pb-6 px-6
+                variants={scaleUpVariants}
+              >
+                {/* Portrait block with circular image */}
+                <div className="relative flex flex-col items-center justify-center pt-10 pb-6 px-6
                           bg-gradient-to-b from-gray-50 to-white">
-            
-            {/* Circular image container */}
-            <div className="relative mb-5">
-              {/* Outer decorative ring */}
-              <div className="absolute inset-0 rounded-full bg-gradient-to-br 
+
+                  {/* Circular image container */}
+                  <div className="relative mb-5">
+                    {/* Outer decorative ring */}
+                    <div className="absolute inset-0 rounded-full bg-gradient-to-br 
                               from-[#7A1616]/10 to-[#C9A635]/10 
                               scale-110 blur-xl" />
-              
-              {/* Main circular image */}
-              <div className="relative w-36 h-36 sm:w-40 sm:h-40 md:w-44 md:h-44 
+
+                    {/* Main circular image */}
+                    <div className="relative w-36 h-36 sm:w-40 sm:h-40 md:w-44 md:h-44 
                               rounded-full overflow-hidden
                               bg-gradient-to-br from-gray-100 to-gray-50
                               border-4 border-white
@@ -809,73 +804,73 @@ const About = () => {
                               transition-all duration-500
                               group-hover:shadow-[0_12px_32px_rgba(122,22,22,0.2)]
                               group-hover:scale-105">
-                <img
-                  src={m.image}
-                  alt={m.name}
-                  className="w-full h-full object-cover object-top"
-                  style={{ 
-                    backgroundColor: 'transparent'
-                  }}
-                  loading="lazy"
-                />
-              </div>
-            </div>
+                      <img
+                        src={m.image}
+                        alt={m.name}
+                        className="w-full h-full object-cover object-top"
+                        style={{
+                          backgroundColor: 'transparent'
+                        }}
+                        loading="lazy"
+                      />
+                    </div>
+                  </div>
 
-            {/* Name and Position - Centered */}
-            <div className="text-center">
-              <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2
+                  {/* Name and Position - Centered */}
+                  <div className="text-center">
+                    <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2
                              group-hover:text-[#7A1616] transition-colors">
-                {m.name}
-              </h3>
+                      {m.name}
+                    </h3>
 
-              <div className="inline-block px-4 py-1.5 rounded-full
+                    <div className="inline-block px-4 py-1.5 rounded-full
                               bg-gradient-to-r from-[#7A1616] to-[#A12424]
                               text-white text-sm sm:text-base font-semibold
                               shadow-sm">
-                {m.position}
-              </div>
-            </div>
-          </div>
+                      {m.position}
+                    </div>
+                  </div>
+                </div>
 
-          {/* Content area */}
-          <div className="flex-1 flex flex-col p-6 sm:p-7 bg-white">
-            
-            {/* Experience badge */}
-            <div className="flex items-center justify-center gap-2 
+                {/* Content area */}
+                <div className="flex-1 flex flex-col p-6 sm:p-7 bg-white">
+
+                  {/* Experience badge */}
+                  <div className="flex items-center justify-center gap-2 
                             text-sm text-gray-600 mb-5
                             bg-gray-50 px-4 py-2 rounded-full 
                             border border-gray-100 w-fit mx-auto">
-              <Clock className="w-4 h-4 text-[#7A1616]" />
-              <span className="font-medium">{m.experience}</span>
-            </div>
+                    <Clock className="w-4 h-4 text-[#7A1616]" />
+                    <span className="font-medium">{m.experience}</span>
+                  </div>
 
-            {/* Description */}
-            <p className="text-sm sm:text-base text-gray-600 text-center 
+                  {/* Description */}
+                  <p className="text-sm sm:text-base text-gray-600 text-center 
                           leading-relaxed mb-5">
-              {m.description}
-            </p>
+                    {m.description}
+                  </p>
 
-            {/* Specialization */}
-            <div className="mt-auto pt-5 border-t border-gray-100">
-              <div className="flex flex-col items-center gap-2 text-center">
-                <div className="flex items-center gap-2">
-                  <Target className="w-4 h-4 text-[#7A1616]" />
-                  <span className="text-xs font-bold text-[#7A1616] 
+                  {/* Specialization */}
+                  <div className="mt-auto pt-5 border-t border-gray-100">
+                    <div className="flex flex-col items-center gap-2 text-center">
+                      <div className="flex items-center gap-2">
+                        <Target className="w-4 h-4 text-[#7A1616]" />
+                        <span className="text-xs font-bold text-[#7A1616] 
                                    uppercase tracking-wide">
-                    Specialization
-                  </span>
+                          Specialization
+                        </span>
+                      </div>
+                      <div className="text-sm sm:text-base text-gray-700 font-medium">
+                        {m.specialization}
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="text-sm sm:text-base text-gray-700 font-medium">
-                  {m.specialization}
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      ))}
-    </motion.div>
-  </div>
-</section>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
 
 
 
