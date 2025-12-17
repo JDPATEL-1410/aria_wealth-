@@ -78,9 +78,9 @@ const FinancialWisdom = () => {
       const fetchPromises = sources.map(async (source) => {
         try {
           if (source.type === 'rss') {
-            // Fetch RSS feeds via rss2json API
+            // Fetch RSS feeds via rss2json API (free tier)
             const response = await fetch(
-              `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(source.url)}&count=${source.limit}&api_key=YOUR_API_KEY_HERE`
+              `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(source.url)}&count=${source.limit}`
             );
 
             if (!response.ok) {
