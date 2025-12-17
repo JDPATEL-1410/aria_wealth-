@@ -53,26 +53,16 @@ const FinancialWisdom = () => {
     try {
       console.log('🔄 Fetching articles from multiple financial platforms...');
 
-      // Multiple RSS sources including Economic Times and other major Indian financial platforms
+
+      // Limited RSS sources to work within free tier rate limits (5 requests/hour)
+      // To add more sources, get an API key from rss2json.com
       const sources = [
-        // The Economic Times
-        { type: 'rss', url: 'https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms', name: 'Economic Times', limit: 5 },
-        { type: 'rss', url: 'https://economictimes.indiatimes.com/wealth/rssfeeds/837555174.cms', name: 'Economic Times', limit: 4 },
+        // The Economic Times - Most reliable source
+        { type: 'rss', url: 'https://economictimes.indiatimes.com/wealth/rssfeeds/837555174.cms', name: 'Economic Times', limit: 8 },
 
-        // Moneycontrol
-        { type: 'rss', url: 'https://www.moneycontrol.com/rss/latestnews.xml', name: 'Moneycontrol', limit: 4 },
-        { type: 'rss', url: 'https://www.moneycontrol.com/rss/mfnews.xml', name: 'Moneycontrol', limit: 3 },
-
-        // LiveMint
-        { type: 'rss', url: 'https://www.livemint.com/rss/money', name: 'LiveMint', limit: 4 },
-        { type: 'rss', url: 'https://www.livemint.com/rss/mutual-funds', name: 'LiveMint', limit: 3 },
-
-        // Business Standard
-        { type: 'rss', url: 'https://www.business-standard.com/rss/finance-news-103.rss', name: 'Business Standard', limit: 3 },
-
-        // Medium (backup)
-        { type: 'medium', tag: 'finance', limit: 3 },
-        { type: 'medium', tag: 'investment', limit: 3 },
+        // Medium - Backup source
+        { type: 'medium', tag: 'finance', limit: 8 },
+        { type: 'medium', tag: 'investment', limit: 8 },
       ];
 
       const fetchPromises = sources.map(async (source) => {
