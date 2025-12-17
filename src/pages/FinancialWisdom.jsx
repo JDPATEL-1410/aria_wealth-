@@ -28,30 +28,103 @@ const FinancialWisdom = () => {
     { title: "Wealth Building", count: 10, color: "from-blue-500 to-blue-600", icon: BookOpen, keywords: ['wealth', 'wealth building', 'wealth creation', 'investment strategy', 'portfolio'] }
   ];
 
-  // Generate thumbnail based on article keywords
-  const generateThumbnail = (title, category) => {
-    const keywords = title.toLowerCase();
+  // Generate thumbnail based on article keywords - Enhanced version
+  const generateThumbnail = (title, category, excerpt = '') => {
+    const keywords = `${title} ${excerpt}`.toLowerCase();
 
-    // Category-specific thumbnails
+    // Expanded category-specific thumbnails with more keywords
     const thumbnailMap = {
+      // SIP & Investment
       'sip': 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&w=800&q=80',
+      'systematic investment': 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&w=800&q=80',
+      'monthly investment': 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&w=800&q=80',
+
+      // Retirement
       'retirement': 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=800&q=80',
+      'pension': 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=800&q=80',
+      'senior citizen': 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=800&q=80',
+
+      // Tax
       'tax': 'https://images.unsplash.com/photo-1554224311-beee460201e8?auto=format&fit=crop&w=800&q=80',
+      '80c': 'https://images.unsplash.com/photo-1554224311-beee460201e8?auto=format&fit=crop&w=800&q=80',
+      'deduction': 'https://images.unsplash.com/photo-1554224311-beee460201e8?auto=format&fit=crop&w=800&q=80',
+      'tax saving': 'https://images.unsplash.com/photo-1554224311-beee460201e8?auto=format&fit=crop&w=800&q=80',
+
+      // Wealth & Growth
       'wealth': 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80',
+      'wealth building': 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80',
+      'wealth creation': 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80',
+      'financial growth': 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80',
+
+      // Investment & Portfolio
       'investment': 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80',
+      'portfolio': 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80',
+      'asset allocation': 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80',
+
+      // Stock Market
       'stock': 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80',
+      'equity': 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80',
+      'share market': 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80',
+      'nifty': 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80',
+      'sensex': 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80',
+
+      // Mutual Funds
       'mutual fund': 'https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?auto=format&fit=crop&w=800&q=80',
+      'mf': 'https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?auto=format&fit=crop&w=800&q=80',
+      'fund': 'https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?auto=format&fit=crop&w=800&q=80',
+
+      // Insurance
       'insurance': 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&q=80',
+      'life insurance': 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&q=80',
+      'health insurance': 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&q=80',
+      'term insurance': 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&q=80',
+
+      // Loans & Credit
       'loan': 'https://images.unsplash.com/photo-1554224311-beee460201e8?auto=format&fit=crop&w=800&q=80',
-      'savings': 'https://images.unsplash.com/photo-1579621970588-a35d0e7ab9b6?auto=format&fit=crop&w=800&q=80'
+      'home loan': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80',
+      'personal loan': 'https://images.unsplash.com/photo-1554224311-beee460201e8?auto=format&fit=crop&w=800&q=80',
+      'credit': 'https://images.unsplash.com/photo-1554224311-beee460201e8?auto=format&fit=crop&w=800&q=80',
+
+      // Savings & Banking
+      'savings': 'https://images.unsplash.com/photo-1579621970588-a35d0e7ab9b6?auto=format&fit=crop&w=800&q=80',
+      'bank': 'https://images.unsplash.com/photo-1579621970588-a35d0e7ab9b6?auto=format&fit=crop&w=800&q=80',
+      'fixed deposit': 'https://images.unsplash.com/photo-1579621970588-a35d0e7ab9b6?auto=format&fit=crop&w=800&q=80',
+      'fd': 'https://images.unsplash.com/photo-1579621970588-a35d0e7ab9b6?auto=format&fit=crop&w=800&q=80',
+
+      // Financial Planning
+      'financial planning': 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80',
+      'financial advisor': 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80',
+      'budget': 'https://images.unsplash.com/photo-1554224311-beee460201e8?auto=format&fit=crop&w=800&q=80',
+
+      // Real Estate
+      'real estate': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80',
+      'property': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80',
+      'home': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80',
+
+      // Gold & Commodities
+      'gold': 'https://images.unsplash.com/photo-1610375461246-83df859d849d?auto=format&fit=crop&w=800&q=80',
+      'commodity': 'https://images.unsplash.com/photo-1610375461246-83df859d849d?auto=format&fit=crop&w=800&q=80',
+
+      // Crypto (if needed)
+      'crypto': 'https://images.unsplash.com/photo-1518546305927-5a555bb7020d?auto=format&fit=crop&w=800&q=80',
+      'bitcoin': 'https://images.unsplash.com/photo-1518546305927-5a555bb7020d?auto=format&fit=crop&w=800&q=80'
     };
 
-    for (const [key, url] of Object.entries(thumbnailMap)) {
-      if (keywords.includes(key)) return url;
+    // Check for keyword matches (prioritize longer phrases first)
+    const sortedKeys = Object.keys(thumbnailMap).sort((a, b) => b.length - a.length);
+    for (const key of sortedKeys) {
+      if (keywords.includes(key)) {
+        console.log(`🖼️ Thumbnail matched for keyword: "${key}"`);
+        return thumbnailMap[key];
+      }
     }
 
     // Default fallback based on category
     const categoryFallbacks = {
+      'SIP Investment': 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&w=800&q=80',
+      'Retirement Planning': 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=800&q=80',
+      'Tax Optimization': 'https://images.unsplash.com/photo-1554224311-beee460201e8?auto=format&fit=crop&w=800&q=80',
+      'Wealth Building': 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80',
       'Beginner': 'https://images.unsplash.com/photo-1434626881859-194d67b2b86f?auto=format&fit=crop&w=800&q=80',
       'Wealth Builder': 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&w=800&q=80',
       'Freedom Seeker': 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=800&q=80',
@@ -99,9 +172,62 @@ const FinancialWisdom = () => {
     }
 
     try {
+      console.log('🔄 Starting to fetch financial articles...');
+
+      // Sample fallback articles in case API fails
+      const sampleArticles = [
+        {
+          id: 'sample-sip-1',
+          title: 'Understanding SIP: A Beginner\'s Guide to Systematic Investment Plans',
+          excerpt: 'Learn how Systematic Investment Plans (SIP) can help you build wealth over time through disciplined investing. Discover the power of rupee cost averaging and compounding...',
+          image: generateThumbnail('Understanding SIP: A Beginner\'s Guide to Systematic Investment Plans', 'SIP Investment', 'systematic investment plans sip mutual funds'),
+          category: 'SIP Investment',
+          readTime: '5 min read',
+          publishDate: new Date().toISOString(),
+          externalUrl: 'https://medium.com/tag/sip-investment',
+          source: 'Sample',
+          author: 'Financial Expert'
+        },
+        {
+          id: 'sample-retirement-1',
+          title: 'Retirement Planning in India: How Much Do You Really Need?',
+          excerpt: 'Planning for retirement requires careful consideration of inflation, lifestyle needs, and investment strategies. Learn how to calculate your retirement corpus...',
+          image: generateThumbnail('Retirement Planning in India', 'Retirement Planning', 'retirement planning pension corpus'),
+          category: 'Retirement Planning',
+          readTime: '7 min read',
+          publishDate: new Date().toISOString(),
+          externalUrl: 'https://medium.com/tag/retirement-planning',
+          source: 'Sample',
+          author: 'Wealth Advisor'
+        },
+        {
+          id: 'sample-tax-1',
+          title: 'Tax Saving Strategies for 2024: Maximize Your Deductions Under Section 80C',
+          excerpt: 'Explore various tax-saving investment options available under Section 80C and other sections. Learn how to optimize your tax liability while building wealth...',
+          image: generateThumbnail('Tax Saving Strategies Section 80C', 'Tax Optimization', 'tax saving 80c deduction'),
+          category: 'Tax Optimization',
+          readTime: '6 min read',
+          publishDate: new Date().toISOString(),
+          externalUrl: 'https://medium.com/tag/tax-planning',
+          source: 'Sample',
+          author: 'Tax Expert'
+        },
+        {
+          id: 'sample-wealth-1',
+          title: 'Wealth Building Through Mutual Funds: A Comprehensive Strategy',
+          excerpt: 'Discover how to build long-term wealth through strategic mutual fund investments. Learn about asset allocation, fund selection, and portfolio rebalancing...',
+          image: generateThumbnail('Wealth Building Through Mutual Funds', 'Wealth Building', 'wealth building mutual funds portfolio'),
+          category: 'Wealth Building',
+          readTime: '8 min read',
+          publishDate: new Date().toISOString(),
+          externalUrl: 'https://medium.com/tag/wealth-management',
+          source: 'Sample',
+          author: 'Investment Advisor'
+        }
+      ];
+
       // Multiple RSS sources for diverse content
       const sources = [
-        // Medium finance tags
         { type: 'medium', tag: 'finance', limit: 5 },
         { type: 'medium', tag: 'investment', limit: 5 },
         { type: 'medium', tag: 'personal-finance', limit: 4 },
@@ -115,10 +241,29 @@ const FinancialWisdom = () => {
       const fetchPromises = sources.map(async (source) => {
         try {
           if (source.type === 'medium') {
-            const response = await fetch(
-              `https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/tag/${source.tag}/feed&count=${source.limit}`
-            );
+            const url = `https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/tag/${source.tag}/feed&count=${source.limit}`;
+            console.log(`Fetching from: ${url}`);
+
+            const response = await fetch(url, {
+              method: 'GET',
+              headers: {
+                'Accept': 'application/json',
+              }
+            });
+
+            if (!response.ok) {
+              console.warn(`Failed to fetch ${source.tag}: ${response.status}`);
+              return [];
+            }
+
             const data = await response.json();
+
+            if (data.status !== 'ok' || !data.items) {
+              console.warn(`Invalid response for ${source.tag}:`, data);
+              return [];
+            }
+
+            console.log(`✅ Successfully fetched ${data.items.length} articles from ${source.tag}`);
 
             return (data.items || []).map((article) => {
               const cleanDescription = article.description?.replace(/<[^>]*>/g, '').trim() || '';
@@ -127,20 +272,20 @@ const FinancialWisdom = () => {
               // Intelligent categorization
               const category = categorizeArticle(article.title, cleanDescription);
 
-              // Auto-generate thumbnail
+              // Auto-generate thumbnail with excerpt for better matching
               let thumbnail = article.thumbnail || article.enclosure?.link;
               if (!thumbnail) {
-                thumbnail = generateThumbnail(article.title, category);
+                thumbnail = generateThumbnail(article.title, category, cleanDescription);
               }
 
               return {
-                id: `medium-${source.tag}-${article.guid}`,
+                id: `medium-${source.tag}-${article.guid || Math.random()}`,
                 title: article.title,
                 excerpt: excerpt || 'Read the full article to learn more about this financial topic.',
                 image: thumbnail,
                 category: category,
                 readTime: Math.max(3, Math.min(10, Math.ceil(cleanDescription.split(' ').length / 200))) + ' min read',
-                publishDate: article.pubDate,
+                publishDate: article.pubDate || new Date().toISOString(),
                 externalUrl: article.link,
                 source: 'Medium',
                 author: article.author || 'Financial Expert'
@@ -149,7 +294,7 @@ const FinancialWisdom = () => {
           }
           return [];
         } catch (error) {
-          console.error(`Error fetching from ${source.type}:`, error);
+          console.error(`Error fetching from ${source.type} (${source.tag}):`, error);
           return [];
         }
       });
@@ -157,8 +302,17 @@ const FinancialWisdom = () => {
       const results = await Promise.all(fetchPromises);
       const allArticles = results.flat();
 
+      console.log(`📊 Total articles fetched from APIs: ${allArticles.length}`);
+
+      // If no articles fetched, use sample articles
+      const articlesToUse = allArticles.length > 0 ? allArticles : sampleArticles;
+
+      if (allArticles.length === 0) {
+        console.warn('⚠️ No articles fetched from APIs, using sample articles');
+      }
+
       // Remove duplicates based on title similarity
-      const uniqueArticles = allArticles.reduce((acc, current) => {
+      const uniqueArticles = articlesToUse.reduce((acc, current) => {
         const isDuplicate = acc.some(item =>
           item.title.toLowerCase() === current.title.toLowerCase() ||
           item.externalUrl === current.externalUrl
@@ -176,10 +330,25 @@ const FinancialWisdom = () => {
 
       setLiveArticles(sortedArticles);
       setLastRefreshTime(new Date());
-      console.log(`✅ Fetched ${sortedArticles.length} financial articles`);
+      console.log(`✅ Final article count: ${sortedArticles.length}`);
     } catch (error) {
-      console.error('Error fetching financial articles:', error);
-      setLiveArticles([]);
+      console.error('❌ Error fetching financial articles:', error);
+      // Set sample articles as fallback
+      const sampleArticles = [
+        {
+          id: 'fallback-1',
+          title: 'Getting Started with SIP Investments',
+          excerpt: 'Learn the basics of Systematic Investment Plans and how they can help you achieve your financial goals...',
+          image: generateThumbnail('sip', 'SIP Investment'),
+          category: 'SIP Investment',
+          readTime: '5 min read',
+          publishDate: new Date().toISOString(),
+          externalUrl: '#',
+          source: 'Fallback',
+          author: 'Financial Expert'
+        }
+      ];
+      setLiveArticles(sampleArticles);
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -204,14 +373,35 @@ const FinancialWisdom = () => {
     // Initial fetch
     fetchFinancialArticles();
 
-    // Auto-refresh every 5 minutes (300000ms)
+    // Auto-refresh every 5 minutes (300000ms) for real-time updates
     const refreshInterval = setInterval(() => {
-      console.log('🔄 Auto-refreshing financial articles...');
+      console.log('🔄 Auto-refreshing financial articles (5-min interval)...');
       fetchFinancialArticles();
     }, 300000);
 
-    // Cleanup interval on unmount
-    return () => clearInterval(refreshInterval);
+    // Daily refresh at midnight to ensure fresh content
+    const now = new Date();
+    const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+    const msUntilMidnight = tomorrow - now;
+
+    const dailyRefreshTimeout = setTimeout(() => {
+      console.log('🌅 Daily refresh - fetching fresh articles...');
+      fetchFinancialArticles();
+
+      // Set up recurring daily refresh
+      const dailyInterval = setInterval(() => {
+        console.log('🌅 Daily refresh - fetching fresh articles...');
+        fetchFinancialArticles();
+      }, 86400000); // 24 hours in milliseconds
+
+      return () => clearInterval(dailyInterval);
+    }, msUntilMidnight);
+
+    // Cleanup intervals on unmount
+    return () => {
+      clearInterval(refreshInterval);
+      clearTimeout(dailyRefreshTimeout);
+    };
   }, []);
 
   const allArticles = [...liveArticles, ...financialWisdomData];
