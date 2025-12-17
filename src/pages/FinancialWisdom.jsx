@@ -42,7 +42,7 @@ const FinancialWisdom = () => {
     return 'Live Articles';
   };
 
-  // Fetch financial articles from multiple sources
+  // Fetch financial articles from multiple third-party sources
   const fetchFinancialArticles = async (isManualRefresh = false) => {
     if (isManualRefresh) {
       setRefreshing(true);
@@ -51,24 +51,51 @@ const FinancialWisdom = () => {
     }
 
     try {
-      // Multiple RSS sources for diverse content
+      console.log('🔄 Fetching articles from multiple financial platforms...');
+
+      // Multiple RSS sources including Economic Times and other major Indian financial platforms
       const sources = [
-        // Medium finance tags
-        { type: 'medium', tag: 'finance', limit: 4 },
-        { type: 'medium', tag: 'investment', limit: 4 },
-        { type: 'medium', tag: 'personal-finance', limit: 3 },
-        { type: 'medium', tag: 'wealth-management', limit: 3 },
-        { type: 'medium', tag: 'mutual-funds', limit: 2 },
-        { type: 'medium', tag: 'retirement-planning', limit: 2 },
+        // The Economic Times
+        { type: 'rss', url: 'https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms', name: 'Economic Times', limit: 5 },
+        { type: 'rss', url: 'https://economictimes.indiatimes.com/wealth/rssfeeds/837555174.cms', name: 'Economic Times', limit: 4 },
+
+        // Moneycontrol
+        { type: 'rss', url: 'https://www.moneycontrol.com/rss/latestnews.xml', name: 'Moneycontrol', limit: 4 },
+        { type: 'rss', url: 'https://www.moneycontrol.com/rss/mfnews.xml', name: 'Moneycontrol', limit: 3 },
+
+        // LiveMint
+        { type: 'rss', url: 'https://www.livemint.com/rss/money', name: 'LiveMint', limit: 4 },
+        { type: 'rss', url: 'https://www.livemint.com/rss/mutual-funds', name: 'LiveMint', limit: 3 },
+
+        // Business Standard
+        { type: 'rss', url: 'https://www.business-standard.com/rss/finance-news-103.rss', name: 'Business Standard', limit: 3 },
+
+        // Medium (backup)
+        { type: 'medium', tag: 'finance', limit: 3 },
+        { type: 'medium', tag: 'investment', limit: 3 },
       ];
 
       const fetchPromises = sources.map(async (source) => {
         try {
-          if (source.type === 'medium') {
+          if (source.type === 'rss') {
+            // Fetch RSS feeds via rss2json API
             const response = await fetch(
-              `https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/tag/${source.tag}/feed&count=${source.limit}`
+              `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(source.url)}&count=${source.limit}&api_key=YOUR_API_KEY_HERE`
             );
+
+            if (!response.ok) {
+              console.warn(`Failed to fetch from ${source.name}`);
+              return [];
+            }
+
             const data = await response.json();
+
+            if (data.status !== 'ok' || !data.items) {
+              console.warn(`Invalid response from ${source.name}`);
+              return [];
+            }
+
+            console.log(`✅ Fetched ${data.items.length} articles from ${source.name}`);
 
             return (data.items || []).map((article) => {
               const cleanDescription = article.description?.replace(/<[^>]*>/g, '').trim() || '';
@@ -77,10 +104,54 @@ const FinancialWisdom = () => {
               // Intelligent categorization
               const category = categorizeArticle(article.title, cleanDescription);
 
-              // Better thumbnail handling
+              // Extract thumbnail from content or use fallback
               let thumbnail = article.thumbnail || article.enclosure?.link;
 
-              // If no thumbnail, use category-specific fallback
+              // Try to extract image from description HTML
+              if (!thumbnail && article.description) {
+                const imgMatch = article.description.match(/<img[^>]+src="([^">]+)"/);
+                if (imgMatch && imgMatch[1]) {
+                  thumbnail = imgMatch[1];
+                }
+              }
+
+              // Category-specific fallbacks
+              if (!thumbnail) {
+                const fallbacks = {
+                  'Beginner': 'https://images.unsplash.com/photo-1434626881859-194d67b2b86f?auto=format&fit=crop&w=800&q=80',
+                  'Wealth Builder': 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&w=800&q=80',
+                  'Freedom Seeker': 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=800&q=80',
+                  'Live Articles': 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80'
+                };
+                thumbnail = fallbacks[category];
+              }
+
+              return {
+                id: `${source.name.toLowerCase().replace(/\s+/g, '-')}-${article.guid || Date.now()}-${Math.random()}`,
+                title: article.title,
+                excerpt: excerpt || 'Read the full article on ' + source.name,
+                image: thumbnail,
+                category: category,
+                readTime: Math.max(3, Math.min(10, Math.ceil(cleanDescription.split(' ').length / 200))) + ' min read',
+                publishDate: article.pubDate || new Date().toISOString(),
+                externalUrl: article.link, // Direct link to original article
+                source: source.name,
+                author: article.author || source.name
+              };
+            });
+          } else if (source.type === 'medium') {
+            // Medium RSS feeds (backup source)
+            const response = await fetch(
+              `https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/tag/${source.tag}/feed&count=${source.limit}`
+            );
+            const data = await response.json();
+
+            return (data.items || []).map((article) => {
+              const cleanDescription = article.description?.replace(/<[^>]*>/g, '').trim() || '';
+              const excerpt = cleanDescription.substring(0, 200) + (cleanDescription.length > 200 ? '...' : '');
+              const category = categorizeArticle(article.title, cleanDescription);
+
+              let thumbnail = article.thumbnail || article.enclosure?.link;
               if (!thumbnail) {
                 const fallbacks = {
                   'Beginner': 'https://images.unsplash.com/photo-1434626881859-194d67b2b86f?auto=format&fit=crop&w=800&q=80',
@@ -94,7 +165,7 @@ const FinancialWisdom = () => {
               return {
                 id: `medium-${source.tag}-${article.guid}`,
                 title: article.title,
-                excerpt: excerpt || 'Read the full article to learn more about this financial topic.',
+                excerpt: excerpt || 'Read the full article on Medium',
                 image: thumbnail,
                 category: category,
                 readTime: Math.max(3, Math.min(10, Math.ceil(cleanDescription.split(' ').length / 200))) + ' min read',
@@ -107,7 +178,7 @@ const FinancialWisdom = () => {
           }
           return [];
         } catch (error) {
-          console.error(`Error fetching from ${source.type}:`, error);
+          console.error(`Error fetching from ${source.name || source.type}:`, error);
           return [];
         }
       });
@@ -115,7 +186,9 @@ const FinancialWisdom = () => {
       const results = await Promise.all(fetchPromises);
       const allArticles = results.flat();
 
-      // Remove duplicates based on title similarity
+      console.log(`📊 Total articles fetched: ${allArticles.length}`);
+
+      // Remove duplicates based on title and URL
       const uniqueArticles = allArticles.reduce((acc, current) => {
         const isDuplicate = acc.some(item =>
           item.title.toLowerCase() === current.title.toLowerCase() ||
@@ -127,14 +200,14 @@ const FinancialWisdom = () => {
         return acc;
       }, []);
 
-      // Sort by publish date and limit
+      // Sort by publish date (newest first) and limit to 24 articles
       const sortedArticles = uniqueArticles
         .sort((a, b) => new Date(b.publishDate) - new Date(a.publishDate))
-        .slice(0, 18);
+        .slice(0, 24);
 
       setLiveArticles(sortedArticles);
       setLastRefreshTime(new Date());
-      console.log(`✅ Fetched ${sortedArticles.length} financial articles`);
+      console.log(`✅ Displaying ${sortedArticles.length} unique financial articles`);
     } catch (error) {
       console.error('Error fetching financial articles:', error);
       setLiveArticles([]);
@@ -149,19 +222,41 @@ const FinancialWisdom = () => {
     fetchFinancialArticles(true);
   };
 
-  // Fetch financial articles with auto-refresh
+  // Fetch financial articles with auto-refresh and daily updates
   useEffect(() => {
-    // Initial fetch
+    // Initial fetch on component mount
     fetchFinancialArticles();
 
-    // Auto-refresh every 5 minutes (300000ms)
+    // Auto-refresh every 5 minutes for real-time updates
     const refreshInterval = setInterval(() => {
-      console.log('🔄 Auto-refreshing financial articles...');
+      console.log('🔄 5-minute auto-refresh...');
       fetchFinancialArticles();
-    }, 300000);
+    }, 300000); // 5 minutes
 
-    // Cleanup interval on unmount
-    return () => clearInterval(refreshInterval);
+    // Calculate time until next midnight for daily refresh
+    const now = new Date();
+    const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0);
+    const msUntilMidnight = tomorrow - now;
+
+    // Set timeout for midnight refresh
+    const midnightTimeout = setTimeout(() => {
+      console.log('🌅 Daily midnight refresh - fetching fresh articles...');
+      fetchFinancialArticles();
+
+      // Set up recurring daily refresh every 24 hours
+      const dailyInterval = setInterval(() => {
+        console.log('🌅 Daily refresh - fetching fresh articles...');
+        fetchFinancialArticles();
+      }, 86400000); // 24 hours
+
+      return () => clearInterval(dailyInterval);
+    }, msUntilMidnight);
+
+    // Cleanup on unmount
+    return () => {
+      clearInterval(refreshInterval);
+      clearTimeout(midnightTimeout);
+    };
   }, []);
 
   const allArticles = [...liveArticles, ...financialWisdomData];
