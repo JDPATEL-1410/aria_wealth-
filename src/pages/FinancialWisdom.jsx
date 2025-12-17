@@ -20,137 +20,16 @@ const FinancialWisdom = () => {
 
   const categories = ['All', 'Beginner', 'Wealth Builder', 'Freedom Seeker', 'Live Articles'];
 
-  // Topic categories for filtering
-  const topicCategories = [
-    { title: "SIP Investment", count: 12, color: "from-[#7A1616] to-[#A12424]", icon: TrendingUp, keywords: ['sip', 'systematic investment', 'mutual fund sip', 'monthly investment'] },
-    { title: "Retirement Planning", count: 8, color: "from-green-500 to-green-600", icon: Target, keywords: ['retirement', 'pension', 'retirement planning', 'post-retirement', 'senior citizen'] },
-    { title: "Tax Optimization", count: 6, color: "from-[#C9A635] to-[#E7C76A]", icon: DollarSign, keywords: ['tax', 'tax saving', 'tax optimization', 'tax planning', '80c', 'deduction'] },
-    { title: "Wealth Building", count: 10, color: "from-blue-500 to-blue-600", icon: BookOpen, keywords: ['wealth', 'wealth building', 'wealth creation', 'investment strategy', 'portfolio'] }
-  ];
-
-  // Generate thumbnail based on article keywords - Enhanced version
-  const generateThumbnail = (title, category, excerpt = '') => {
-    const keywords = `${title} ${excerpt}`.toLowerCase();
-
-    // Expanded category-specific thumbnails with more keywords
-    const thumbnailMap = {
-      // SIP & Investment
-      'sip': 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&w=800&q=80',
-      'systematic investment': 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&w=800&q=80',
-      'monthly investment': 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&w=800&q=80',
-
-      // Retirement
-      'retirement': 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=800&q=80',
-      'pension': 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=800&q=80',
-      'senior citizen': 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=800&q=80',
-
-      // Tax
-      'tax': 'https://images.unsplash.com/photo-1554224311-beee460201e8?auto=format&fit=crop&w=800&q=80',
-      '80c': 'https://images.unsplash.com/photo-1554224311-beee460201e8?auto=format&fit=crop&w=800&q=80',
-      'deduction': 'https://images.unsplash.com/photo-1554224311-beee460201e8?auto=format&fit=crop&w=800&q=80',
-      'tax saving': 'https://images.unsplash.com/photo-1554224311-beee460201e8?auto=format&fit=crop&w=800&q=80',
-
-      // Wealth & Growth
-      'wealth': 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80',
-      'wealth building': 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80',
-      'wealth creation': 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80',
-      'financial growth': 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80',
-
-      // Investment & Portfolio
-      'investment': 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80',
-      'portfolio': 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80',
-      'asset allocation': 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80',
-
-      // Stock Market
-      'stock': 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80',
-      'equity': 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80',
-      'share market': 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80',
-      'nifty': 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80',
-      'sensex': 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80',
-
-      // Mutual Funds
-      'mutual fund': 'https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?auto=format&fit=crop&w=800&q=80',
-      'mf': 'https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?auto=format&fit=crop&w=800&q=80',
-      'fund': 'https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?auto=format&fit=crop&w=800&q=80',
-
-      // Insurance
-      'insurance': 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&q=80',
-      'life insurance': 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&q=80',
-      'health insurance': 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&q=80',
-      'term insurance': 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&q=80',
-
-      // Loans & Credit
-      'loan': 'https://images.unsplash.com/photo-1554224311-beee460201e8?auto=format&fit=crop&w=800&q=80',
-      'home loan': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80',
-      'personal loan': 'https://images.unsplash.com/photo-1554224311-beee460201e8?auto=format&fit=crop&w=800&q=80',
-      'credit': 'https://images.unsplash.com/photo-1554224311-beee460201e8?auto=format&fit=crop&w=800&q=80',
-
-      // Savings & Banking
-      'savings': 'https://images.unsplash.com/photo-1579621970588-a35d0e7ab9b6?auto=format&fit=crop&w=800&q=80',
-      'bank': 'https://images.unsplash.com/photo-1579621970588-a35d0e7ab9b6?auto=format&fit=crop&w=800&q=80',
-      'fixed deposit': 'https://images.unsplash.com/photo-1579621970588-a35d0e7ab9b6?auto=format&fit=crop&w=800&q=80',
-      'fd': 'https://images.unsplash.com/photo-1579621970588-a35d0e7ab9b6?auto=format&fit=crop&w=800&q=80',
-
-      // Financial Planning
-      'financial planning': 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80',
-      'financial advisor': 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80',
-      'budget': 'https://images.unsplash.com/photo-1554224311-beee460201e8?auto=format&fit=crop&w=800&q=80',
-
-      // Real Estate
-      'real estate': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80',
-      'property': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80',
-      'home': 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80',
-
-      // Gold & Commodities
-      'gold': 'https://images.unsplash.com/photo-1610375461246-83df859d849d?auto=format&fit=crop&w=800&q=80',
-      'commodity': 'https://images.unsplash.com/photo-1610375461246-83df859d849d?auto=format&fit=crop&w=800&q=80',
-
-      // Crypto (if needed)
-      'crypto': 'https://images.unsplash.com/photo-1518546305927-5a555bb7020d?auto=format&fit=crop&w=800&q=80',
-      'bitcoin': 'https://images.unsplash.com/photo-1518546305927-5a555bb7020d?auto=format&fit=crop&w=800&q=80'
-    };
-
-    // Check for keyword matches (prioritize longer phrases first)
-    const sortedKeys = Object.keys(thumbnailMap).sort((a, b) => b.length - a.length);
-    for (const key of sortedKeys) {
-      if (keywords.includes(key)) {
-        console.log(`🖼️ Thumbnail matched for keyword: "${key}"`);
-        return thumbnailMap[key];
-      }
-    }
-
-    // Default fallback based on category
-    const categoryFallbacks = {
-      'SIP Investment': 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&w=800&q=80',
-      'Retirement Planning': 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=800&q=80',
-      'Tax Optimization': 'https://images.unsplash.com/photo-1554224311-beee460201e8?auto=format&fit=crop&w=800&q=80',
-      'Wealth Building': 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80',
-      'Beginner': 'https://images.unsplash.com/photo-1434626881859-194d67b2b86f?auto=format&fit=crop&w=800&q=80',
-      'Wealth Builder': 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&w=800&q=80',
-      'Freedom Seeker': 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=800&q=80',
-      'Live Articles': 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80'
-    };
-
-    return categoryFallbacks[category] || 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80';
-  };
-
   // Categorize article based on keywords
   const categorizeArticle = (title, description) => {
     const content = `${title} ${description}`.toLowerCase();
 
-    // Check topic categories first
-    for (const topic of topicCategories) {
-      if (topic.keywords.some(keyword => content.includes(keyword))) {
-        return topic.title;
-      }
-    }
-
     // Beginner keywords
     const beginnerKeywords = ['beginner', 'basics', 'introduction', 'getting started', 'guide', 'how to start', 'first time', 'learn', 'understanding', 'explained'];
     // Wealth Builder keywords
-    const wealthKeywords = ['investment', 'portfolio', 'stocks', 'mutual fund', 'diversification', 'asset allocation', 'growth', 'compound'];
+    const wealthKeywords = ['investment', 'portfolio', 'stocks', 'mutual fund', 'sip', 'diversification', 'asset allocation', 'growth', 'compound', 'wealth building'];
     // Freedom Seeker keywords
-    const freedomKeywords = ['financial freedom', 'passive income', 'fire', 'early retirement', 'financial independence', 'long-term', 'legacy', 'estate planning'];
+    const freedomKeywords = ['retirement', 'financial freedom', 'passive income', 'fire', 'early retirement', 'financial independence', 'long-term', 'legacy', 'estate planning'];
 
     if (beginnerKeywords.some(keyword => content.includes(keyword))) {
       return 'Beginner';
@@ -172,98 +51,24 @@ const FinancialWisdom = () => {
     }
 
     try {
-      console.log('🔄 Starting to fetch financial articles...');
-
-      // Sample fallback articles in case API fails
-      const sampleArticles = [
-        {
-          id: 'sample-sip-1',
-          title: 'Understanding SIP: A Beginner\'s Guide to Systematic Investment Plans',
-          excerpt: 'Learn how Systematic Investment Plans (SIP) can help you build wealth over time through disciplined investing. Discover the power of rupee cost averaging and compounding...',
-          image: generateThumbnail('Understanding SIP: A Beginner\'s Guide to Systematic Investment Plans', 'SIP Investment', 'systematic investment plans sip mutual funds'),
-          category: 'SIP Investment',
-          readTime: '5 min read',
-          publishDate: new Date().toISOString(),
-          externalUrl: 'https://medium.com/tag/sip-investment',
-          source: 'Sample',
-          author: 'Financial Expert'
-        },
-        {
-          id: 'sample-retirement-1',
-          title: 'Retirement Planning in India: How Much Do You Really Need?',
-          excerpt: 'Planning for retirement requires careful consideration of inflation, lifestyle needs, and investment strategies. Learn how to calculate your retirement corpus...',
-          image: generateThumbnail('Retirement Planning in India', 'Retirement Planning', 'retirement planning pension corpus'),
-          category: 'Retirement Planning',
-          readTime: '7 min read',
-          publishDate: new Date().toISOString(),
-          externalUrl: 'https://medium.com/tag/retirement-planning',
-          source: 'Sample',
-          author: 'Wealth Advisor'
-        },
-        {
-          id: 'sample-tax-1',
-          title: 'Tax Saving Strategies for 2024: Maximize Your Deductions Under Section 80C',
-          excerpt: 'Explore various tax-saving investment options available under Section 80C and other sections. Learn how to optimize your tax liability while building wealth...',
-          image: generateThumbnail('Tax Saving Strategies Section 80C', 'Tax Optimization', 'tax saving 80c deduction'),
-          category: 'Tax Optimization',
-          readTime: '6 min read',
-          publishDate: new Date().toISOString(),
-          externalUrl: 'https://medium.com/tag/tax-planning',
-          source: 'Sample',
-          author: 'Tax Expert'
-        },
-        {
-          id: 'sample-wealth-1',
-          title: 'Wealth Building Through Mutual Funds: A Comprehensive Strategy',
-          excerpt: 'Discover how to build long-term wealth through strategic mutual fund investments. Learn about asset allocation, fund selection, and portfolio rebalancing...',
-          image: generateThumbnail('Wealth Building Through Mutual Funds', 'Wealth Building', 'wealth building mutual funds portfolio'),
-          category: 'Wealth Building',
-          readTime: '8 min read',
-          publishDate: new Date().toISOString(),
-          externalUrl: 'https://medium.com/tag/wealth-management',
-          source: 'Sample',
-          author: 'Investment Advisor'
-        }
-      ];
-
       // Multiple RSS sources for diverse content
       const sources = [
-        { type: 'medium', tag: 'finance', limit: 5 },
-        { type: 'medium', tag: 'investment', limit: 5 },
-        { type: 'medium', tag: 'personal-finance', limit: 4 },
+        // Medium finance tags
+        { type: 'medium', tag: 'finance', limit: 4 },
+        { type: 'medium', tag: 'investment', limit: 4 },
+        { type: 'medium', tag: 'personal-finance', limit: 3 },
         { type: 'medium', tag: 'wealth-management', limit: 3 },
-        { type: 'medium', tag: 'mutual-funds', limit: 3 },
-        { type: 'medium', tag: 'retirement-planning', limit: 3 },
-        { type: 'medium', tag: 'sip-investment', limit: 3 },
-        { type: 'medium', tag: 'tax-planning', limit: 2 },
+        { type: 'medium', tag: 'mutual-funds', limit: 2 },
+        { type: 'medium', tag: 'retirement-planning', limit: 2 },
       ];
 
       const fetchPromises = sources.map(async (source) => {
         try {
           if (source.type === 'medium') {
-            const url = `https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/tag/${source.tag}/feed&count=${source.limit}`;
-            console.log(`Fetching from: ${url}`);
-
-            const response = await fetch(url, {
-              method: 'GET',
-              headers: {
-                'Accept': 'application/json',
-              }
-            });
-
-            if (!response.ok) {
-              console.warn(`Failed to fetch ${source.tag}: ${response.status}`);
-              return [];
-            }
-
+            const response = await fetch(
+              `https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/tag/${source.tag}/feed&count=${source.limit}`
+            );
             const data = await response.json();
-
-            if (data.status !== 'ok' || !data.items) {
-              console.warn(`Invalid response for ${source.tag}:`, data);
-              return [];
-            }
-
-            console.log(`✅ Successfully fetched ${data.items.length} articles from ${source.tag}`);
 
             return (data.items || []).map((article) => {
               const cleanDescription = article.description?.replace(/<[^>]*>/g, '').trim() || '';
@@ -272,20 +77,28 @@ const FinancialWisdom = () => {
               // Intelligent categorization
               const category = categorizeArticle(article.title, cleanDescription);
 
-              // Auto-generate thumbnail with excerpt for better matching
+              // Better thumbnail handling
               let thumbnail = article.thumbnail || article.enclosure?.link;
+
+              // If no thumbnail, use category-specific fallback
               if (!thumbnail) {
-                thumbnail = generateThumbnail(article.title, category, cleanDescription);
+                const fallbacks = {
+                  'Beginner': 'https://images.unsplash.com/photo-1434626881859-194d67b2b86f?auto=format&fit=crop&w=800&q=80',
+                  'Wealth Builder': 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&w=800&q=80',
+                  'Freedom Seeker': 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=800&q=80',
+                  'Live Articles': 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80'
+                };
+                thumbnail = fallbacks[category];
               }
 
               return {
-                id: `medium-${source.tag}-${article.guid || Math.random()}`,
+                id: `medium-${source.tag}-${article.guid}`,
                 title: article.title,
                 excerpt: excerpt || 'Read the full article to learn more about this financial topic.',
                 image: thumbnail,
                 category: category,
                 readTime: Math.max(3, Math.min(10, Math.ceil(cleanDescription.split(' ').length / 200))) + ' min read',
-                publishDate: article.pubDate || new Date().toISOString(),
+                publishDate: article.pubDate,
                 externalUrl: article.link,
                 source: 'Medium',
                 author: article.author || 'Financial Expert'
@@ -294,7 +107,7 @@ const FinancialWisdom = () => {
           }
           return [];
         } catch (error) {
-          console.error(`Error fetching from ${source.type} (${source.tag}):`, error);
+          console.error(`Error fetching from ${source.type}:`, error);
           return [];
         }
       });
@@ -302,17 +115,8 @@ const FinancialWisdom = () => {
       const results = await Promise.all(fetchPromises);
       const allArticles = results.flat();
 
-      console.log(`📊 Total articles fetched from APIs: ${allArticles.length}`);
-
-      // If no articles fetched, use sample articles
-      const articlesToUse = allArticles.length > 0 ? allArticles : sampleArticles;
-
-      if (allArticles.length === 0) {
-        console.warn('⚠️ No articles fetched from APIs, using sample articles');
-      }
-
       // Remove duplicates based on title similarity
-      const uniqueArticles = articlesToUse.reduce((acc, current) => {
+      const uniqueArticles = allArticles.reduce((acc, current) => {
         const isDuplicate = acc.some(item =>
           item.title.toLowerCase() === current.title.toLowerCase() ||
           item.externalUrl === current.externalUrl
@@ -326,29 +130,14 @@ const FinancialWisdom = () => {
       // Sort by publish date and limit
       const sortedArticles = uniqueArticles
         .sort((a, b) => new Date(b.publishDate) - new Date(a.publishDate))
-        .slice(0, 24);
+        .slice(0, 18);
 
       setLiveArticles(sortedArticles);
       setLastRefreshTime(new Date());
-      console.log(`✅ Final article count: ${sortedArticles.length}`);
+      console.log(`✅ Fetched ${sortedArticles.length} financial articles`);
     } catch (error) {
-      console.error('❌ Error fetching financial articles:', error);
-      // Set sample articles as fallback
-      const sampleArticles = [
-        {
-          id: 'fallback-1',
-          title: 'Getting Started with SIP Investments',
-          excerpt: 'Learn the basics of Systematic Investment Plans and how they can help you achieve your financial goals...',
-          image: generateThumbnail('sip', 'SIP Investment'),
-          category: 'SIP Investment',
-          readTime: '5 min read',
-          publishDate: new Date().toISOString(),
-          externalUrl: '#',
-          source: 'Fallback',
-          author: 'Financial Expert'
-        }
-      ];
-      setLiveArticles(sampleArticles);
+      console.error('Error fetching financial articles:', error);
+      setLiveArticles([]);
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -360,48 +149,19 @@ const FinancialWisdom = () => {
     fetchFinancialArticles(true);
   };
 
-  // Handle topic category click
-  const handleTopicClick = (topicTitle) => {
-    setSelectedCategory('All');
-    setSearchTerm(topicTitle);
-    // Scroll to articles section
-    document.getElementById('articles')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   // Fetch financial articles with auto-refresh
   useEffect(() => {
     // Initial fetch
     fetchFinancialArticles();
 
-    // Auto-refresh every 5 minutes (300000ms) for real-time updates
+    // Auto-refresh every 5 minutes (300000ms)
     const refreshInterval = setInterval(() => {
-      console.log('🔄 Auto-refreshing financial articles (5-min interval)...');
+      console.log('🔄 Auto-refreshing financial articles...');
       fetchFinancialArticles();
     }, 300000);
 
-    // Daily refresh at midnight to ensure fresh content
-    const now = new Date();
-    const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
-    const msUntilMidnight = tomorrow - now;
-
-    const dailyRefreshTimeout = setTimeout(() => {
-      console.log('🌅 Daily refresh - fetching fresh articles...');
-      fetchFinancialArticles();
-
-      // Set up recurring daily refresh
-      const dailyInterval = setInterval(() => {
-        console.log('🌅 Daily refresh - fetching fresh articles...');
-        fetchFinancialArticles();
-      }, 86400000); // 24 hours in milliseconds
-
-      return () => clearInterval(dailyInterval);
-    }, msUntilMidnight);
-
-    // Cleanup intervals on unmount
-    return () => {
-      clearInterval(refreshInterval);
-      clearTimeout(dailyRefreshTimeout);
-    };
+    // Cleanup interval on unmount
+    return () => clearInterval(refreshInterval);
   }, []);
 
   const allArticles = [...liveArticles, ...financialWisdomData];
@@ -409,8 +169,7 @@ const FinancialWisdom = () => {
   const filteredArticles = allArticles.filter(article => {
     const matchesCategory = selectedCategory === 'All' || article.category === selectedCategory;
     const matchesSearch = article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      article.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      article.category.toLowerCase().includes(searchTerm.toLowerCase());
+      article.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
@@ -438,12 +197,6 @@ const FinancialWisdom = () => {
   };
 
   const getCategoryColor = (category) => {
-    // Check if it's a topic category
-    const topicCategory = topicCategories.find(t => t.title === category);
-    if (topicCategory) {
-      return 'bg-gradient-to-r from-[#C9A635]/20 to-[#E7C76A]/20 text-[#7A1616] border-[#C9A635] shadow-sm';
-    }
-
     switch (category) {
       case 'Beginner':
         return 'bg-green-100 text-green-800 border-green-200';
@@ -620,7 +373,7 @@ const FinancialWisdom = () => {
               {categories.map((category) => (
                 <button
                   key={category}
-                  onClick={() => { setSelectedCategory(category); setSearchTerm(''); }}
+                  onClick={() => setSelectedCategory(category)}
                   className={`px-3 sm:px-5 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 transform hover:scale-105 ${selectedCategory === category
                     ? 'bg-gradient-to-r from-[#7A1616] to-[#A12424] text-white shadow-lg'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border-2 border-gray-200'
@@ -657,10 +410,10 @@ const FinancialWisdom = () => {
             </div>
           )}
 
-          {/* Articles Grid - Equal Height Cards */}
+          {/* Articles Grid - Enhanced with Equal Heights */}
           {!loading && (
             <motion.div
-              className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
               variants={containerVariants}
               initial="hidden"
               animate={articlesInView ? "visible" : "hidden"}
@@ -690,16 +443,18 @@ const FinancialWisdom = () => {
                     className="flex flex-col h-full bg-white rounded-2xl sm:rounded-3xl shadow-xl border-2 border-gray-100 overflow-hidden hover:shadow-2xl hover:border-[#C9A635]/40 transition-all duration-500 group"
                   >
                     {/* Article Image - Fixed Height */}
-                    <div className="relative overflow-hidden h-48 sm:h-56 flex-shrink-0">
-                      <img
-                        src={article.image}
-                        alt={article.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                        loading="lazy"
-                        onError={(e) => {
-                          e.target.src = generateThumbnail(article.title, article.category);
-                        }}
-                      />
+                    <div className="relative overflow-hidden flex-shrink-0">
+                      <div className="relative h-48 sm:h-56 overflow-hidden">
+                        <img
+                          src={article.image}
+                          alt={article.title}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          loading="lazy"
+                          onError={(e) => {
+                            e.target.src = 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&w=800&q=80';
+                          }}
+                        />
+                      </div>
                       {article.externalUrl && (
                         <div className="absolute top-3 sm:top-4 right-3 sm:right-4 bg-white/95 backdrop-blur-sm px-2 sm:px-3 py-1 sm:py-1.5 rounded-full flex items-center gap-1 sm:gap-1.5 text-xs font-bold text-[#7A1616] shadow-lg">
                           <ExternalLink className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
@@ -714,8 +469,8 @@ const FinancialWisdom = () => {
                       )}
                     </div>
 
-                    {/* Article Content - Flexible Height */}
-                    <div className="p-5 sm:p-6 flex flex-col flex-1">
+                    {/* Article Content - Flexible with Consistent Spacing */}
+                    <div className="flex flex-col flex-1 p-5 sm:p-6">
                       {/* Category & Read Time */}
                       <div className="flex items-center justify-between mb-3 sm:mb-4">
                         <span className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-bold border-2 ${getCategoryColor(article.category)}`}>
@@ -727,13 +482,13 @@ const FinancialWisdom = () => {
                         </div>
                       </div>
 
-                      {/* Article Title - Fixed Lines */}
+                      {/* Article Title - Fixed 2 Lines */}
                       <h3 className="text-lg sm:text-xl font-extrabold text-gray-900 mb-2 sm:mb-3 group-hover:text-[#7A1616] transition-colors duration-300 line-clamp-2 min-h-[3.5rem]">
                         {article.title}
                       </h3>
 
-                      {/* Article Excerpt - Fixed Lines */}
-                      <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-3 sm:mb-4 line-clamp-3 flex-1">
+                      {/* Article Excerpt - Fixed 3 Lines, Grows to Fill Space */}
+                      <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-4 line-clamp-3 flex-1">
                         {article.excerpt}
                       </p>
 
@@ -776,7 +531,7 @@ const FinancialWisdom = () => {
         </div>
       </section>
 
-      {/* Featured Topics - Clickable Cards */}
+      {/* Featured Topics */}
       <section className="py-16 sm:py-20 md:py-24 lg:py-28 bg-white relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -804,7 +559,6 @@ const FinancialWisdom = () => {
             </p>
           </motion.div>
 
-          {/* Topic Cards - 2 Columns on Mobile, 4 on Desktop */}
           <motion.div
             className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8"
             initial={{ opacity: 0 }}
@@ -812,16 +566,13 @@ const FinancialWisdom = () => {
             viewport={{ once: true }}
             transition={{ staggerChildren: 0.1, delayChildren: 0.2 }}
           >
-            {topicCategories.map((topic, index) => {
+            {[
+              { title: "SIP Investment", articles: 12, color: "from-[#7A1616] to-[#A12424]", icon: TrendingUp },
+              { title: "Retirement Planning", articles: 8, color: "from-green-500 to-green-600", icon: Target },
+              { title: "Tax Optimization", articles: 6, color: "from-[#C9A635] to-[#E7C76A]", icon: DollarSign },
+              { title: "Wealth Building", articles: 10, color: "from-blue-500 to-blue-600", icon: BookOpen }
+            ].map((topic, index) => {
               const Icon = topic.icon;
-              const topicArticles = allArticles.filter(article =>
-                topic.keywords.some(keyword =>
-                  article.title.toLowerCase().includes(keyword) ||
-                  article.excerpt.toLowerCase().includes(keyword)
-                )
-              );
-              const actualCount = topicArticles.length;
-
               return (
                 <motion.div
                   key={index}
@@ -830,21 +581,19 @@ const FinancialWisdom = () => {
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
                   whileHover={{ y: -10 }}
-                  onClick={() => handleTopicClick(topic.title)}
-                  className="cursor-pointer"
                 >
-                  <div className="bg-white rounded-2xl sm:rounded-3xl shadow-xl border-2 border-gray-100 p-5 sm:p-6 md:p-8 text-center group hover:shadow-2xl hover:border-[#C9A635]/40 transition-all duration-500 relative overflow-hidden h-full flex flex-col">
+                  <div className="bg-white rounded-2xl sm:rounded-3xl shadow-xl border-2 border-gray-100 p-5 sm:p-6 md:p-8 text-center group hover:shadow-2xl hover:border-[#C9A635]/40 transition-all duration-500 cursor-pointer relative overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-br from-[#7A1616]/5 to-[#C9A635]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                    <div className="relative z-10 flex flex-col items-center flex-1">
-                      <div className={`w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 bg-gradient-to-r ${topic.color} rounded-xl sm:rounded-2xl mb-4 sm:mb-6 flex items-center justify-center group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 shadow-2xl`}>
+                    <div className="relative z-10">
+                      <div className={`w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 bg-gradient-to-r ${topic.color} rounded-xl sm:rounded-2xl mx-auto mb-4 sm:mb-6 flex items-center justify-center group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 shadow-2xl`}>
                         <Icon className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 text-white" />
                       </div>
                       <h3 className="text-base sm:text-lg md:text-xl font-extrabold text-gray-900 mb-2 sm:mb-3 group-hover:text-[#7A1616] transition-colors duration-300">
                         {topic.title}
                       </h3>
                       <p className="text-sm sm:text-base text-gray-600 font-semibold">
-                        {actualCount} Article{actualCount !== 1 ? 's' : ''}
+                        {topic.articles} Articles
                       </p>
                     </div>
                   </div>
