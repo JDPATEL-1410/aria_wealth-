@@ -275,7 +275,7 @@ const About = () => {
               <Building2 className="w-4 h-4 sm:w-5 sm:h-5 text-[#7A1616]" />
               <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[#C9A635] rounded-full animate-pulse" />
               <span className="text-xs sm:text-sm font-semibold text-gray-800 tracking-wide">
-                SEBI REGISTERED INVESTMENT ADVISOR
+                SEBI REGISTERED Mutual Fund Distributor
               </span>
             </motion.div>
 
@@ -562,14 +562,27 @@ const About = () => {
               </span>
             </motion.h2>
 
-            <motion.div className="max-w-3xl mx-auto space-y-2 sm:space-y-3 px-4" variants={itemVariants}>
-              <p className="text-base sm:text-lg md:text-xl text-gray-700 font-medium">
-                Guidance that's personal. Strategy that lasts.
-              </p>
-              <p className="text-sm sm:text-base md:text-lg text-gray-600">
-                Financial freedom through all life cycles —{" "}
-                <span className="text-[#7A1616] font-semibold">from first salary to legacy planning.</span>
-              </p>
+            <motion.div
+              className="max-w-4xl mx-auto mt-8 sm:mt-12 p-8 sm:p-10 md:p-12 bg-white rounded-[2.5rem] shadow-2xl border border-[#C9A635]/20 relative overflow-hidden group"
+              variants={scaleUpVariants}
+            >
+              {/* Decorative background gradients */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#C9A635]/10 to-transparent rounded-full blur-3xl opacity-60" />
+              <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-[#7A1616]/5 to-transparent rounded-full blur-3xl opacity-60" />
+
+              <div className="relative z-10 flex flex-col items-center text-center">
+                <h3 className="text-2xl sm:text-3xl md:text-4xl font-serif text-[#7A1616] mb-6 leading-tight">
+                  "Guidance that’s personal. <br className="hidden sm:block" />
+                  <span className="text-[#C9A635]">Wisdom over noise.</span>"
+                </h3>
+
+                <p className="text-lg sm:text-xl md:text-2xl text-gray-700 leading-relaxed font-light max-w-3xl">
+                  Our philosophy is rooted in building a <span className="font-semibold text-gray-900">lifelong partnership</span> across generations. From education to retirement, from today’s needs to tomorrow’s legacy—<span className="italic text-[#7A1616]">we stand by you at every life stage.</span>
+                </p>
+
+                {/* Decorative quote marks */}
+                <div className="absolute top-6 left-8 text-8xl text-[#C9A635]/10 font-serif leading-none select-none">“</div>
+              </div>
             </motion.div>
           </motion.div>
 
