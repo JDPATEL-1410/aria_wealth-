@@ -140,7 +140,7 @@ const Footer = () => {
               variants={itemVariants}
             >
               <h3 className="text-xl font-bold text-[#7A1616] mb-4">Get In Touch</h3>
-              
+
               {/* Contact Details */}
               <div className="space-y-3 mb-6">
                 <div className="flex items-center justify-center lg:justify-start gap-3">
@@ -175,7 +175,7 @@ const Footer = () => {
               <div className="mb-6 bg-[#7A1616]/5 p-4 rounded-lg border border-[#7A1616]/10">
                 <h4 className="font-bold text-[#7A1616] mb-2">Office Hours</h4>
                 <p className="text-gray-700 text-sm leading-relaxed">
-                  Mon - Fri: 9:00 AM - 6:00 PM<br />
+                  Mon - Fri: 10:00 AM - 6:00 PM<br />
                   Saturday: 10:00 AM - 2:00 PM<br />
                   Sunday: Closed
                 </p>
@@ -292,19 +292,19 @@ const Footer = () => {
                 Privacy Policy
               </Link>
               |
-             <a
-  href="/AMFI_Code-of-Conduct.pdf"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="text-[#C9A635] hover:text-white transition-colors mx-1"
->
-  Code of Conduct
-</a>
+              <a
+                href="/AMFI_Code-of-Conduct.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#C9A635] hover:text-white transition-colors mx-1"
+              >
+                Code of Conduct
+              </a>
 
             </p>
 
             <p className="text-gray-400 text-xs mt-2">
-              <span className="font-semibold text-white">Grievance Officer:</span> ANIL KUMAR. P.V | 
+              <span className="font-semibold text-white">Grievance Officer:</span> ANIL KUMAR. P.V |
               For any grievance, please contact:{" "}
               <span className="font-medium text-white">
                 +91 79775 23663
@@ -330,7 +330,7 @@ const Footer = () => {
           Investments in Mutual Funds are subject to market risks. Read all
           scheme-related documents carefully before investing.
         </p>
-        
+
         {/* Designed By */}
         <p className="text-xs text-gray-600 flex items-center justify-center gap-1">
           Designed & Developed by{" "}
@@ -341,17 +341,17 @@ const Footer = () => {
             className="text-[#7A1616] hover:text-[#C9A635] font-semibold transition-colors duration-300 flex items-center gap-1"
           >
             AINA TECH SERVICES LLP
-            <svg 
-              className="w-3 h-3" 
-              fill="none" 
-              stroke="currentColor" 
+            <svg
+              className="w-3 h-3"
+              fill="none"
+              stroke="currentColor"
               viewBox="0 0 24 24"
             >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth={2} 
-                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" 
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
               />
             </svg>
           </a>

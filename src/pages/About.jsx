@@ -1395,7 +1395,7 @@ const About = () => {
               <div className="hidden sm:block w-1 h-1 bg-white/40 rounded-full" />
               <div className="flex items-center gap-2">
                 <Users className="w-4 h-4 sm:w-5 sm:h-5" />
-                <span className="text-xs sm:text-sm font-semibold">2000+ Happy Clients</span>
+                <span className="text-xs sm:text-sm font-semibold">200+ Happy Clients</span>
               </div>
             </div>
           </motion.div>
