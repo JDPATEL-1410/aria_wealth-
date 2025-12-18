@@ -1051,13 +1051,15 @@ const About = () => {
             <div className="max-w-4xl mx-auto">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {[
-                  { icon: Lightbulb, text: "Financial Planning Awareness" },
+                  { icon: Lightbulb, text: "Financial Solution Awareness" },
                   { icon: TrendingUp, text: "Understanding Investment Options" },
-                  { icon: FileText, text: "Mutual Fund Execution (as per SEBI guidelines)" },
-                  { icon: Shield, text: "Protection-oriented planning" },
-                  { icon: Users, text: "Legacy and estate understanding" },
-                  { icon: CreditCard, text: "Loan assistance & documentation guidance" },
-                  { icon: Globe, text: "NRI-related financial planning support" }
+                  { icon: FileText, text: "Legacy and Estate Planning Guidance including Wills & Succession" },
+                  { icon: Globe, text: "NRI Investment Solutions & Compliance" },
+                  { icon: LineChart, text: "Investment Options Simplified" },
+                  { icon: Shield, text: "Insurance and Debt Protection" },
+                  { icon: Clock, text: "Budget & Cash Flow Planning" },
+                  { icon: Briefcase, text: "Alternate Investments Access" },
+                  { icon: CreditCard, text: "Loan processes & documentation assistance" }
                 ].map((item, index) => {
                   const Icon = item.icon;
                   return (
