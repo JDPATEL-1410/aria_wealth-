@@ -13,6 +13,15 @@ import {
   LineChart,
   CheckCircle,
   ArrowRight,
+  Eye,
+  FileText,
+  Lock,
+  Brain,
+  Lightbulb,
+  CreditCard,
+  Globe,
+  Handshake,
+  Repeat,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { TEAM } from "./TEAM";
@@ -382,6 +391,144 @@ const About = () => {
         </div>
       </section>
 
+      {/* Mission & Vision Section */}
+      <section className="relative py-16 sm:py-20 md:py-28 bg-gradient-to-br from-white via-gray-50 to-white overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0 opacity-[0.03] sm:opacity-5">
+          <img
+            src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1920&q=60"
+            alt="Office background"
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+        </div>
+
+        {/* Decorative gradient orbs */}
+        <div className="absolute top-0 left-0 w-96 h-96 bg-[#7A1616]/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#C9A635]/10 rounded-full blur-3xl" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* Section Header */}
+          <motion.div
+            className="text-center mb-12 sm:mb-16 md:mb-20"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <div className="inline-flex items-center space-x-2 bg-[#7A1616]/10 px-5 py-2.5 rounded-full mb-6">
+              <Target className="w-4 h-4 text-[#7A1616]" />
+              <span className="text-sm font-semibold text-[#7A1616]">OUR PURPOSE</span>
+            </div>
+
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-4 px-4">
+              Mission &{" "}
+              <span className="bg-gradient-to-r from-[#7A1616] via-[#A12424] to-[#7A1616] bg-clip-text text-transparent">
+                Vision
+              </span>
+            </h2>
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto px-4">
+              Guiding principles that drive everything we do at ARIA WEALTH
+            </p>
+          </motion.div>
+
+          {/* Mission & Vision Cards */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-10">
+            {/* Mission Card */}
+            <motion.div
+              className="group relative"
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              {/* Glow effect */}
+              <div className="absolute inset-0 bg-gradient-to-br from-[#C9A635]/30 to-[#E7C76A]/30 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+              <div className="relative bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl p-8 sm:p-10 md:p-12 shadow-2xl border border-white/20 group-hover:shadow-[0_20px_60px_rgba(201,166,53,0.3)] transition-all duration-500 h-full">
+                {/* Icon */}
+                <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-[#7A1616] via-[#A12424] to-[#7A1616] rounded-2xl mb-6 sm:mb-8 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-xl">
+                  <Target className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
+                </div>
+
+                {/* Title */}
+                <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 sm:mb-6 group-hover:text-[#7A1616] transition-colors duration-300">
+                  Our Mission
+                </h3>
+
+                {/* Content */}
+                <div className="space-y-4">
+                  <p className="text-base sm:text-lg text-gray-700 leading-relaxed">
+                    Our mission is to build a{" "}
+                    <span className="font-bold text-[#7A1616]">financially literate India</span>{" "}
+                    by guiding families with simplified personal finance knowledge through structured solutions and disciplined investing suited to their unique purpose in Life.
+                  </p>
+                  <p className="text-base sm:text-lg text-gray-700 leading-relaxed">
+                    By enabling families to make{" "}
+                    <span className="font-bold text-[#7A1616]">confident, informed decisions</span>, we enhance their quality of life and bring peace of mind across every life stage of their financial journey.
+                  </p>
+                </div>
+
+                {/* Decorative element */}
+                <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-tl from-[#C9A635]/10 to-transparent rounded-tl-full" />
+              </div>
+            </motion.div>
+
+            {/* Vision Card */}
+            <motion.div
+              className="group relative"
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              viewport={{ once: true }}
+            >
+              {/* Glow effect */}
+              <div className="absolute inset-0 bg-gradient-to-br from-[#7A1616]/30 to-[#A12424]/30 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+              <div className="relative bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl p-8 sm:p-10 md:p-12 shadow-2xl border border-white/20 group-hover:shadow-[0_20px_60px_rgba(122,22,22,0.3)] transition-all duration-500 h-full">
+                {/* Icon */}
+                <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-[#C9A635] via-[#E7C76A] to-[#F8D97A] rounded-2xl mb-6 sm:mb-8 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-xl">
+                  <TrendingUp className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
+                </div>
+
+                {/* Title */}
+                <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 sm:mb-6 group-hover:text-[#7A1616] transition-colors duration-300">
+                  Our Vision
+                </h3>
+
+                {/* Content */}
+                <div className="space-y-4">
+                  <p className="text-base sm:text-lg text-gray-700 leading-relaxed">
+                    To build an{" "}
+                    <span className="font-bold text-[#7A1616]">enduring financial practice</span>{" "}
+                    that is valued and trusted by clients and peers.
+                  </p>
+                  <p className="text-base sm:text-lg text-gray-700 leading-relaxed">
+                    A firm with{" "}
+                    <span className="font-bold text-[#7A1616]">high standards</span>{" "}
+                    that inspires other personal finance professionals and contributes to the growth and development of the profession.
+                  </p>
+                </div>
+
+                {/* Decorative element */}
+                <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-tl from-[#7A1616]/10 to-transparent rounded-tl-full" />
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Bottom decorative line */}
+          <motion.div
+            className="mt-12 sm:mt-16 md:mt-20 flex justify-center"
+            initial={{ opacity: 0, scaleX: 0 }}
+            whileInView={{ opacity: 1, scaleX: 1 }}
+            transition={{ duration: 1, delay: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <div className="h-1 w-32 sm:w-48 bg-gradient-to-r from-transparent via-[#C9A635] to-transparent rounded-full" />
+          </motion.div>
+        </div>
+      </section>
+
       {/* Philosophy Section */}
       <section ref={philosophyRef} className="relative py-16 sm:py-20 md:py-28 bg-gradient-to-br from-[#7A1616]/5 via-white to-[#C9A635]/5 overflow-hidden">
         {/* Decorative elements */}
@@ -714,53 +861,337 @@ const About = () => {
         </div>
       </section>
 
-      {/* Team Section */}
+
+      {/* Comprehensive About Aria Wealth Section */}
+      <section className="relative py-16 sm:py-20 md:py-28 bg-gradient-to-br from-white via-gray-50 to-white overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0 opacity-[0.03] sm:opacity-5">
+          <img
+            src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1920&q=60"
+            alt="Business background"
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+        </div>
+
+        {/* Decorative gradient orbs */}
+        <div className="absolute top-0 left-0 w-96 h-96 bg-[#7A1616]/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#C9A635]/10 rounded-full blur-3xl" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* Main Heading */}
+          <motion.div
+            className="text-center mb-12 sm:mb-16 md:mb-20"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <div className="inline-flex items-center space-x-2 bg-[#7A1616]/10 px-5 py-2.5 rounded-full mb-6">
+              <Building2 className="w-4 h-4 text-[#7A1616]" />
+              <span className="text-sm font-semibold text-[#7A1616]">ABOUT ARIA WEALTH</span>
+            </div>
+
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-6 px-4">
+              Built on Trust. Driven by{" "}
+              <span className="bg-gradient-to-r from-[#7A1616] via-[#A12424] to-[#7A1616] bg-clip-text text-transparent">
+                Transparency
+              </span>
+            </h2>
+
+            <div className="max-w-4xl mx-auto space-y-4 px-4">
+              <p className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">
+                Clarity. Consistency. Confidence.
+              </p>
+              <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
+                At Aria Wealth, we help individuals and families make informed financial decisions with a structured and disciplined approach. Our role is to simplify concepts, bring transparency to your financial journey, and help you stay aligned with your long-term goals.
+              </p>
+              <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                We believe money is personal — and so is the way you plan for it. With a focus on awareness, guidance, and process-oriented planning, we help you understand your options and stay committed through different market phases.
+              </p>
+            </div>
+          </motion.div>
+
+          {/* Markets Move Statement - Redesigned with Background Image */}
+          <motion.div
+            className="max-w-5xl mx-auto mb-16 sm:mb-20"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+          >
+            <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+              {/* Background Image */}
+              <div className="absolute inset-0">
+                <img
+                  src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1920&q=80"
+                  alt="Financial planning"
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-[#7A1616]/95 via-[#A12424]/90 to-[#7A1616]/95" />
+              </div>
+
+              {/* Content */}
+              <div className="relative z-10 p-8 sm:p-12 md:p-16">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl" />
+                <div className="relative z-10">
+                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold mb-4 text-white">
+                    Markets Move. Your Vision Matters.
+                  </h3>
+                  <p className="text-base sm:text-lg text-gray-100 leading-relaxed mb-4">
+                    Instead of reacting to short-term noise, we help you stay focused on your long-term objectives.
+                  </p>
+                  <p className="text-sm sm:text-base text-gray-200 leading-relaxed">
+                    Our approach is centred around financial discipline, mindful decision-making, and consistent monitoring — while always keeping suitability and risk awareness at the forefront.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* What Defines Aria Wealth */}
+          <motion.div
+            className="mb-16 sm:mb-20"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3, duration: 0.8 }}
+          >
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 mb-8 sm:mb-12 text-center">
+              What Defines{" "}
+              <span className="bg-gradient-to-r from-[#C9A635] to-[#E7C76A] bg-clip-text text-transparent">
+                Aria Wealth
+              </span>
+            </h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[
+                {
+                  icon: Eye,
+                  title: "Transparency First",
+                  description: "Clear communication with no unrealistic claims."
+                },
+                {
+                  icon: FileText,
+                  title: "Process-Driven Approach",
+                  description: "A structured method aligned with your goals, risk profile, and investment horizon."
+                },
+                {
+                  icon: Lock,
+                  title: "Integrity & Privacy",
+                  description: "Your data and decisions are handled with complete confidentiality."
+                },
+                {
+                  icon: Brain,
+                  title: "Behavioural Guidance",
+                  description: "Helping you avoid emotional or impulsive decisions during market fluctuations."
+                },
+                {
+                  icon: TrendingUp,
+                  title: "Life-Cycle Based Planning",
+                  description: "Supporting your financial journey across different life stages."
+                }
+              ].map((item, index) => {
+                const Icon = item.icon;
+                return (
+                  <motion.div
+                    key={index}
+                    className="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg border border-gray-200 hover:shadow-xl hover:border-[#C9A635]/40 transition-all duration-500 group"
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1, duration: 0.6 }}
+                    whileHover={{ y: -10 }}
+                  >
+                    <div className="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-[#7A1616] to-[#A12424] rounded-2xl mb-5 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg">
+                      <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
+                    </div>
+                    <h4 className="text-lg sm:text-xl font-extrabold text-gray-900 mb-3 group-hover:text-[#7A1616] transition-colors duration-300">
+                      {item.title}
+                    </h4>
+                    <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                      {item.description}
+                    </p>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </motion.div>
+
+          {/* What We Assist You With */}
+          <motion.div
+            className="mb-16 sm:mb-20"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+          >
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 mb-8 sm:mb-12 text-center">
+              What We{" "}
+              <span className="bg-gradient-to-r from-[#7A1616] to-[#A12424] bg-clip-text text-transparent">
+                Assist You With
+              </span>
+            </h3>
+
+            <div className="max-w-4xl mx-auto">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {[
+                  { icon: Lightbulb, text: "Financial Planning Awareness" },
+                  { icon: TrendingUp, text: "Understanding Investment Options" },
+                  { icon: FileText, text: "Mutual Fund Execution (as per SEBI guidelines)" },
+                  { icon: Shield, text: "Protection-oriented planning" },
+                  { icon: Users, text: "Legacy and estate understanding" },
+                  { icon: CreditCard, text: "Loan assistance & documentation guidance" },
+                  { icon: Globe, text: "NRI-related financial planning support" }
+                ].map((item, index) => {
+                  const Icon = item.icon;
+                  return (
+                    <motion.div
+                      key={index}
+                      className="flex items-center gap-4 bg-gradient-to-r from-white to-gray-50 rounded-xl sm:rounded-2xl p-4 sm:p-5 border border-gray-200 hover:border-[#C9A635]/40 hover:shadow-lg transition-all duration-300 group"
+                      initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.05, duration: 0.5 }}
+                    >
+                      <div className="flex-shrink-0">
+                        <div className="w-12 h-12 bg-gradient-to-br from-[#C9A635] to-[#E7C76A] rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md">
+                          <Icon className="w-6 h-6 text-white" />
+                        </div>
+                      </div>
+                      <p className="text-sm sm:text-base font-semibold text-gray-800 group-hover:text-[#7A1616] transition-colors duration-300">
+                        {item.text}
+                      </p>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Our Principles */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.5, duration: 0.8 }}
+          >
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 mb-8 sm:mb-12 text-center">
+              Our{" "}
+              <span className="bg-gradient-to-r from-[#C9A635] via-[#E7C76A] to-[#C9A635] bg-clip-text text-transparent">
+                Principles
+              </span>
+            </h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+              {[
+                {
+                  icon: Handshake,
+                  title: "Relationship First",
+                  description: "Every engagement begins with understanding your situation, concerns, and aspirations. We believe meaningful financial conversations always start with trust."
+                },
+                {
+                  icon: TrendingUp,
+                  title: "Strategy Over Speculation",
+                  description: "We follow a disciplined, regulated, and research-backed approach to mutual fund selection and planning support. We do not promote shortcuts, trends, or speculation."
+                },
+                {
+                  icon: Repeat,
+                  title: "Stability Over Activity",
+                  description: "Frequent switching is not a strategy. We guide you to stay aligned with your goals, risk tolerance, and time horizon."
+                },
+                {
+                  icon: Target,
+                  title: "Financial Awareness Through Every Life Stage",
+                  description: "Whether you're starting your career, planning for children's futures, approaching retirement, or thinking about legacy — we help you understand suitable solutions and stay long-term focused."
+                }
+              ].map((item, index) => {
+                const Icon = item.icon;
+                return (
+                  <motion.div
+                    key={index}
+                    className="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-gray-100 hover:shadow-2xl hover:border-[#C9A635]/40 transition-all duration-500 group"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1, duration: 0.6 }}
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className="flex-shrink-0">
+                        <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-[#C9A635] to-[#E7C76A] rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg">
+                          <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
+                        </div>
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="text-xl sm:text-2xl font-extrabold text-gray-900 mb-3 group-hover:text-[#7A1616] transition-colors duration-300">
+                          {item.title}
+                        </h4>
+                        <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                          {item.description}
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Team Section - Light Theme */}
       <section
         ref={teamRef}
-        className="py-14 sm:py-18 md:py-22 bg-gradient-to-br from-white to-gray-50 relative"
+        className="py-16 sm:py-20 md:py-28 bg-gradient-to-br from-white via-gray-50 to-white relative overflow-hidden"
       >
-        {/* Soft background texture */}
-        <div className="absolute inset-0 opacity-[0.02] sm:opacity-5 pointer-events-none">
+        {/* Background Image with Overlay */}
+        <div className="absolute inset-0 opacity-[0.03] sm:opacity-5">
           <img
-            src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1920&q=60"
+            src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1920&q=80"
             alt="Team background"
             className="w-full h-full object-cover"
             loading="lazy"
           />
         </div>
 
+        {/* Decorative Elements */}
+        <div className="absolute top-10 left-10 w-72 h-72 bg-[#7A1616]/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-10 right-10 w-96 h-96 bg-[#C9A635]/10 rounded-full blur-3xl" />
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Heading */}
           <motion.div
-            className="text-center mb-10 sm:mb-14 md:mb-16"
+            className="text-center mb-12 sm:mb-16 md:mb-20"
             variants={containerVariants}
             initial="hidden"
             animate={teamInView ? "visible" : "hidden"}
           >
             <motion.div
-              className="inline-block mb-4 sm:mb-5"
+              className="inline-block mb-4 sm:mb-6"
               variants={itemVariants}
             >
-              <div className="inline-flex items-center space-x-2 bg-[#7A1616]/10 px-4 sm:px-5 py-2 rounded-full">
-                <Users className="w-3 h-3 sm:w-4 sm:h-4 text-[#7A1616]" />
-                <span className="text-xs sm:text-sm font-semibold text-[#7A1616]">
+              <div className="inline-flex items-center space-x-2 bg-[#7A1616]/10 px-5 py-2.5 rounded-full">
+                <Users className="w-4 h-4 text-[#7A1616]" />
+                <span className="text-sm font-semibold text-[#7A1616]">
                   LEADERSHIP
                 </span>
               </div>
             </motion.div>
 
             <motion.h2
-              className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 mb-3 sm:mb-4 px-4"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-4 sm:mb-6 px-4"
               variants={itemVariants}
             >
               Meet Our{" "}
-              <span className="bg-gradient-to-r from-[#7A1616] via-[#A12424] to-[#8B1A1A] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#7A1616] via-[#A12424] to-[#7A1616] bg-clip-text text-transparent">
                 Team
               </span>
             </motion.h2>
 
             <motion.p
-              className="text-sm sm:text-lg text-gray-600 max-w-3xl mx-auto px-4"
+              className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto px-4"
               variants={itemVariants}
             >
               Experienced professionals dedicated to your financial success.
@@ -769,7 +1200,7 @@ const About = () => {
 
           {/* Team Grid */}
           <motion.div
-            className="grid grid-cols-1 lg:grid-cols-2 gap-7 sm:gap-8 md:gap-10 max-w-5xl mx-auto"
+            className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 max-w-5xl mx-auto"
             variants={containerVariants}
             initial="hidden"
             animate={teamInView ? "visible" : "hidden"}
@@ -778,32 +1209,34 @@ const About = () => {
               <motion.div
                 key={m.id}
                 className="h-full flex flex-col bg-white rounded-3xl 
-                     shadow-[0_4px_20px_rgba(0,0,0,0.08)] 
+                     shadow-[0_8px_32px_rgba(0,0,0,0.1)] 
                      overflow-hidden group transition-all duration-500 
-                     hover:shadow-[0_8px_32px_rgba(0,0,0,0.12)]
-                     hover:-translate-y-1"
+                     hover:shadow-[0_16px_48px_rgba(122,22,22,0.15)]
+                     hover:-translate-y-2
+                     border border-gray-100"
                 variants={scaleUpVariants}
               >
                 {/* Portrait block with circular image */}
-                <div className="relative flex flex-col items-center justify-center pt-10 pb-6 px-6
+                <div className="relative flex flex-col items-center justify-center pt-12 pb-8 px-6
                           bg-gradient-to-b from-gray-50 to-white">
 
                   {/* Circular image container */}
-                  <div className="relative mb-5">
+                  <div className="relative mb-6">
                     {/* Outer decorative ring */}
                     <div className="absolute inset-0 rounded-full bg-gradient-to-br 
-                              from-[#7A1616]/10 to-[#C9A635]/10 
-                              scale-110 blur-xl" />
+                              from-[#7A1616]/20 to-[#C9A635]/20 
+                              scale-110 blur-2xl" />
 
                     {/* Main circular image */}
-                    <div className="relative w-36 h-36 sm:w-40 sm:h-40 md:w-44 md:h-44 
+                    <div className="relative w-40 h-40 sm:w-44 sm:h-44 md:w-48 md:h-48 
                               rounded-full overflow-hidden
                               bg-gradient-to-br from-gray-100 to-gray-50
                               border-4 border-white
-                              shadow-[0_8px_24px_rgba(0,0,0,0.12)]
+                              shadow-[0_12px_32px_rgba(0,0,0,0.15)]
                               transition-all duration-500
-                              group-hover:shadow-[0_12px_32px_rgba(122,22,22,0.2)]
-                              group-hover:scale-105">
+                              group-hover:shadow-[0_16px_48px_rgba(122,22,22,0.3)]
+                              group-hover:scale-105
+                              ring-4 ring-[#C9A635]/20">
                       <img
                         src={m.image}
                         alt={m.name}
@@ -818,43 +1251,43 @@ const About = () => {
 
                   {/* Name and Position - Centered */}
                   <div className="text-center">
-                    <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2
+                    <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3
                              group-hover:text-[#7A1616] transition-colors">
                       {m.name}
                     </h3>
 
-                    <div className="inline-block px-4 py-1.5 rounded-full
+                    <div className="inline-block px-5 py-2 rounded-full
                               bg-gradient-to-r from-[#7A1616] to-[#A12424]
                               text-white text-sm sm:text-base font-semibold
-                              shadow-sm">
+                              shadow-lg">
                       {m.position}
                     </div>
                   </div>
                 </div>
 
                 {/* Content area */}
-                <div className="flex-1 flex flex-col p-6 sm:p-7 bg-white">
+                <div className="flex-1 flex flex-col p-6 sm:p-8 bg-white">
 
                   {/* Experience badge */}
                   <div className="flex items-center justify-center gap-2 
-                            text-sm text-gray-600 mb-5
-                            bg-gray-50 px-4 py-2 rounded-full 
-                            border border-gray-100 w-fit mx-auto">
+                            text-sm text-gray-600 mb-6
+                            bg-gradient-to-r from-gray-50 to-gray-100 px-5 py-3 rounded-full 
+                            border border-gray-200 w-fit mx-auto">
                     <Clock className="w-4 h-4 text-[#7A1616]" />
                     <span className="font-medium">{m.experience}</span>
                   </div>
 
                   {/* Description */}
                   <p className="text-sm sm:text-base text-gray-600 text-center 
-                          leading-relaxed mb-5">
+                          leading-relaxed mb-6">
                     {m.description}
                   </p>
 
                   {/* Specialization */}
-                  <div className="mt-auto pt-5 border-t border-gray-100">
-                    <div className="flex flex-col items-center gap-2 text-center">
+                  <div className="mt-auto pt-6 border-t-2 border-gray-100">
+                    <div className="flex flex-col items-center gap-3 text-center">
                       <div className="flex items-center gap-2">
-                        <Target className="w-4 h-4 text-[#7A1616]" />
+                        <Target className="w-5 h-5 text-[#7A1616]" />
                         <span className="text-xs font-bold text-[#7A1616] 
                                    uppercase tracking-wide">
                           Specialization
@@ -871,7 +1304,6 @@ const About = () => {
           </motion.div>
         </div>
       </section>
-
 
 
       {/* CTA Section */}

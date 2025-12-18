@@ -5,11 +5,11 @@ import CTASection from '../CTASection';
 
 const InsuranceProtection = () => {
   const [activeInsurance, setActiveInsurance] = useState('life');
-  
+
   const heroRef = useRef(null);
   const insuranceRef = useRef(null);
   const featuresRef = useRef(null);
-  
+
   const heroInView = useInView(heroRef, { once: true });
   const insuranceInView = useInView(insuranceRef, { once: true, margin: "-100px" });
   const featuresInView = useInView(featuresRef, { once: true, margin: "-100px" });
@@ -70,112 +70,85 @@ const InsuranceProtection = () => {
       whoCovered: ['Individuals', 'Families', 'Senior citizens', 'New parents', 'Chronic illness patients']
     },
     {
-      id: 'motor',
-      icon: Car,
-      title: 'Motor Insurance',
-      tagline: 'Drive worry-free',
-      description: 'Complete vehicle protection including third-party liability, own damage, and comprehensive coverage for cars and two-wheelers.',
-      image: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=800&q=80',
-      coverage: 'As per IDV',
-      premiumRange: 'Starting ₹2,500/year',
+      id: 'personal-accident',
+      icon: Shield,
+      title: 'Personal Accident Insurance',
+      tagline: 'Protection against accidents',
+      description: 'Comprehensive coverage for accidental death, disability, and medical expenses arising from accidents.',
+      image: 'https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=800&q=80',
+      coverage: '₹10 Lakh - ₹2 Crore',
+      premiumRange: 'Starting ₹400/year',
       features: [
-        'Third-Party Liability',
-        'Comprehensive Cover',
-        'Zero Depreciation',
-        'Engine Protection',
-        'Road Side Assistance',
-        'Personal Accident Cover'
+        'Accidental Death Benefit',
+        'Permanent Total Disability',
+        'Permanent Partial Disability',
+        'Temporary Total Disability',
+        'Medical Expense Reimbursement',
+        'Ambulance Charges'
       ],
       benefits: [
-        'Accident damage coverage',
-        'Theft protection',
-        'Natural calamity coverage',
-        'Cashless garage network',
-        'Quick claim settlement',
-        'Add-on covers available'
+        'Lump sum payout on death',
+        'Disability compensation',
+        'Medical expense coverage',
+        'Worldwide coverage',
+        'No medical checkup required',
+        'Affordable premiums'
       ],
-      whoCovered: ['Car owners', 'Two-wheeler owners', 'Commercial vehicle owners', 'Fleet operators']
+      whoCovered: ['Working professionals', 'Business owners', 'Travelers', 'Active individuals']
     },
     {
-      id: 'home',
-      icon: Home,
-      title: 'Home Insurance',
-      tagline: 'Safeguard your dwelling',
-      description: 'Protect your home and belongings against fire, theft, natural disasters, and other unforeseen events.',
-      image: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80',
-      coverage: '₹10 Lakh - ₹5 Crore',
-      premiumRange: 'Starting ₹1,500/year',
+      id: 'critical-illness',
+      icon: Heart,
+      title: 'Critical Illness Insurance',
+      tagline: 'Financial support for major illnesses',
+      description: 'Lump sum payout on diagnosis of critical illnesses like cancer, heart attack, stroke, and kidney failure.',
+      image: 'https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?auto=format&fit=crop&w=800&q=80',
+      coverage: '₹5 Lakh - ₹1 Crore',
+      premiumRange: 'Starting ₹600/month',
       features: [
-        'Structure Coverage',
-        'Contents Insurance',
-        'Personal Liability',
-        'Temporary Accommodation',
-        'Natural Disaster Cover',
-        'Jewelry & Valuables'
+        'Cancer Coverage',
+        'Heart Attack & Stroke',
+        'Kidney Failure',
+        'Major Organ Transplant',
+        'Paralysis Coverage',
+        'Multiple Sclerosis'
       ],
       benefits: [
-        'Fire & explosion coverage',
-        'Burglary & theft protection',
-        'Natural calamity coverage',
-        'Electrical & mechanical breakdown',
-        'Public liability coverage',
-        'Renovation cost included'
+        'Lump sum benefit on diagnosis',
+        'Covers 36+ critical illnesses',
+        'No hospitalization required',
+        'Use funds as needed',
+        'Tax benefits under 80D',
+        'Standalone or rider option'
       ],
-      whoCovered: ['Homeowners', 'Tenants', 'Landlords', 'Property investors']
+      whoCovered: ['Individuals 18-65 years', 'Family history of illness', 'High-stress professionals', 'Health-conscious individuals']
     },
     {
-      id: 'travel',
+      id: 'general',
       icon: Briefcase,
-      title: 'Travel Insurance',
-      tagline: 'Travel with confidence',
-      description: 'International and domestic travel insurance covering medical emergencies, trip cancellations, and lost baggage.',
-      image: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80',
-      coverage: 'Up to $1 Million',
-      premiumRange: 'Starting ₹300/trip',
-      features: [
-        'Medical Emergency Cover',
-        'Trip Cancellation',
-        'Lost Baggage',
-        'Flight Delay',
-        'Passport Loss',
-        'Personal Accident'
-      ],
-      benefits: [
-        'Emergency medical expenses',
-        'Trip cancellation refund',
-        'Baggage delay compensation',
-        'Emergency evacuation',
-        'Adventure sports cover',
-        '24/7 assistance'
-      ],
-      whoCovered: ['International travelers', 'Frequent flyers', 'Adventure enthusiasts', 'Business travelers']
-    },
-    {
-      id: 'business',
-      icon: Users,
-      title: 'Business Insurance',
-      tagline: 'Protect your enterprise',
-      description: 'Comprehensive business insurance including liability, property, and employee coverage for SMEs and corporations.',
-      image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80',
+      title: 'General Insurance',
+      tagline: 'Comprehensive asset protection',
+      description: 'Protection for your assets including property, vehicle, travel, and other valuables against various risks.',
+      image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&q=80',
       coverage: 'Customized',
-      premiumRange: 'Customized pricing',
+      premiumRange: 'Varies by coverage',
       features: [
-        'Public Liability Insurance',
-        'Professional Indemnity',
-        'Business Property',
-        'Group Health Insurance',
-        'Directors & Officers',
-        'Cyber Insurance'
+        'Property Insurance',
+        'Vehicle Insurance',
+        'Travel Insurance',
+        'Fire Insurance',
+        'Burglary Insurance',
+        'Liability Coverage'
       ],
       benefits: [
-        'Legal liability protection',
-        'Business interruption cover',
-        'Employee benefits',
         'Asset protection',
-        'Compliance with regulations',
-        'Risk management support'
+        'Financial security',
+        'Customizable coverage',
+        'Quick claim settlement',
+        'Comprehensive protection',
+        'Peace of mind'
       ],
-      whoCovered: ['Business owners', 'Startups', 'SMEs', 'Corporations', 'Professionals']
+      whoCovered: ['Property owners', 'Vehicle owners', 'Travelers', 'Business owners', 'Homeowners']
     }
   ];
 
@@ -273,7 +246,7 @@ const InsuranceProtection = () => {
             />
           </picture>
           <div className="absolute inset-0 bg-gradient-to-br from-black/75 via-black/65 to-[#7A1616]/50" />
-          
+
           <div className="absolute inset-0 opacity-10 hidden md:block">
             <div className="absolute inset-0" style={{
               backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
@@ -426,17 +399,15 @@ const InsuranceProtection = () => {
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
                   whileHover={{ y: -5 }}
-                  className={`text-left p-5 sm:p-6 rounded-2xl sm:rounded-3xl transition-all duration-300 ${
-                    activeInsurance === product.id
+                  className={`text-left p-5 sm:p-6 rounded-2xl sm:rounded-3xl transition-all duration-300 ${activeInsurance === product.id
                       ? 'bg-gradient-to-br from-[#7A1616] to-[#A12424] text-white shadow-2xl scale-105'
                       : 'bg-white border-2 border-gray-200 hover:border-[#C9A635]/40 hover:shadow-xl'
-                  }`}
+                    }`}
                 >
-                  <div className={`inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl mb-3 sm:mb-4 ${
-                    activeInsurance === product.id
+                  <div className={`inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl mb-3 sm:mb-4 ${activeInsurance === product.id
                       ? 'bg-white/20 backdrop-blur-md'
                       : 'bg-gradient-to-r from-[#7A1616]/10 to-[#C9A635]/10'
-                  }`}>
+                    }`}>
                     <Icon className={`w-7 h-7 sm:w-8 sm:h-8 ${activeInsurance === product.id ? 'text-white' : 'text-[#7A1616]'}`} />
                   </div>
                   <h3 className={`text-lg sm:text-xl font-extrabold mb-2 ${activeInsurance === product.id ? 'text-white' : 'text-gray-900'}`}>
@@ -636,7 +607,7 @@ const InsuranceProtection = () => {
       </section>
 
       {/* CTA Section */}
-      <CTASection 
+      <CTASection
         title="Ready to Secure Your Future?"
         subtitle="Get personalized insurance recommendations from our certified advisors"
         primaryCta={{ text: "Get Free Quote", link: "/contact" }}

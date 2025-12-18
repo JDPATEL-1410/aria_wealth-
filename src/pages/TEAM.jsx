@@ -13,7 +13,7 @@ export const TEAM = [
     id: "anil",
     name: "Anil Kumar",
     position: "Head, Operations & Client Services",
-    experience: "15+ years in financial operations",
+    experience: "Extensive financial operations expertise",
     specialization: "Client servicing, process excellence, operations",
     image: "/team/anil.png",
     description:

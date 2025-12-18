@@ -1,11 +1,46 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, MessageCircle, TrendingUp, Users, Shield } from 'lucide-react';
 import { heroData } from '../data/mock';
 import heroImage from '../assets/Herosection.png';
 
 const Hero = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const slides = [
+    {
+      title: {
+        line1: "Your Goals Stay",
+        line2: "the Course"
+      },
+      description: "Clarity, discipline, and guidance — helping you stay aligned with what truly matters."
+    },
+    {
+      title: {
+        line1: "Financial Decisions Feel Lighter",
+        line2: "When You Have the Right Guidance"
+      },
+      description: "We help you plan with clarity and stay focused through every life stage."
+    },
+    {
+      title: {
+        line1: "Your Life Evolves.",
+        line2: "Your Financial Plan Should Too."
+      },
+      description: "Thoughtful, transparent guidance for every chapter of your journey."
+    }
+  ];
+
+  // Auto-rotate slides every 5 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 5000);
+
+    return () => clearInterval(timer);
+  }, [slides.length]);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -20,6 +55,29 @@ const Hero = () => {
       opacity: 1,
       y: 0,
       transition: { duration: 0.8, ease: 'easeOut' },
+    },
+  };
+
+  const slideVariants = {
+    enter: {
+      opacity: 0,
+      y: 20,
+    },
+    center: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: 'easeOut',
+      },
+    },
+    exit: {
+      opacity: 0,
+      y: -20,
+      transition: {
+        duration: 0.5,
+        ease: 'easeIn',
+      },
     },
   };
 
@@ -58,30 +116,56 @@ const Hero = () => {
             </span>
           </motion.div>
 
-          {/* Heading */}
-          <motion.h1
-            className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-gray-900 leading-tight tracking-tight"
-            variants={itemVariants}
-          >
-            <span className="bg-gradient-to-r from-[#7A1616] to-[#8B1A1A] bg-clip-text text-transparent">
-              Your Goals Stay
-            </span>
-            <br />
-            <span className="text-gray-800">
-              the{' '}
-              <span className="bg-gradient-to-r from-[#C9A635] to-[#D4B547] bg-clip-text text-transparent">
-                Course
-              </span>
-            </span>
-          </motion.h1>
+          {/* Animated Heading & Description */}
+          <div className="relative w-full min-h-[280px] sm:min-h-[320px]">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentSlide}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                className="absolute inset-0"
+              >
+                {/* Heading */}
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-gray-900 leading-tight tracking-tight mb-6">
+                  <span className="bg-gradient-to-r from-[#7A1616] to-[#8B1A1A] bg-clip-text text-transparent">
+                    {slides[currentSlide].title.line1}
+                  </span>
+                  <br />
+                  <span className="text-gray-800">
+                    {slides[currentSlide].title.line2.split(' ').slice(0, -1).join(' ')}{' '}
+                    <span className="bg-gradient-to-r from-[#C9A635] to-[#D4B547] bg-clip-text text-transparent">
+                      {slides[currentSlide].title.line2.split(' ').slice(-1)}
+                    </span>
+                  </span>
+                </h1>
 
-          {/* Description */}
-          <motion.p
-            className="text-lg sm:text-xl text-gray-700 max-w-2xl leading-relaxed"
+                {/* Description */}
+                <p className="text-lg sm:text-xl text-gray-700 max-w-2xl leading-relaxed">
+                  {slides[currentSlide].description}
+                </p>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Slide Indicators */}
+          <motion.div
+            className="flex gap-2"
             variants={itemVariants}
           >
-            {heroData.description}
-          </motion.p>
+            {slides.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentSlide(index)}
+                className={`h-2 rounded-full transition-all duration-300 ${index === currentSlide
+                  ? 'w-8 bg-gradient-to-r from-[#7A1616] to-[#C9A635]'
+                  : 'w-2 bg-gray-300 hover:bg-gray-400'
+                  }`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </motion.div>
 
           {/* CTA Buttons */}
           <motion.div
@@ -103,7 +187,7 @@ const Hero = () => {
               className="group inline-flex items-center justify-center space-x-2 border-2 border-[#C9A635] text-[#7A1616] px-8 py-4 rounded-xl font-semibold text-lg hover:bg-[#C9A635] hover:text-white transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-xl"
             >
               <MessageCircle className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" />
-              <span>Let’s Connect</span>
+              <span>Let's Connect</span>
             </Link>
           </motion.div>
 

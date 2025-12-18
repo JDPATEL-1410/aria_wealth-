@@ -5,11 +5,11 @@ import CTASection from '../CTASection';
 
 const OtherSolutions = () => {
   const [activeSolution, setActiveSolution] = useState('nri');
-  
+
   const heroRef = useRef(null);
   const solutionsRef = useRef(null);
   const benefitsRef = useRef(null);
-  
+
   const heroInView = useInView(heroRef, { once: true });
   const solutionsInView = useInView(solutionsRef, { once: true, margin: "-100px" });
   const benefitsInView = useInView(benefitsRef, { once: true, margin: "-100px" });
@@ -27,7 +27,6 @@ const OtherSolutions = () => {
         'Repatriation services',
         'FCNR investments',
         'Property investment guidance',
-        'Tax planning & filing',
         'Portfolio management'
       ],
       benefits: [
@@ -135,38 +134,6 @@ const OtherSolutions = () => {
       idealFor: ['HNI investors', 'Ultra HNI', 'Family offices', 'Corporate treasuries']
     },
     {
-      id: 'tax-planning',
-      icon: FileText,
-      title: 'Tax Planning',
-      tagline: 'Optimize your tax liability',
-      description: 'Comprehensive tax planning strategies to legally minimize tax burden and maximize savings under various sections.',
-      image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=800&q=80',
-      services: [
-        'Income tax planning',
-        'Section 80C optimization',
-        'Capital gains planning',
-        'TDS management',
-        'Tax filing assistance',
-        'Advance tax calculation'
-      ],
-      benefits: [
-        'Legal tax savings',
-        'Compliance assurance',
-        'Expert guidance',
-        'Timely filing',
-        'Notice management',
-        'Refund tracking'
-      ],
-      taxSections: [
-        '80C - ₹1.5L (ELSS, PPF, Life Insurance)',
-        '80D - ₹25K-100K (Health Insurance)',
-        '80E - Education loan interest',
-        '24(b) - ₹2L (Home loan interest)',
-        '10(10D) - Life insurance maturity'
-      ],
-      idealFor: ['Salaried individuals', 'Business owners', 'Freelancers', 'Investors', 'Senior citizens']
-    },
-    {
       id: 'financial-planning',
       icon: Calculator,
       title: 'Financial Planning',
@@ -272,7 +239,7 @@ const OtherSolutions = () => {
             />
           </picture>
           <div className="absolute inset-0 bg-gradient-to-br from-black/75 via-black/65 to-[#7A1616]/50" />
-          
+
           <div className="absolute inset-0 opacity-10 hidden md:block">
             <div className="absolute inset-0" style={{
               backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
@@ -425,17 +392,15 @@ const OtherSolutions = () => {
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
                   whileHover={{ y: -5 }}
-                  className={`text-left p-5 sm:p-6 rounded-2xl sm:rounded-3xl transition-all duration-300 ${
-                    activeSolution === solution.id
-                      ? 'bg-gradient-to-br from-[#7A1616] to-[#A12424] text-white shadow-2xl scale-105'
-                      : 'bg-white border-2 border-gray-200 hover:border-[#C9A635]/40 hover:shadow-xl'
-                  }`}
+                  className={`text-left p-5 sm:p-6 rounded-2xl sm:rounded-3xl transition-all duration-300 ${activeSolution === solution.id
+                    ? 'bg-gradient-to-br from-[#7A1616] to-[#A12424] text-white shadow-2xl scale-105'
+                    : 'bg-white border-2 border-gray-200 hover:border-[#C9A635]/40 hover:shadow-xl'
+                    }`}
                 >
-                  <div className={`inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl mb-3 sm:mb-4 ${
-                    activeSolution === solution.id
-                      ? 'bg-white/20 backdrop-blur-md'
-                      : 'bg-gradient-to-r from-[#7A1616]/10 to-[#C9A635]/10'
-                  }`}>
+                  <div className={`inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl mb-3 sm:mb-4 ${activeSolution === solution.id
+                    ? 'bg-white/20 backdrop-blur-md'
+                    : 'bg-gradient-to-r from-[#7A1616]/10 to-[#C9A635]/10'
+                    }`}>
                     <Icon className={`w-7 h-7 sm:w-8 sm:h-8 ${activeSolution === solution.id ? 'text-white' : 'text-[#7A1616]'}`} />
                   </div>
                   <h3 className={`text-lg sm:text-xl font-extrabold mb-2 ${activeSolution === solution.id ? 'text-white' : 'text-gray-900'}`}>
@@ -475,7 +440,7 @@ const OtherSolutions = () => {
                       <p className="text-gray-200 font-medium text-sm sm:text-base">{activeSolutionData.tagline}</p>
                     </div>
                   </div>
-                  
+
                   {(activeSolutionData.loanDetails || activeSolutionData.pmsDetails) && (
                     <div className="grid grid-cols-2 gap-2 sm:gap-3">
                       {Object.entries(activeSolutionData.loanDetails || activeSolutionData.pmsDetails || {}).slice(0, 2).map(([key, value], idx) => (
@@ -583,7 +548,7 @@ const OtherSolutions = () => {
       </section>
 
       {/* CTA Section */}
-      <CTASection 
+      <CTASection
         title="Ready to Explore Our Solutions?"
         subtitle="Let our experts help you find the perfect financial solution"
         primaryCta={{ text: "Schedule Consultation", link: "/contact" }}
