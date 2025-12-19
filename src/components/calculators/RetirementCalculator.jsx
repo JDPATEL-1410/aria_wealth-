@@ -1,7 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
-import { Calculator, TrendingUp, DollarSign, Target, Info, Calendar } from 'lucide-react';
+import { Calculator, TrendingUp, Target, Info, Calendar } from 'lucide-react';
+import CurrencySelector, { formatCurrency, getCurrencySymbol } from '../CurrencySelector';
 
 const RetirementCalculator = () => {
   const [currentAge, setCurrentAge] = useState(30);
@@ -12,44 +13,45 @@ const RetirementCalculator = () => {
   const [expectedReturn, setExpectedReturn] = useState(12);
   const [inflationRate, setInflationRate] = useState(6);
   const [lifeExpectancy, setLifeExpectancy] = useState(85);
+  const [selectedCurrency, setSelectedCurrency] = useState('INR');
 
   // Calculations
   const results = useMemo(() => {
     const yearsToRetirement = retirementAge - currentAge;
     const yearsInRetirement = lifeExpectancy - retirementAge;
     const realReturnRate = ((1 + expectedReturn / 100) / (1 + inflationRate / 100) - 1) * 100;
-    
+
     // Required monthly income at retirement (inflation adjusted)
     const requiredMonthlyIncome = (currentIncome * incomeReplacement / 100) * Math.pow(1 + inflationRate / 100, yearsToRetirement);
-    
+
     // Required corpus at retirement
     const monthlyReturnRate = realReturnRate / 100 / 12;
     const totalRetirementMonths = yearsInRetirement * 12;
-    const requiredCorpus = monthlyReturnRate > 0 
+    const requiredCorpus = monthlyReturnRate > 0
       ? (requiredMonthlyIncome * (1 - Math.pow(1 + monthlyReturnRate, -totalRetirementMonths))) / monthlyReturnRate
       : requiredMonthlyIncome * totalRetirementMonths;
-    
+
     // Future value of current savings
     const futureValueCurrentSavings = currentSavings * Math.pow(1 + expectedReturn / 100, yearsToRetirement);
-    
+
     // Additional corpus needed
     const additionalCorpusNeeded = Math.max(0, requiredCorpus - futureValueCurrentSavings);
-    
+
     // Required monthly SIP
     const monthlyReturnRateNominal = expectedReturn / 100 / 12;
     const totalMonths = yearsToRetirement * 12;
     const requiredMonthlySIP = totalMonths > 0 && monthlyReturnRateNominal > 0
       ? (additionalCorpusNeeded * monthlyReturnRateNominal) / (Math.pow(1 + monthlyReturnRateNominal, totalMonths) - 1)
       : additionalCorpusNeeded / totalMonths;
-    
+
     // Year-wise projection
     const projectionData = [];
     let accumulatedValue = currentSavings;
-    
+
     for (let year = 1; year <= yearsToRetirement; year++) {
       const annualSIP = requiredMonthlySIP * 12;
       accumulatedValue = (accumulatedValue + annualSIP) * (1 + expectedReturn / 100);
-      
+
       projectionData.push({
         year: currentAge + year,
         value: Math.round(accumulatedValue),
@@ -57,7 +59,7 @@ const RetirementCalculator = () => {
         shortfall: Math.max(0, Math.round(requiredCorpus - accumulatedValue))
       });
     }
-    
+
     return {
       yearsToRetirement,
       yearsInRetirement,
@@ -71,13 +73,7 @@ const RetirementCalculator = () => {
     };
   }, [currentAge, retirementAge, currentIncome, incomeReplacement, currentSavings, expectedReturn, inflationRate, lifeExpectancy]);
 
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
-      maximumFractionDigits: 0
-    }).format(amount);
-  };
+
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -97,6 +93,10 @@ const RetirementCalculator = () => {
               </h2>
             </div>
             <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
+              <CurrencySelector
+                selectedCurrency={selectedCurrency}
+                onCurrencyChange={setSelectedCurrency}
+              />
               {/* Age Details */}
               <div className="grid grid-cols-2 gap-3 sm:gap-4">
                 <div>
@@ -310,11 +310,11 @@ const RetirementCalculator = () => {
             <div className="bg-white rounded-xl shadow-xl border-2 border-gray-100 p-4 sm:p-6">
               <div className="flex flex-col sm:flex-row items-start sm:items-center sm:space-x-4">
                 <div className="bg-green-100 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center mb-2 sm:mb-0">
-                  <DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
+                  {getCurrencySymbol(selectedCurrency, "w-5 h-5 sm:w-6 sm:h-6 text-green-600")}
                 </div>
                 <div>
                   <h3 className="text-xs sm:text-sm font-medium text-gray-600">Monthly Need</h3>
-                  <p className="text-base sm:text-2xl font-bold text-green-600">{formatCurrency(results.requiredMonthlyIncome)}</p>
+                  <p className="text-base sm:text-2xl font-bold text-green-600">{formatCurrency(results.requiredMonthlyIncome, selectedCurrency)}</p>
                 </div>
               </div>
             </div>
@@ -326,7 +326,7 @@ const RetirementCalculator = () => {
                 </div>
                 <div>
                   <h3 className="text-xs sm:text-sm font-medium text-white/90">Corpus Needed</h3>
-                  <p className="text-base sm:text-2xl font-bold text-white">{formatCurrency(results.requiredCorpus)}</p>
+                  <p className="text-base sm:text-2xl font-bold text-white">{formatCurrency(results.requiredCorpus, selectedCurrency)}</p>
                 </div>
               </div>
             </div>
@@ -338,7 +338,7 @@ const RetirementCalculator = () => {
                 </div>
                 <div>
                   <h3 className="text-xs sm:text-sm font-medium text-gray-600">Monthly SIP</h3>
-                  <p className="text-base sm:text-2xl font-bold text-purple-600">{formatCurrency(results.requiredMonthlySIP)}</p>
+                  <p className="text-base sm:text-2xl font-bold text-purple-600">{formatCurrency(results.requiredMonthlySIP, selectedCurrency)}</p>
                 </div>
               </div>
             </div>
@@ -356,33 +356,33 @@ const RetirementCalculator = () => {
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={results.projectionData}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                    <XAxis 
-                      dataKey="year" 
+                    <XAxis
+                      dataKey="year"
                       stroke="#666"
                       fontSize={12}
                     />
-                    <YAxis 
+                    <YAxis
                       stroke="#666"
                       fontSize={12}
-                      tickFormatter={(value) => `₹${(value / 10000000).toFixed(1)}Cr`}
+                      tickFormatter={(value) => formatCurrency(value, selectedCurrency)}
                     />
-                    <Tooltip 
-                      formatter={(value, name) => [formatCurrency(value), name]}
+                    <Tooltip
+                      formatter={(value, name) => [formatCurrency(value, selectedCurrency), name]}
                       labelFormatter={(label) => `Age ${label}`}
                     />
-                    <Area 
-                      type="monotone" 
-                      dataKey="value" 
+                    <Area
+                      type="monotone"
+                      dataKey="value"
                       stackId="1"
-                      stroke="#C9A635" 
+                      stroke="#C9A635"
                       fill="#C9A635"
                       fillOpacity={0.3}
                       name="Accumulated"
                     />
-                    <Line 
-                      type="monotone" 
-                      dataKey="target" 
-                      stroke="#7A1616" 
+                    <Line
+                      type="monotone"
+                      dataKey="target"
+                      stroke="#7A1616"
                       strokeWidth={2}
                       strokeDasharray="5 5"
                       name="Target"
@@ -404,22 +404,22 @@ const RetirementCalculator = () => {
               <div className="p-4 sm:p-6 space-y-3 sm:space-y-4">
                 <div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
                   <span className="text-xs sm:text-sm font-medium text-gray-700">Current</span>
-                  <span className="text-sm sm:text-base font-bold text-gray-900">{formatCurrency(currentSavings)}</span>
+                  <span className="text-sm sm:text-base font-bold text-gray-900">{formatCurrency(currentSavings, selectedCurrency)}</span>
                 </div>
-                
+
                 <div className="flex justify-between items-center p-3 bg-green-50 rounded-lg">
                   <span className="text-xs sm:text-sm font-medium text-gray-700">Future Value</span>
-                  <span className="text-sm sm:text-base font-bold text-green-600">{formatCurrency(results.futureValueCurrentSavings)}</span>
+                  <span className="text-sm sm:text-base font-bold text-green-600">{formatCurrency(results.futureValueCurrentSavings, selectedCurrency)}</span>
                 </div>
-                
+
                 <div className="flex justify-between items-center p-3 bg-red-50 rounded-lg">
                   <span className="text-xs sm:text-sm font-medium text-gray-700">Additional</span>
-                  <span className="text-sm sm:text-base font-bold text-red-600">{formatCurrency(results.additionalCorpusNeeded)}</span>
+                  <span className="text-sm sm:text-base font-bold text-red-600">{formatCurrency(results.additionalCorpusNeeded, selectedCurrency)}</span>
                 </div>
-                
+
                 <div className="flex justify-between items-center p-3 bg-purple-50 rounded-lg">
                   <span className="text-xs sm:text-sm font-medium text-gray-700">Monthly SIP</span>
-                  <span className="text-sm sm:text-base font-bold text-purple-600">{formatCurrency(results.requiredMonthlySIP)}</span>
+                  <span className="text-sm sm:text-base font-bold text-purple-600">{formatCurrency(results.requiredMonthlySIP, selectedCurrency)}</span>
                 </div>
               </div>
             </div>
@@ -439,16 +439,16 @@ const RetirementCalculator = () => {
                     <p><strong>Replacement:</strong> {incomeReplacement}%</p>
                   </div>
                 </div>
-                
+
                 {results.requiredMonthlySIP > 0 && (
                   <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 sm:p-4">
                     <h4 className="font-semibold text-yellow-800 mb-2 text-sm sm:text-base">Action Required</h4>
                     <p className="text-yellow-700 text-xs sm:text-sm">
-                      Invest <strong>{formatCurrency(results.requiredMonthlySIP)}</strong> monthly!
+                      Invest <strong>{formatCurrency(results.requiredMonthlySIP, selectedCurrency)}</strong> monthly!
                     </p>
                   </div>
                 )}
-                
+
                 {results.additionalCorpusNeeded <= 0 && (
                   <div className="bg-green-50 border border-green-200 rounded-lg p-3 sm:p-4">
                     <h4 className="font-semibold text-green-800 mb-2 text-sm sm:text-base">On Track!</h4>

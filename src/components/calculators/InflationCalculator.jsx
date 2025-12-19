@@ -1,26 +1,28 @@
 import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
-import { Calculator, TrendingDown, DollarSign, AlertTriangle, Info } from 'lucide-react';
+import { Calculator, TrendingDown, AlertTriangle, Info } from 'lucide-react';
+import CurrencySelector, { formatCurrency, getCurrencySymbol } from '../CurrencySelector';
 
 const InflationCalculator = () => {
   const [currentAmount, setCurrentAmount] = useState(100000);
   const [inflationRate, setInflationRate] = useState(6);
   const [timePeriod, setTimePeriod] = useState(10);
   const [targetAmount, setTargetAmount] = useState(200000);
+  const [selectedCurrency, setSelectedCurrency] = useState('INR');
 
   // Calculations
   const results = useMemo(() => {
     // Future cost due to inflation
     const futureCost = currentAmount * Math.pow(1 + inflationRate / 100, timePeriod);
-    
+
     // Purchasing power reduction
     const purchasingPowerLoss = futureCost - currentAmount;
     const purchasingPowerReduction = ((futureCost - currentAmount) / futureCost) * 100;
-    
+
     // Required amount today to buy target amount in future
     const requiredTodayForTarget = targetAmount / Math.pow(1 + inflationRate / 100, timePeriod);
-    
+
     // Year-wise inflation impact
     const yearlyData = [];
     for (let year = 1; year <= timePeriod; year++) {
@@ -33,7 +35,7 @@ const InflationCalculator = () => {
         realValue: Math.round(currentAmount)
       });
     }
-    
+
     // Different inflation scenarios
     const scenarios = [];
     const inflationRates = [3, 5, 6, 8, 10];
@@ -45,7 +47,7 @@ const InflationCalculator = () => {
         difference: Math.round(futureCostScenario - currentAmount)
       });
     });
-    
+
     // Common items inflation impact
     const commonItems = [
       { name: 'Petrol (per litre)', current: 100 },
@@ -54,13 +56,13 @@ const InflationCalculator = () => {
       { name: 'Monthly Grocery', current: 15000 },
       { name: 'School Fee (Annual)', current: 100000 }
     ];
-    
+
     const itemsInflationData = commonItems.map(item => ({
       ...item,
       future: Math.round(item.current * Math.pow(1 + inflationRate / 100, timePeriod)),
       increase: Math.round((item.current * Math.pow(1 + inflationRate / 100, timePeriod)) - item.current)
     }));
-    
+
     return {
       futureCost: Math.round(futureCost),
       purchasingPowerLoss: Math.round(purchasingPowerLoss),
@@ -72,13 +74,7 @@ const InflationCalculator = () => {
     };
   }, [currentAmount, inflationRate, timePeriod, targetAmount]);
 
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
-      maximumFractionDigits: 0
-    }).format(amount);
-  };
+
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -98,6 +94,10 @@ const InflationCalculator = () => {
               </h2>
             </div>
             <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
+              <CurrencySelector
+                selectedCurrency={selectedCurrency}
+                onCurrencyChange={setSelectedCurrency}
+              />
               {/* Current Amount/Price */}
               <div>
                 <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
@@ -225,10 +225,10 @@ const InflationCalculator = () => {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             <div className="bg-white rounded-xl shadow-xl border-2 border-gray-100 p-3 sm:p-4 text-center">
               <div className="bg-blue-100 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
-                <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+                {getCurrencySymbol(selectedCurrency, "w-4 h-4 sm:w-5 sm:h-5 text-blue-600")}
               </div>
               <h3 className="text-xs font-medium text-gray-600 mb-1">Current</h3>
-              <p className="text-sm sm:text-lg font-bold text-gray-900">{formatCurrency(currentAmount)}</p>
+              <p className="text-sm sm:text-lg font-bold text-gray-900">{formatCurrency(currentAmount, selectedCurrency)}</p>
             </div>
 
             <div className="bg-white rounded-xl shadow-xl border-2 border-gray-100 p-3 sm:p-4 text-center">
@@ -236,7 +236,7 @@ const InflationCalculator = () => {
                 <TrendingDown className="w-4 h-4 sm:w-5 sm:h-5 text-red-600" />
               </div>
               <h3 className="text-xs font-medium text-gray-600 mb-1">Future</h3>
-              <p className="text-sm sm:text-lg font-bold text-red-600">{formatCurrency(results.futureCost)}</p>
+              <p className="text-sm sm:text-lg font-bold text-red-600">{formatCurrency(results.futureCost, selectedCurrency)}</p>
             </div>
 
             <div className="bg-gradient-to-br from-[#7A1616] to-[#8B1A1A] rounded-xl shadow-xl p-3 sm:p-4 text-center text-white">
@@ -249,10 +249,10 @@ const InflationCalculator = () => {
 
             <div className="bg-white rounded-xl shadow-xl border-2 border-gray-100 p-3 sm:p-4 text-center">
               <div className="bg-green-100 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
-                <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
+                {getCurrencySymbol(selectedCurrency, "w-4 h-4 sm:w-5 sm:h-5 text-green-600")}
               </div>
               <h3 className="text-xs font-medium text-gray-600 mb-1">Need Today</h3>
-              <p className="text-sm sm:text-lg font-bold text-green-600">{formatCurrency(results.requiredTodayForTarget)}</p>
+              <p className="text-sm sm:text-lg font-bold text-green-600">{formatCurrency(results.requiredTodayForTarget, selectedCurrency)}</p>
             </div>
           </div>
 
@@ -270,37 +270,37 @@ const InflationCalculator = () => {
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={results.yearlyData}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                      <XAxis 
-                        dataKey="year" 
+                      <XAxis
+                        dataKey="year"
                         stroke="#666"
                         fontSize={12}
                       />
-                      <YAxis 
+                      <YAxis
                         stroke="#666"
                         fontSize={12}
-                        tickFormatter={(value) => `₹${(value / 1000).toFixed(0)}K`}
+                        tickFormatter={(value) => formatCurrency(value, selectedCurrency)}
                       />
-                      <Tooltip 
+                      <Tooltip
                         formatter={(value, name) => {
                           if (name === 'Purchasing Power') {
                             return [`${value}%`, name];
                           }
-                          return [formatCurrency(value), name];
+                          return [formatCurrency(value, selectedCurrency), name];
                         }}
                         labelFormatter={(label) => `Year ${label}`}
                       />
-                      <Line 
-                        type="monotone" 
-                        dataKey="realValue" 
-                        stroke="#10B981" 
+                      <Line
+                        type="monotone"
+                        dataKey="realValue"
+                        stroke="#10B981"
                         strokeWidth={2}
                         name="Today's Value"
                         strokeDasharray="5 5"
                       />
-                      <Line 
-                        type="monotone" 
-                        dataKey="inflatedCost" 
-                        stroke="#EF4444" 
+                      <Line
+                        type="monotone"
+                        dataKey="inflatedCost"
+                        stroke="#EF4444"
                         strokeWidth={3}
                         name="Inflated Cost"
                       />
@@ -322,22 +322,22 @@ const InflationCalculator = () => {
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={results.scenarios}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                      <XAxis 
-                        dataKey="rate" 
+                      <XAxis
+                        dataKey="rate"
                         stroke="#666"
                         fontSize={12}
                       />
-                      <YAxis 
+                      <YAxis
                         stroke="#666"
                         fontSize={12}
-                        tickFormatter={(value) => `₹${(value / 1000).toFixed(0)}K`}
+                        tickFormatter={(value) => formatCurrency(value, selectedCurrency)}
                       />
-                      <Tooltip 
-                        formatter={(value, name) => [formatCurrency(value), name]}
+                      <Tooltip
+                        formatter={(value, name) => [formatCurrency(value, selectedCurrency), name]}
                       />
-                      <Bar 
-                        dataKey="futureCost" 
-                        fill="#C9A635" 
+                      <Bar
+                        dataKey="futureCost"
+                        fill="#C9A635"
                         name="Future Cost"
                         radius={[4, 4, 0, 0]}
                       />
@@ -373,13 +373,13 @@ const InflationCalculator = () => {
                           {item.name}
                         </td>
                         <td className="px-3 sm:px-6 py-2 sm:py-4 text-right text-gray-900">
-                          {formatCurrency(item.current)}
+                          {formatCurrency(item.current, selectedCurrency)}
                         </td>
                         <td className="px-3 sm:px-6 py-2 sm:py-4 text-right text-red-600 font-semibold">
-                          {formatCurrency(item.future)}
+                          {formatCurrency(item.future, selectedCurrency)}
                         </td>
                         <td className="px-3 sm:px-6 py-2 sm:py-4 text-right text-orange-600 hidden sm:table-cell">
-                          {formatCurrency(item.increase)}
+                          {formatCurrency(item.increase, selectedCurrency)}
                         </td>
                       </tr>
                     ))}
@@ -401,20 +401,20 @@ const InflationCalculator = () => {
                 <p className="text-xs sm:text-sm text-gray-700 mb-1 sm:mb-2">12-15% Return</p>
                 <p className="text-xs text-gray-600">Long-term (5+ years)</p>
               </div>
-              
+
               <div className="text-center bg-white/50 rounded-lg p-3 sm:p-4">
                 <h4 className="font-semibold text-gray-900 mb-1 sm:mb-2 text-sm sm:text-base">Balanced Funds</h4>
                 <p className="text-xs sm:text-sm text-gray-700 mb-1 sm:mb-2">10-12% Return</p>
                 <p className="text-xs text-gray-600">Moderate risk</p>
               </div>
-              
+
               <div className="text-center bg-white/50 rounded-lg p-3 sm:p-4">
                 <h4 className="font-semibold text-gray-900 mb-1 sm:mb-2 text-sm sm:text-base">Gold/REITs</h4>
                 <p className="text-xs sm:text-sm text-gray-700 mb-1 sm:mb-2">8-10% Return</p>
                 <p className="text-xs text-gray-600">Inflation hedge</p>
               </div>
             </div>
-            
+
             <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-white/50 rounded-lg">
               <h4 className="font-semibold text-[#7A1616] mb-2 text-sm sm:text-base">Key Takeaway</h4>
               <p className="text-xs sm:text-sm text-gray-700">

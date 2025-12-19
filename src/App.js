@@ -25,7 +25,16 @@ import Contact from "./pages/Contact";
 import Compliance from "./pages/Compliance";
 import CommissionDisclosure from "./pages/CommissionDisclosure";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
- 
+
+// About Section Pages
+import AboutAriaWealth from "./pages/about/AboutAriaWealth";
+import OurTeam from "./pages/about/OurTeam";
+import MissionVision from "./pages/about/MissionVision";
+import Philosophy from "./pages/about/Philosophy";
+import Values from "./pages/about/Values";
+import Journey from "./pages/about/Journey";
+import OurCulture from "./pages/about/OurCulture";
+
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -41,7 +50,7 @@ function App() {
         console.log("Backend not connected yet - using mock data");
       }
     };
-    
+
     testBackendConnection();
   }, []);
 
@@ -50,7 +59,7 @@ function App() {
       <BrowserRouter>
         <div className="min-h-screen flex flex-col">
           <Navbar />
-          
+
           <AnimatePresence mode="wait">
             <motion.main
               className="flex-grow"
@@ -62,6 +71,16 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
+
+                {/* About Section Routes */}
+                <Route path="/about/about-aria-wealth" element={<AboutAriaWealth />} />
+                <Route path="/about/team" element={<OurTeam />} />
+                <Route path="/about/mission-vision" element={<MissionVision />} />
+                <Route path="/about/philosophy" element={<Philosophy />} />
+                <Route path="/about/values" element={<Values />} />
+                <Route path="/about/journey" element={<Journey />} />
+                <Route path="/about/our-culture" element={<OurCulture />} />
+
                 <Route path="/services" element={<Services />} />
                 <Route path="/services/investment-solutions" element={<InvestmentSolutions />} />
                 <Route path="/services/goal-based-solutions" element={<GoalBasedSolutions />} />
@@ -74,11 +93,11 @@ function App() {
                 <Route path="/compliance" element={<Compliance />} />
                 <Route path="/commission-disclosure" element={<CommissionDisclosure />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                
+
               </Routes>
             </motion.main>
           </AnimatePresence>
-          
+
           <Footer />
           <ScrollToTop />
         </div>

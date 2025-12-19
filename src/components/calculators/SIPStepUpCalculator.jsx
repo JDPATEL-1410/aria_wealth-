@@ -1,55 +1,57 @@
 import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
-import { TrendingUp, DollarSign, Target, Info, Percent, ArrowUp } from 'lucide-react';
+import { TrendingUp, Target, Info, Percent, ArrowUp } from 'lucide-react';
+import CurrencySelector, { formatCurrency, getCurrencySymbol } from '../CurrencySelector';
 
 const SIPStepUpCalculator = () => {
   const [initialSIP, setInitialSIP] = useState(10000);
   const [investmentPeriod, setInvestmentPeriod] = useState(20);
   const [expectedReturn, setExpectedReturn] = useState(12);
   const [stepUpPercentage, setStepUpPercentage] = useState(10);
+  const [selectedCurrency, setSelectedCurrency] = useState('INR');
 
   const results = useMemo(() => {
     const monthlyRate = expectedReturn / 100 / 12;
-    
+
     // Scenario 1: Fixed SIP (no step-up)
     const monthsTotal = investmentPeriod * 12;
     const fixedFutureValue = monthsTotal > 0 && monthlyRate > 0
       ? initialSIP * ((Math.pow(1 + monthlyRate, monthsTotal) - 1) / monthlyRate) * (1 + monthlyRate)
       : initialSIP * monthsTotal;
-    
+
     const fixedTotalInvested = initialSIP * monthsTotal;
     const fixedReturns = fixedFutureValue - fixedTotalInvested;
-    
+
     // Scenario 2: Step-up SIP
     let stepUpFutureValue = 0;
     let stepUpTotalInvested = 0;
     let currentSIP = initialSIP;
-    
+
     for (let year = 1; year <= investmentPeriod; year++) {
       const yearlyContribution = currentSIP * 12;
       const monthsRemaining = (investmentPeriod - year + 1) * 12;
-      
+
       const yearFutureValue = monthsRemaining > 0 && monthlyRate > 0
         ? currentSIP * ((Math.pow(1 + monthlyRate, monthsRemaining) - 1) / monthlyRate) * (1 + monthlyRate)
         : currentSIP * monthsRemaining;
-      
+
       stepUpFutureValue += yearFutureValue;
       stepUpTotalInvested += yearlyContribution;
-      
+
       if (year < investmentPeriod) {
         currentSIP = currentSIP * (1 + stepUpPercentage / 100);
       }
     }
-    
+
     const stepUpReturns = stepUpFutureValue - stepUpTotalInvested;
-    
+
     // Benefits of step-up
     const additionalWealth = stepUpFutureValue - fixedFutureValue;
     const additionalInvestment = stepUpTotalInvested - fixedTotalInvested;
     const additionalReturns = stepUpReturns - fixedReturns;
     const wealthMultiplier = (stepUpFutureValue / fixedFutureValue).toFixed(2);
-    
+
     // Year-wise comparison
     const comparisonData = [];
     let fixedAccumulated = 0;
@@ -57,16 +59,16 @@ const SIPStepUpCalculator = () => {
     let fixedInvested = 0;
     let stepUpInvested = 0;
     let yearSIP = initialSIP;
-    
+
     for (let year = 1; year <= investmentPeriod; year++) {
       const fixedYearlyContribution = initialSIP * 12;
       fixedInvested += fixedYearlyContribution;
       fixedAccumulated = fixedAccumulated * (1 + expectedReturn / 100) + fixedYearlyContribution;
-      
+
       const stepUpYearlyContribution = yearSIP * 12;
       stepUpInvested += stepUpYearlyContribution;
       stepUpAccumulated = stepUpAccumulated * (1 + expectedReturn / 100) + stepUpYearlyContribution;
-      
+
       comparisonData.push({
         year: year,
         fixedSIP: Math.round(fixedAccumulated),
@@ -74,12 +76,12 @@ const SIPStepUpCalculator = () => {
         monthlySIP: Math.round(yearSIP),
         benefit: Math.round(stepUpAccumulated - fixedAccumulated)
       });
-      
+
       yearSIP = yearSIP * (1 + stepUpPercentage / 100);
     }
-    
+
     const finalSIPAmount = initialSIP * Math.pow(1 + stepUpPercentage / 100, investmentPeriod - 1);
-    
+
     // Annual step-up progression
     const sipProgressionData = [];
     let progressionSIP = initialSIP;
@@ -91,7 +93,7 @@ const SIPStepUpCalculator = () => {
       });
       progressionSIP = progressionSIP * (1 + stepUpPercentage / 100);
     }
-    
+
     return {
       fixedFutureValue: Math.round(fixedFutureValue),
       fixedTotalInvested: Math.round(fixedTotalInvested),
@@ -110,13 +112,7 @@ const SIPStepUpCalculator = () => {
     };
   }, [initialSIP, investmentPeriod, expectedReturn, stepUpPercentage]);
 
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
-      maximumFractionDigits: 0
-    }).format(amount);
-  };
+
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -136,6 +132,10 @@ const SIPStepUpCalculator = () => {
               </h2>
             </div>
             <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
+              <CurrencySelector
+                selectedCurrency={selectedCurrency}
+                onCurrencyChange={setSelectedCurrency}
+              />
               {/* Initial Monthly SIP */}
               <div>
                 <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
@@ -236,7 +236,7 @@ const SIPStepUpCalculator = () => {
               {/* Final SIP Display */}
               <div className="bg-gradient-to-br from-[#C9A635]/10 to-[#E7C76A]/20 rounded-xl p-3 sm:p-4 border-2 border-[#C9A635]/30">
                 <p className="text-xs sm:text-sm text-gray-700 mb-1">Final Monthly SIP (Y{investmentPeriod})</p>
-                <p className="text-xl sm:text-2xl font-extrabold text-[#7A1616]">{formatCurrency(results.finalSIPAmount)}</p>
+                <p className="text-xl sm:text-2xl font-extrabold text-[#7A1616]">{formatCurrency(results.finalSIPAmount, selectedCurrency)}</p>
               </div>
             </div>
           </div>
@@ -267,22 +267,22 @@ const SIPStepUpCalculator = () => {
             <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl sm:rounded-2xl shadow-xl border-2 border-gray-200 p-4 sm:p-6">
               <div className="flex items-center space-x-3 sm:space-x-4 mb-3 sm:mb-4">
                 <div className="bg-gray-200 w-10 h-10 sm:w-14 sm:h-14 rounded-lg sm:rounded-xl flex items-center justify-center">
-                  <DollarSign className="w-5 h-5 sm:w-7 sm:h-7 text-gray-600" />
+                  {getCurrencySymbol(selectedCurrency, "w-5 h-5 sm:w-7 sm:h-7 text-gray-600")}
                 </div>
                 <div>
                   <h3 className="text-xs sm:text-sm font-semibold text-gray-700">Fixed SIP</h3>
                   <p className="text-xs text-gray-600">No increase</p>
                 </div>
               </div>
-              <p className="text-2xl sm:text-3xl font-extrabold text-gray-700 mb-2">{formatCurrency(results.fixedFutureValue)}</p>
+              <p className="text-2xl sm:text-3xl font-extrabold text-gray-700 mb-2">{formatCurrency(results.fixedFutureValue, selectedCurrency)}</p>
               <div className="space-y-1 text-xs sm:text-sm">
                 <p className="flex justify-between text-gray-600">
                   <span>Invested:</span>
-                  <span className="font-semibold">{formatCurrency(results.fixedTotalInvested)}</span>
+                  <span className="font-semibold">{formatCurrency(results.fixedTotalInvested, selectedCurrency)}</span>
                 </p>
                 <p className="flex justify-between text-gray-700">
                   <span>Returns:</span>
-                  <span className="font-bold">{formatCurrency(results.fixedReturns)}</span>
+                  <span className="font-bold">{formatCurrency(results.fixedReturns, selectedCurrency)}</span>
                 </p>
               </div>
             </div>
@@ -297,15 +297,15 @@ const SIPStepUpCalculator = () => {
                   <p className="text-xs text-green-600">{stepUpPercentage}% increase</p>
                 </div>
               </div>
-              <p className="text-2xl sm:text-3xl font-extrabold text-green-600 mb-2">{formatCurrency(results.stepUpFutureValue)}</p>
+              <p className="text-2xl sm:text-3xl font-extrabold text-green-600 mb-2">{formatCurrency(results.stepUpFutureValue, selectedCurrency)}</p>
               <div className="space-y-1 text-xs sm:text-sm">
                 <p className="flex justify-between text-gray-700">
                   <span>Invested:</span>
-                  <span className="font-semibold">{formatCurrency(results.stepUpTotalInvested)}</span>
+                  <span className="font-semibold">{formatCurrency(results.stepUpTotalInvested, selectedCurrency)}</span>
                 </p>
                 <p className="flex justify-between text-green-700">
                   <span>Returns:</span>
-                  <span className="font-bold">{formatCurrency(results.stepUpReturns)}</span>
+                  <span className="font-bold">{formatCurrency(results.stepUpReturns, selectedCurrency)}</span>
                 </p>
               </div>
             </div>
@@ -324,19 +324,19 @@ const SIPStepUpCalculator = () => {
                 </div>
               </div>
               <div className="text-left sm:text-right w-full sm:w-auto">
-                <p className="text-3xl sm:text-4xl font-black">{formatCurrency(results.additionalWealth)}</p>
+                <p className="text-3xl sm:text-4xl font-black">{formatCurrency(results.additionalWealth, selectedCurrency)}</p>
                 <p className="text-white/90 text-base sm:text-lg mt-1">{results.wealthGainPercentage}% more</p>
               </div>
             </div>
-            
+
             <div className="grid grid-cols-3 gap-3 sm:gap-4 pt-4 sm:pt-6 border-t border-white/20">
               <div className="text-center">
                 <p className="text-white/70 text-xs mb-1">Extra</p>
-                <p className="text-base sm:text-xl font-bold">{formatCurrency(results.additionalInvestment)}</p>
+                <p className="text-base sm:text-xl font-bold">{formatCurrency(results.additionalInvestment, selectedCurrency)}</p>
               </div>
               <div className="text-center">
                 <p className="text-white/70 text-xs mb-1">Returns</p>
-                <p className="text-base sm:text-xl font-bold">{formatCurrency(results.additionalReturns)}</p>
+                <p className="text-base sm:text-xl font-bold">{formatCurrency(results.additionalReturns, selectedCurrency)}</p>
               </div>
               <div className="text-center">
                 <p className="text-white/70 text-xs mb-1">Multiplier</p>
@@ -358,8 +358,8 @@ const SIPStepUpCalculator = () => {
                   <BarChart data={results.sipProgressionData}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                     <XAxis dataKey="year" stroke="#666" fontSize={12} />
-                    <YAxis stroke="#666" fontSize={12} tickFormatter={(value) => `₹${(value / 1000).toFixed(0)}K`} />
-                    <Tooltip formatter={(value) => formatCurrency(value)} />
+                    <YAxis stroke="#666" fontSize={12} tickFormatter={(value) => formatCurrency(value, selectedCurrency)} />
+                    <Tooltip formatter={(value) => formatCurrency(value, selectedCurrency)} />
                     <Bar dataKey="amount" fill="#C9A635" radius={[8, 8, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
@@ -379,8 +379,8 @@ const SIPStepUpCalculator = () => {
                   <AreaChart data={results.comparisonData}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                     <XAxis dataKey="year" stroke="#666" fontSize={12} />
-                    <YAxis stroke="#666" fontSize={12} tickFormatter={(value) => `₹${(value / 100000).toFixed(0)}L`} />
-                    <Tooltip formatter={(value) => formatCurrency(value)} />
+                    <YAxis stroke="#666" fontSize={12} tickFormatter={(value) => formatCurrency(value, selectedCurrency)} />
+                    <Tooltip formatter={(value) => formatCurrency(value, selectedCurrency)} />
                     <Area type="monotone" dataKey="fixedSIP" stroke="#9CA3AF" fill="#9CA3AF" fillOpacity={0.3} name="Fixed" />
                     <Area type="monotone" dataKey="stepUpSIP" stroke="#10b981" fill="#10b981" fillOpacity={0.3} name="Step-Up" />
                   </AreaChart>
@@ -405,7 +405,7 @@ const SIPStepUpCalculator = () => {
                     <p className="text-xs sm:text-sm text-gray-600">Grows with salary</p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start gap-2 sm:gap-3">
                   <div className="bg-blue-100 p-2 rounded-lg flex-shrink-0">
                     <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
@@ -415,7 +415,7 @@ const SIPStepUpCalculator = () => {
                     <p className="text-xs sm:text-sm text-gray-600">Higher returns</p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start gap-2 sm:gap-3">
                   <div className="bg-purple-100 p-2 rounded-lg flex-shrink-0">
                     <Target className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
@@ -437,11 +437,11 @@ const SIPStepUpCalculator = () => {
                   <div className="space-y-2 sm:space-y-3 text-xs sm:text-sm">
                     <p className="flex justify-between">
                       <span className="font-semibold">Start:</span>
-                      <span className="font-bold text-[#7A1616]">{formatCurrency(initialSIP)}</span>
+                      <span className="font-bold text-[#7A1616]">{formatCurrency(initialSIP, selectedCurrency)}</span>
                     </p>
                     <p className="flex justify-between">
                       <span className="font-semibold">Final:</span>
-                      <span className="font-bold text-[#C9A635]">{formatCurrency(results.finalSIPAmount)}</span>
+                      <span className="font-bold text-[#C9A635]">{formatCurrency(results.finalSIPAmount, selectedCurrency)}</span>
                     </p>
                     <p className="flex justify-between">
                       <span className="font-semibold">Increase:</span>
@@ -450,7 +450,7 @@ const SIPStepUpCalculator = () => {
                     <div className="pt-2 sm:pt-3 border-t border-[#C9A635]/30">
                       <p className="flex justify-between">
                         <span className="font-semibold">Extra:</span>
-                        <span className="font-extrabold text-[#7A1616]">{formatCurrency(results.additionalWealth)}</span>
+                        <span className="font-extrabold text-[#7A1616]">{formatCurrency(results.additionalWealth, selectedCurrency)}</span>
                       </p>
                     </div>
                   </div>
@@ -462,7 +462,7 @@ const SIPStepUpCalculator = () => {
                     Recommended
                   </h4>
                   <p className="text-green-700 text-xs sm:text-sm">
-                    Start <strong>{formatCurrency(initialSIP)}</strong> + {stepUpPercentage}% yearly!
+                    Start <strong>{formatCurrency(initialSIP, selectedCurrency)}</strong> + {stepUpPercentage}% yearly!
                   </p>
                 </div>
               </div>

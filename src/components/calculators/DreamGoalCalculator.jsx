@@ -1,7 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import { Calculator, Target, DollarSign, Calendar, Info, Star } from 'lucide-react';
+import { Calculator, Target, Calendar, Info, Star } from 'lucide-react';
+import CurrencySelector, { formatCurrency, getCurrencySymbol } from '../CurrencySelector';
 
 const DreamGoalCalculator = () => {
   const [goalType, setGoalType] = useState('home');
@@ -10,6 +11,7 @@ const DreamGoalCalculator = () => {
   const [currentSavings, setCurrentSavings] = useState(500000);
   const [expectedReturn, setExpectedReturn] = useState(12);
   const [inflationRate, setInflationRate] = useState(6);
+  const [selectedCurrency, setSelectedCurrency] = useState('INR');
 
   const goalPresets = {
     home: { name: 'Dream Home', amount: 5000000, icon: '🏠', timeframe: 10 },
@@ -25,20 +27,20 @@ const DreamGoalCalculator = () => {
   const results = useMemo(() => {
     // Adjust target for inflation
     const inflationAdjustedTarget = targetAmount * Math.pow(1 + inflationRate / 100, timeHorizon);
-    
+
     // Future value of current savings
     const futureCurrentSavings = currentSavings * Math.pow(1 + expectedReturn / 100, timeHorizon);
-    
+
     // Additional amount needed
     const additionalAmountNeeded = Math.max(0, inflationAdjustedTarget - futureCurrentSavings);
-    
+
     // Required monthly SIP
     const monthlyRate = expectedReturn / 100 / 12;
     const totalMonths = timeHorizon * 12;
     const requiredMonthlySIP = totalMonths > 0 && monthlyRate > 0
       ? (additionalAmountNeeded * monthlyRate) / (Math.pow(1 + monthlyRate, totalMonths) - 1)
       : additionalAmountNeeded / totalMonths;
-    
+
     // Alternative scenarios (different time horizons)
     const timeScenarios = [];
     [3, 5, 7, 10, 15].forEach(years => {
@@ -50,7 +52,7 @@ const DreamGoalCalculator = () => {
         const monthlySIP = months > 0 && monthlyRate > 0
           ? (additional * monthlyRate) / (Math.pow(1 + monthlyRate, months) - 1)
           : additional / months;
-        
+
         timeScenarios.push({
           years,
           targetAmount: Math.round(adjustedTarget),
@@ -59,15 +61,15 @@ const DreamGoalCalculator = () => {
         });
       }
     });
-    
+
     // Year-wise accumulation
     const yearlyData = [];
     let accumulatedValue = currentSavings;
-    
+
     for (let year = 1; year <= timeHorizon; year++) {
       const annualSIP = requiredMonthlySIP * 12;
       accumulatedValue = (accumulatedValue + annualSIP) * (1 + expectedReturn / 100);
-      
+
       yearlyData.push({
         year,
         accumulated: Math.round(accumulatedValue),
@@ -76,12 +78,12 @@ const DreamGoalCalculator = () => {
         currentSavingsGrowth: Math.round(currentSavings * Math.pow(1 + expectedReturn / 100, year))
       });
     }
-    
+
     // Investment breakdown
     const totalSIPInvestment = requiredMonthlySIP * totalMonths;
     const totalInvestment = currentSavings + totalSIPInvestment;
     const totalReturns = inflationAdjustedTarget - totalInvestment;
-    
+
     return {
       inflationAdjustedTarget: Math.round(inflationAdjustedTarget),
       futureCurrentSavings: Math.round(futureCurrentSavings),
@@ -101,13 +103,7 @@ const DreamGoalCalculator = () => {
     { name: 'Expected Returns', value: results.totalReturns, color: '#10B981' }
   ];
 
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
-      maximumFractionDigits: 0
-    }).format(amount);
-  };
+
 
   const handleGoalTypeChange = (value) => {
     setGoalType(value);
@@ -135,6 +131,10 @@ const DreamGoalCalculator = () => {
               </h2>
             </div>
             <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
+              <CurrencySelector
+                selectedCurrency={selectedCurrency}
+                onCurrencyChange={setSelectedCurrency}
+              />
               {/* Goal Type Selection */}
               <div>
                 <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
@@ -297,7 +297,7 @@ const DreamGoalCalculator = () => {
                   {goalPresets[goalType].name} Strategy
                 </h3>
                 <p className="text-gray-700 text-sm leading-relaxed">
-                  Dreams become reality with disciplined planning. Start your SIP today and 
+                  Dreams become reality with disciplined planning. Start your SIP today and
                   watch your goal become achievable through the magic of compound growth.
                 </p>
               </div>
@@ -318,17 +318,17 @@ const DreamGoalCalculator = () => {
               <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">{goalPresets[goalType].icon}</div>
               <h2 className="text-xl sm:text-2xl font-bold mb-2">{goalPresets[goalType].name}</h2>
               <p className="text-white/90 mb-4 sm:mb-6 text-sm sm:text-base">
-                Target: {formatCurrency(targetAmount)} | {timeHorizon} years
+                Target: {formatCurrency(targetAmount, selectedCurrency)} | {timeHorizon} years
               </p>
-              
+
               <div className="grid grid-cols-2 gap-3 sm:gap-4">
                 <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-4">
                   <h3 className="text-xs sm:text-sm font-medium text-white/90 mb-1">Adjusted Goal</h3>
-                  <p className="text-base sm:text-xl font-bold">{formatCurrency(results.inflationAdjustedTarget)}</p>
+                  <p className="text-base sm:text-xl font-bold">{formatCurrency(results.inflationAdjustedTarget, selectedCurrency)}</p>
                 </div>
                 <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-4">
                   <h3 className="text-xs sm:text-sm font-medium text-white/90 mb-1">Monthly SIP</h3>
-                  <p className="text-base sm:text-xl font-bold text-[#C9A635]">{formatCurrency(results.requiredMonthlySIP)}</p>
+                  <p className="text-base sm:text-xl font-bold text-[#C9A635]">{formatCurrency(results.requiredMonthlySIP, selectedCurrency)}</p>
                 </div>
               </div>
             </div>
@@ -338,10 +338,10 @@ const DreamGoalCalculator = () => {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             <div className="bg-white rounded-xl shadow-xl border-2 border-gray-100 p-3 sm:p-4 text-center">
               <div className="bg-blue-100 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
-                <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+                {getCurrencySymbol(selectedCurrency, "w-4 h-4 sm:w-5 sm:h-5 text-blue-600")}
               </div>
               <h3 className="text-xs font-medium text-gray-600 mb-1">Savings</h3>
-              <p className="text-sm sm:text-lg font-bold text-gray-900">{formatCurrency(currentSavings)}</p>
+              <p className="text-sm sm:text-lg font-bold text-gray-900">{formatCurrency(currentSavings, selectedCurrency)}</p>
             </div>
 
             <div className="bg-white rounded-xl shadow-xl border-2 border-gray-100 p-3 sm:p-4 text-center">
@@ -349,7 +349,7 @@ const DreamGoalCalculator = () => {
                 <Target className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
               </div>
               <h3 className="text-xs font-medium text-gray-600 mb-1">Total SIP</h3>
-              <p className="text-sm sm:text-lg font-bold text-green-600">{formatCurrency(results.totalSIPInvestment)}</p>
+              <p className="text-sm sm:text-lg font-bold text-green-600">{formatCurrency(results.totalSIPInvestment, selectedCurrency)}</p>
             </div>
 
             <div className="bg-white rounded-xl shadow-xl border-2 border-gray-100 p-3 sm:p-4 text-center">
@@ -357,7 +357,7 @@ const DreamGoalCalculator = () => {
                 <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
               </div>
               <h3 className="text-xs font-medium text-gray-600 mb-1">Returns</h3>
-              <p className="text-sm sm:text-lg font-bold text-purple-600">{formatCurrency(results.totalReturns)}</p>
+              <p className="text-sm sm:text-lg font-bold text-purple-600">{formatCurrency(results.totalReturns, selectedCurrency)}</p>
             </div>
 
             <div className="bg-white rounded-xl shadow-xl border-2 border-gray-100 p-3 sm:p-4 text-center">
@@ -365,7 +365,7 @@ const DreamGoalCalculator = () => {
                 <Star className="w-4 h-4 sm:w-5 sm:h-5 text-orange-600" />
               </div>
               <h3 className="text-xs font-medium text-gray-600 mb-1">Goal Value</h3>
-              <p className="text-sm sm:text-lg font-bold text-orange-600">{formatCurrency(results.inflationAdjustedTarget)}</p>
+              <p className="text-sm sm:text-lg font-bold text-orange-600">{formatCurrency(results.inflationAdjustedTarget, selectedCurrency)}</p>
             </div>
           </div>
 
@@ -383,32 +383,32 @@ const DreamGoalCalculator = () => {
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={results.yearlyData}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                      <XAxis 
-                        dataKey="year" 
+                      <XAxis
+                        dataKey="year"
                         stroke="#666"
                         fontSize={12}
                       />
-                      <YAxis 
+                      <YAxis
                         stroke="#666"
                         fontSize={12}
-                        tickFormatter={(value) => `₹${(value / 100000).toFixed(0)}L`}
+                        tickFormatter={(value) => formatCurrency(value, selectedCurrency)}
                       />
-                      <Tooltip 
-                        formatter={(value, name) => [formatCurrency(value), name]}
+                      <Tooltip
+                        formatter={(value, name) => [formatCurrency(value, selectedCurrency), name]}
                         labelFormatter={(label) => `Year ${label}`}
                       />
-                      <Line 
-                        type="monotone" 
-                        dataKey="target" 
-                        stroke="#7A1616" 
+                      <Line
+                        type="monotone"
+                        dataKey="target"
+                        stroke="#7A1616"
                         strokeWidth={2}
                         strokeDasharray="5 5"
                         name="Target"
                       />
-                      <Line 
-                        type="monotone" 
-                        dataKey="accumulated" 
-                        stroke="#C9A635" 
+                      <Line
+                        type="monotone"
+                        dataKey="accumulated"
+                        stroke="#C9A635"
                         strokeWidth={3}
                         name="Accumulated"
                       />
@@ -442,11 +442,11 @@ const DreamGoalCalculator = () => {
                           <Cell key={`cell-${index}`} fill={entry.color} />
                         ))}
                       </Pie>
-                      <Tooltip formatter={(value) => formatCurrency(value)} />
+                      <Tooltip formatter={(value) => formatCurrency(value, selectedCurrency)} />
                     </PieChart>
                   </ResponsiveContainer>
                 </div>
-                
+
                 <div className="mt-4 space-y-2">
                   {pieData.map((entry, index) => (
                     <div key={index} className="flex items-center justify-between text-xs sm:text-sm">
@@ -454,7 +454,7 @@ const DreamGoalCalculator = () => {
                         <div className="w-3 h-3 rounded-full" style={{ backgroundColor: entry.color }}></div>
                         <span className="text-gray-600">{entry.name}</span>
                       </div>
-                      <span className="font-semibold text-gray-900">{formatCurrency(entry.value)}</span>
+                      <span className="font-semibold text-gray-900">{formatCurrency(entry.value, selectedCurrency)}</span>
                     </div>
                   ))}
                 </div>
@@ -472,24 +472,22 @@ const DreamGoalCalculator = () => {
             <div className="p-4 sm:p-6">
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                 {results.timeScenarios.slice(0, 4).map((scenario, index) => (
-                  <div key={index} className={`p-3 sm:p-4 rounded-lg border-2 ${
-                    scenario.years < timeHorizon 
-                      ? 'border-red-200 bg-red-50' 
-                      : 'border-green-200 bg-green-50'
-                  }`}>
+                  <div key={index} className={`p-3 sm:p-4 rounded-lg border-2 ${scenario.years < timeHorizon
+                    ? 'border-red-200 bg-red-50'
+                    : 'border-green-200 bg-green-50'
+                    }`}>
                     <div className="text-center">
                       <h4 className="text-base sm:text-lg font-bold text-gray-900 mb-1">{scenario.years}Y</h4>
                       <div className="space-y-1 sm:space-y-2">
                         <div className="hidden sm:block">
                           <p className="text-xs text-gray-600">Target</p>
-                          <p className="text-xs font-semibold">{formatCurrency(scenario.targetAmount)}</p>
+                          <p className="text-xs font-semibold">{formatCurrency(scenario.targetAmount, selectedCurrency)}</p>
                         </div>
                         <div>
                           <p className="text-xs text-gray-600">Monthly SIP</p>
-                          <p className={`text-sm sm:text-lg font-bold ${
-                            scenario.years < timeHorizon ? 'text-red-600' : 'text-green-600'
-                          }`}>
-                            {formatCurrency(scenario.monthlySIP)}
+                          <p className={`text-sm sm:text-lg font-bold ${scenario.years < timeHorizon ? 'text-red-600' : 'text-green-600'
+                            }`}>
+                            {formatCurrency(scenario.monthlySIP, selectedCurrency)}
                           </p>
                         </div>
                       </div>
@@ -497,7 +495,7 @@ const DreamGoalCalculator = () => {
                   </div>
                 ))}
               </div>
-              
+
               <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-gradient-to-r from-[#C9A635]/10 to-[#7A1616]/10 rounded-lg">
                 <div className="flex items-start space-x-2 sm:space-x-3">
                   <Info className="w-4 h-4 sm:w-5 sm:h-5 text-[#7A1616] mt-0.5 flex-shrink-0" />

@@ -275,7 +275,7 @@ const About = () => {
               <Building2 className="w-4 h-4 sm:w-5 sm:h-5 text-[#7A1616]" />
               <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[#C9A635] rounded-full animate-pulse" />
               <span className="text-xs sm:text-sm font-semibold text-gray-800 tracking-wide">
-                SEBI REGISTERED Mutual Fund Distributor
+                AMFI REGISTERED Mutual Fund Distributor
               </span>
             </motion.div>
 
@@ -285,19 +285,29 @@ const About = () => {
               variants={itemVariants}
             >
               <span className="text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
-                Building{" "}
+                We listen{" "}
               </span>
               <span className="bg-gradient-to-r from-[#E7C76A] via-[#F8D97A] to-[#C9A635] bg-clip-text text-transparent drop-shadow-[0_4px_12px_rgba(201,166,53,0.5)]">
-                Wealth
+                before
               </span>
               <br />
               <span className="text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
-                Through{" "}
+                we{" "}
               </span>
               <span className="bg-gradient-to-r from-[#C9A635] via-[#E7C76A] to-[#F8D97A] bg-clip-text text-transparent drop-shadow-[0_4px_12px_rgba(201,166,53,0.5)]">
-                Trust
+                plan
               </span>
             </motion.h1>
+
+            {/* Tagline */}
+            <motion.div
+              className="mb-6 sm:mb-8"
+              variants={itemVariants}
+            >
+              <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-[#E7C76A] drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] px-4">
+                Building Wealth Through Trust
+              </p>
+            </motion.div>
 
             {/* Subtext */}
             <motion.p
@@ -305,8 +315,7 @@ const About = () => {
               variants={itemVariants}
             >
               Authentic relationships. Discipline over noise. A lifelong partnership
-              through every life cycle.{" "}
-              <span className="text-[#E7C76A] font-semibold">We listen before we plan</span>.
+              through every life cycle.
             </motion.p>
 
             {/* CTA Buttons */}
@@ -314,18 +323,23 @@ const About = () => {
               className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-5 justify-center items-stretch sm:items-center px-4"
               variants={itemVariants}
             >
-              <Link to="/contact" className="w-full sm:w-auto">
+              <a
+                href="https://members.networkfp.com/member/reah-menezes"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto"
+              >
                 <button className="group w-full sm:w-auto px-6 sm:px-8 md:px-10 py-3 sm:py-4 bg-[#A12424] text-white font-bold text-base sm:text-lg rounded-xl hover:bg-[#7A1616] transition-all duration-300 shadow-2xl transform hover:scale-105 active:scale-95">
                   <span className="flex items-center justify-center gap-2">
-                    Schedule a Consultation
+                    View Profile
                     <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
                   </span>
                 </button>
-              </Link>
+              </a>
 
-              <Link to="/services" className="w-full sm:w-auto">
+              <Link to="/contact" className="w-full sm:w-auto">
                 <button className="w-full sm:w-auto px-6 sm:px-8 md:px-10 py-3 sm:py-4 bg-white/95 backdrop-blur-md text-[#7A1616] font-bold text-base sm:text-lg rounded-xl hover:bg-white transition-all duration-300 shadow-2xl transform hover:scale-105 active:scale-95 border-2 border-white/50">
-                  Explore Our Services
+                  Let's Connect
                 </button>
               </Link>
             </motion.div>
@@ -392,7 +406,7 @@ const About = () => {
       </section>
 
       {/* Mission & Vision Section */}
-      <section className="relative py-16 sm:py-20 md:py-28 bg-gradient-to-br from-white via-gray-50 to-white overflow-hidden">
+      <section id="mission-vision" className="relative py-16 sm:py-20 md:py-28 bg-gradient-to-br from-white via-gray-50 to-white overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 opacity-[0.03] sm:opacity-5">
           <img
@@ -530,7 +544,7 @@ const About = () => {
       </section>
 
       {/* Philosophy Section */}
-      <section ref={philosophyRef} className="relative py-16 sm:py-20 md:py-28 bg-gradient-to-br from-[#7A1616]/5 via-white to-[#C9A635]/5 overflow-hidden">
+      <section id="philosophy" ref={philosophyRef} className="relative py-16 sm:py-20 md:py-28 bg-gradient-to-br from-[#7A1616]/5 via-white to-[#C9A635]/5 overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-48 h-48 sm:w-72 sm:h-72 md:w-96 md:h-96 bg-[#C9A635]/10 rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-48 h-48 sm:w-72 sm:h-72 md:w-96 md:h-96 bg-[#7A1616]/10 rounded-full blur-3xl" />
@@ -636,7 +650,7 @@ const About = () => {
       </section>
 
       {/* Journey Section */}
-      <section ref={journeyRef} className="py-16 sm:py-20 md:py-28 bg-white relative overflow-hidden">
+      <section id="journey" ref={journeyRef} className="py-16 sm:py-20 md:py-28 bg-white relative overflow-hidden">
         {/* Background image */}
         <div className="absolute inset-0 opacity-[0.03] sm:opacity-5">
           <img
@@ -736,7 +750,7 @@ const About = () => {
       </section>
 
       {/* Why Choose Us Section */}
-      <section ref={whyChooseRef} className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-gray-50 to-white">
+      <section id="why-choose" ref={whyChooseRef} className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-gray-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             className="text-center mb-12 sm:mb-16"
@@ -799,7 +813,7 @@ const About = () => {
       </section>
 
       {/* Values Section */}
-      <section ref={valuesRef} className="py-16 sm:py-20 md:py-28 bg-gradient-to-br from-white via-[#C9A635]/5 to-white relative overflow-hidden">
+      <section id="values" ref={valuesRef} className="py-16 sm:py-20 md:py-28 bg-gradient-to-br from-white via-[#C9A635]/5 to-white relative overflow-hidden">
         {/* Decorative blurs */}
         <div className="absolute top-10 sm:top-20 left-5 sm:left-10 w-48 h-48 sm:w-72 sm:h-72 bg-[#7A1616]/5 rounded-full blur-3xl" />
         <div className="absolute bottom-10 sm:bottom-20 right-5 sm:right-10 w-56 h-56 sm:w-96 sm:h-96 bg-[#C9A635]/10 rounded-full blur-3xl" />
@@ -1051,8 +1065,7 @@ const About = () => {
             <div className="max-w-4xl mx-auto">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {[
-                  { icon: Lightbulb, text: "Financial Solution Awareness" },
-                  { icon: TrendingUp, text: "Understanding Investment Options" },
+                  { icon: Lightbulb, text: "Personal Finance Solution Awareness" },
                   { icon: FileText, text: "Legacy and Estate Planning Guidance including Wills & Succession" },
                   { icon: Globe, text: "NRI Investment Solutions & Compliance" },
                   { icon: LineChart, text: "Investment Options Simplified" },
@@ -1158,6 +1171,7 @@ const About = () => {
 
       {/* Team Section - Light Theme */}
       <section
+        id="team"
         ref={teamRef}
         className="py-16 sm:py-20 md:py-28 bg-gradient-to-br from-white via-gray-50 to-white relative overflow-hidden"
       >

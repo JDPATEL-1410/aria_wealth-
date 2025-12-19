@@ -1,16 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, MessageCircle } from "lucide-react";
+import { Menu, X, MessageCircle, ChevronDown } from "lucide-react";
 import { navigationLinks } from "../data/mock";
 import logo from "../assets/logo.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false);
   const location = useLocation();
+
+  const aboutSubMenu = [
+    { name: 'About', path: '/about/about-aria-wealth' },
+    { name: 'Our Team', path: '/about/team' },
+    { name: 'Vision & Mission', path: '/about/mission-vision' },
+    { name: 'Our Philosophy', path: '/about/philosophy' },
+    { name: 'Our Values', path: '/about/values' },
+    { name: 'Your Journey', path: '/about/journey' },
+    { name: 'Our Culture', path: '/about/our-culture' },
+  ];
 
   useEffect(() => {
     setIsOpen(false);
+    setAboutDropdownOpen(false);
   }, [location.pathname]);
 
   // Prevent body scroll when menu is open
@@ -48,15 +60,68 @@ const Navbar = () => {
             <div className="hidden lg:flex items-center space-x-1">
               {navigationLinks.map((link) => {
                 const isActive = location.pathname === link.path;
+
+                // Special handling for About Us with dropdown
+                if (link.name === 'About Us') {
+                  return (
+                    <div
+                      key={link.name}
+                      className="relative"
+                      onMouseEnter={() => setAboutDropdownOpen(true)}
+                      onMouseLeave={() => setAboutDropdownOpen(false)}
+                    >
+                      <Link
+                        to={link.path}
+                        className={`relative px-5 py-2.5 text-[15px] font-semibold transition-all duration-300 rounded-lg flex items-center gap-1 ${isActive
+                          ? "text-[#7A1616] bg-[#C9A635]/15"
+                          : "text-gray-700 hover:text-[#7A1616] hover:bg-[#C9A635]/10"
+                          }`}
+                      >
+                        {link.name}
+                        <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${aboutDropdownOpen ? 'rotate-180' : ''}`} />
+                        {isActive && (
+                          <motion.div
+                            layoutId="activeTab"
+                            className="absolute bottom-0 left-5 right-5 h-1 rounded-full bg-[#C9A635]"
+                            transition={{ duration: 0.25 }}
+                          />
+                        )}
+                      </Link>
+
+                      {/* Dropdown Menu */}
+                      <AnimatePresence>
+                        {aboutDropdownOpen && (
+                          <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            transition={{ duration: 0.2 }}
+                            className="absolute top-full left-0 mt-2 w-56 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden z-50"
+                          >
+                            {aboutSubMenu.map((item) => (
+                              <Link
+                                key={item.name}
+                                to={item.path}
+                                className="block px-5 py-3 text-sm font-semibold text-gray-700 hover:bg-[#C9A635]/10 hover:text-[#7A1616] transition-all duration-200 border-b border-gray-50 last:border-b-0"
+                              >
+                                {item.name}
+                              </Link>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                }
+
                 return (
                   <Link
                     key={link.name}
                     to={link.path}
-                    className={`relative px-5 py-2.5 text-[15px] font-semibold transition-all duration-300 rounded-lg ${
-                      isActive
-                        ? "text-[#7A1616] bg-[#C9A635]/15"
-                        : "text-gray-700 hover:text-[#7A1616] hover:bg-[#C9A635]/10"
-                    }`}
+                    className={`relative px-5 py-2.5 text-[15px] font-semibold transition-all duration-300 rounded-lg ${isActive
+                      ? "text-[#7A1616] bg-[#C9A635]/15"
+                      : "text-gray-700 hover:text-[#7A1616] hover:bg-[#C9A635]/10"
+                      }`}
                   >
                     {link.name}
                     {isActive && (
@@ -120,7 +185,7 @@ const Navbar = () => {
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
-              transition={{ 
+              transition={{
                 type: "spring",
                 damping: 25,
                 stiffness: 200
@@ -156,11 +221,10 @@ const Navbar = () => {
                       <Link
                         to={link.path}
                         onClick={() => setIsOpen(false)}
-                        className={`block px-5 py-3.5 rounded-xl text-[15px] font-semibold transition-all duration-300 ${
-                          isActive
-                            ? "text-white bg-gradient-to-r from-[#7A1616] to-[#8B1A1A] shadow-lg"
-                            : "text-[#7A1616] hover:bg-[#C9A635]/15 hover:translate-x-1"
-                        }`}
+                        className={`block px-5 py-3.5 rounded-xl text-[15px] font-semibold transition-all duration-300 ${isActive
+                          ? "text-white bg-gradient-to-r from-[#7A1616] to-[#8B1A1A] shadow-lg"
+                          : "text-[#7A1616] hover:bg-[#C9A635]/15 hover:translate-x-1"
+                          }`}
                       >
                         {link.name}
                       </Link>

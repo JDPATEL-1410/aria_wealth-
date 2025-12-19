@@ -1,56 +1,58 @@
 import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Legend } from 'recharts';
-import { Clock, TrendingUp, DollarSign, AlertTriangle, Info, Calendar, TrendingDown } from 'lucide-react';
+import { Clock, TrendingUp, AlertTriangle, Info, Calendar, TrendingDown } from 'lucide-react';
+import CurrencySelector, { formatCurrency, getCurrencySymbol } from '../CurrencySelector';
 
 const SIPDelayCalculator = () => {
   const [monthlySIP, setMonthlySIP] = useState(10000);
   const [investmentPeriod, setInvestmentPeriod] = useState(20);
   const [expectedReturn, setExpectedReturn] = useState(12);
   const [delayYears, setDelayYears] = useState(5);
+  const [selectedCurrency, setSelectedCurrency] = useState('INR');
 
   const results = useMemo(() => {
     const monthlyRate = expectedReturn / 100 / 12;
-    
+
     // Scenario 1: Start today
     const monthsNow = investmentPeriod * 12;
     const futureValueNow = monthsNow > 0 && monthlyRate > 0
       ? monthlySIP * ((Math.pow(1 + monthlyRate, monthsNow) - 1) / monthlyRate) * (1 + monthlyRate)
       : monthlySIP * monthsNow;
-    
+
     const totalInvestedNow = monthlySIP * monthsNow;
     const returnsNow = futureValueNow - totalInvestedNow;
-    
+
     // Scenario 2: Start after delay
     const monthsDelayed = (investmentPeriod - delayYears) * 12;
     const futureValueDelayed = monthsDelayed > 0 && monthlyRate > 0
       ? monthlySIP * ((Math.pow(1 + monthlyRate, monthsDelayed) - 1) / monthlyRate) * (1 + monthlyRate)
       : monthlySIP * monthsDelayed;
-    
+
     const totalInvestedDelayed = monthlySIP * monthsDelayed;
     const returnsDelayed = futureValueDelayed - totalInvestedDelayed;
-    
+
     // Loss calculations
     const opportunityCost = futureValueNow - futureValueDelayed;
     const lostReturns = returnsNow - returnsDelayed;
     const lostInvestment = totalInvestedNow - totalInvestedDelayed;
-    
+
     // Required higher SIP to match original target
     const requiredSIPDelayed = monthsDelayed > 0 && monthlyRate > 0
       ? (futureValueNow * monthlyRate) / ((Math.pow(1 + monthlyRate, monthsDelayed) - 1) * (1 + monthlyRate))
       : futureValueNow / monthsDelayed;
-    
+
     const additionalSIPRequired = requiredSIPDelayed - monthlySIP;
-    
+
     // Year-wise comparison
     const comparisonData = [];
     for (let year = 1; year <= investmentPeriod; year++) {
       const monthsElapsed = year * 12;
-      
+
       const valueNow = monthsElapsed > 0 && monthlyRate > 0
         ? monthlySIP * ((Math.pow(1 + monthlyRate, monthsElapsed) - 1) / monthlyRate) * (1 + monthlyRate)
         : monthlySIP * monthsElapsed;
-      
+
       let valueDelayed = 0;
       if (year > delayYears) {
         const monthsInvested = (year - delayYears) * 12;
@@ -58,7 +60,7 @@ const SIPDelayCalculator = () => {
           ? monthlySIP * ((Math.pow(1 + monthlyRate, monthsInvested) - 1) / monthlyRate) * (1 + monthlyRate)
           : monthlySIP * monthsInvested;
       }
-      
+
       comparisonData.push({
         year: year,
         startNow: Math.round(valueNow),
@@ -66,7 +68,7 @@ const SIPDelayCalculator = () => {
         gap: Math.round(valueNow - valueDelayed)
       });
     }
-    
+
     return {
       futureValueNow: Math.round(futureValueNow),
       totalInvestedNow: Math.round(totalInvestedNow),
@@ -84,13 +86,7 @@ const SIPDelayCalculator = () => {
     };
   }, [monthlySIP, investmentPeriod, expectedReturn, delayYears]);
 
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
-      maximumFractionDigits: 0
-    }).format(amount);
-  };
+
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -110,6 +106,10 @@ const SIPDelayCalculator = () => {
               </h2>
             </div>
             <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
+              <CurrencySelector
+                selectedCurrency={selectedCurrency}
+                onCurrencyChange={setSelectedCurrency}
+              />
               {/* Monthly SIP Amount */}
               <div>
                 <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
@@ -253,15 +253,15 @@ const SIPDelayCalculator = () => {
                   <p className="text-xs text-green-600">Best Strategy</p>
                 </div>
               </div>
-              <p className="text-2xl sm:text-3xl font-extrabold text-green-600 mb-2">{formatCurrency(results.futureValueNow)}</p>
+              <p className="text-2xl sm:text-3xl font-extrabold text-green-600 mb-2">{formatCurrency(results.futureValueNow, selectedCurrency)}</p>
               <div className="space-y-1 text-xs sm:text-sm">
                 <p className="flex justify-between text-gray-700">
                   <span>Invested:</span>
-                  <span className="font-semibold">{formatCurrency(results.totalInvestedNow)}</span>
+                  <span className="font-semibold">{formatCurrency(results.totalInvestedNow, selectedCurrency)}</span>
                 </p>
                 <p className="flex justify-between text-green-700">
                   <span>Returns:</span>
-                  <span className="font-bold">{formatCurrency(results.returnsNow)}</span>
+                  <span className="font-bold">{formatCurrency(results.returnsNow, selectedCurrency)}</span>
                 </p>
               </div>
             </div>
@@ -276,15 +276,15 @@ const SIPDelayCalculator = () => {
                   <p className="text-xs text-red-600">Lost Opportunity</p>
                 </div>
               </div>
-              <p className="text-2xl sm:text-3xl font-extrabold text-red-600 mb-2">{formatCurrency(results.futureValueDelayed)}</p>
+              <p className="text-2xl sm:text-3xl font-extrabold text-red-600 mb-2">{formatCurrency(results.futureValueDelayed, selectedCurrency)}</p>
               <div className="space-y-1 text-xs sm:text-sm">
                 <p className="flex justify-between text-gray-700">
                   <span>Invested:</span>
-                  <span className="font-semibold">{formatCurrency(results.totalInvestedDelayed)}</span>
+                  <span className="font-semibold">{formatCurrency(results.totalInvestedDelayed, selectedCurrency)}</span>
                 </p>
                 <p className="flex justify-between text-red-700">
                   <span>Returns:</span>
-                  <span className="font-bold">{formatCurrency(results.returnsDelayed)}</span>
+                  <span className="font-bold">{formatCurrency(results.returnsDelayed, selectedCurrency)}</span>
                 </p>
               </div>
             </div>
@@ -303,19 +303,19 @@ const SIPDelayCalculator = () => {
                 </div>
               </div>
               <div className="text-left sm:text-right w-full sm:w-auto">
-                <p className="text-3xl sm:text-4xl font-black">{formatCurrency(results.opportunityCost)}</p>
+                <p className="text-3xl sm:text-4xl font-black">{formatCurrency(results.opportunityCost, selectedCurrency)}</p>
                 <p className="text-white/90 text-base sm:text-lg mt-1">{results.lossPercentage}% loss</p>
               </div>
             </div>
-            
+
             <div className="grid grid-cols-3 gap-3 sm:gap-4 pt-4 sm:pt-6 border-t border-white/20">
               <div className="text-center">
                 <p className="text-white/70 text-xs mb-1">Lost Returns</p>
-                <p className="text-base sm:text-xl font-bold">{formatCurrency(results.lostReturns)}</p>
+                <p className="text-base sm:text-xl font-bold">{formatCurrency(results.lostReturns, selectedCurrency)}</p>
               </div>
               <div className="text-center">
                 <p className="text-white/70 text-xs mb-1">Lost Amount</p>
-                <p className="text-base sm:text-xl font-bold">{formatCurrency(results.lostInvestment)}</p>
+                <p className="text-base sm:text-xl font-bold">{formatCurrency(results.lostInvestment, selectedCurrency)}</p>
               </div>
               <div className="text-center">
                 <p className="text-white/70 text-xs mb-1">Delay</p>
@@ -336,32 +336,32 @@ const SIPDelayCalculator = () => {
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={results.comparisonData}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                    <XAxis 
-                      dataKey="year" 
+                    <XAxis
+                      dataKey="year"
                       stroke="#666"
                       fontSize={12}
                     />
-                    <YAxis 
+                    <YAxis
                       stroke="#666"
                       fontSize={12}
-                      tickFormatter={(value) => `₹${(value / 100000).toFixed(0)}L`}
+                      tickFormatter={(value) => formatCurrency(value, selectedCurrency)}
                     />
-                    <Tooltip 
-                      formatter={(value) => formatCurrency(value)}
+                    <Tooltip
+                      formatter={(value) => formatCurrency(value, selectedCurrency)}
                       labelFormatter={(label) => `Year ${label}`}
                     />
                     <Legend />
-                    <Line 
-                      type="monotone" 
-                      dataKey="startNow" 
-                      stroke="#10b981" 
+                    <Line
+                      type="monotone"
+                      dataKey="startNow"
+                      stroke="#10b981"
                       strokeWidth={3}
                       name="Start Today"
                     />
-                    <Line 
-                      type="monotone" 
-                      dataKey="startDelayed" 
-                      stroke="#ef4444" 
+                    <Line
+                      type="monotone"
+                      dataKey="startDelayed"
+                      stroke="#ef4444"
                       strokeWidth={3}
                       strokeDasharray="5 5"
                       name={`${delayYears}Y Delay`}
@@ -381,10 +381,10 @@ const SIPDelayCalculator = () => {
               <div className="p-4 sm:p-6">
                 <div className="text-center p-4 sm:p-5 bg-gradient-to-br from-orange-50 to-red-50 rounded-xl border-2 border-orange-200">
                   <p className="text-xs sm:text-sm text-gray-700 mb-2">Required SIP After Delay</p>
-                  <p className="text-2xl sm:text-3xl font-extrabold text-orange-600">{formatCurrency(results.requiredSIPDelayed)}</p>
+                  <p className="text-2xl sm:text-3xl font-extrabold text-orange-600">{formatCurrency(results.requiredSIPDelayed, selectedCurrency)}</p>
                   <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-orange-200">
                     <p className="text-xs sm:text-sm text-gray-700 mb-1">Extra Needed</p>
-                    <p className="text-xl sm:text-2xl font-bold text-red-600">{formatCurrency(results.additionalSIPRequired)}</p>
+                    <p className="text-xl sm:text-2xl font-bold text-red-600">{formatCurrency(results.additionalSIPRequired, selectedCurrency)}</p>
                   </div>
                 </div>
               </div>
@@ -401,7 +401,7 @@ const SIPDelayCalculator = () => {
                     Start Now
                   </h4>
                   <p className="text-green-700 text-xs sm:text-sm">
-                    Just <strong>{formatCurrency(monthlySIP)}</strong> monthly!
+                    Just <strong>{formatCurrency(monthlySIP, selectedCurrency)}</strong> monthly!
                   </p>
                 </div>
 

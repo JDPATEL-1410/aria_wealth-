@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Phone, Mail, Calendar } from 'lucide-react';
 
-const CTASection = ({ 
+const CTASection = ({
   title = "Ready to Start Your Wealth Journey?",
   subtitle = "Get personalized financial advice from our AMFI certified experts",
   primaryCta = { text: "Schedule Free Consultation", link: "/contact" },
@@ -33,8 +33,8 @@ const CTASection = ({
     }
   };
 
-  const bgClass = bgVariant === "primary" 
-    ? "bg-gradient-to-br from-[#7A1616] via-[#8B1A1A] to-[#7A1616]" 
+  const bgClass = bgVariant === "primary"
+    ? "bg-gradient-to-br from-[#7A1616] via-[#8B1A1A] to-[#7A1616]"
     : "bg-gradient-to-br from-gray-900 via-[#7A1616] to-gray-900";
 
   return (
@@ -56,14 +56,14 @@ const CTASection = ({
         >
           {/* Main Content */}
           <div className="max-w-4xl mx-auto">
-            <motion.h2 
+            <motion.h2
               className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 sm:mb-6 px-4"
               variants={itemVariants}
             >
               {title}
             </motion.h2>
-            
-            <motion.p 
+
+            <motion.p
               className="text-base sm:text-lg md:text-xl text-gray-200 mb-6 sm:mb-8 max-w-2xl mx-auto px-4"
               variants={itemVariants}
             >
@@ -71,7 +71,7 @@ const CTASection = ({
             </motion.p>
 
             {/* CTA Buttons */}
-            <motion.div 
+            <motion.div
               className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-8 sm:mb-12 px-4"
               variants={itemVariants}
             >
@@ -83,7 +83,7 @@ const CTASection = ({
                 <span className="truncate">{primaryCta.text}</span>
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300 flex-shrink-0" />
               </Link>
-              
+
               <Link
                 to={secondaryCta.link}
                 className="group inline-flex items-center justify-center space-x-2 border-2 border-white/20 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg hover:bg-white/10 hover:border-white/40 transition-all duration-300 transform hover:scale-105 backdrop-blur-sm w-full sm:w-auto"
@@ -94,7 +94,7 @@ const CTASection = ({
             </motion.div>
 
             {/* Contact Options */}
-            <motion.div 
+            <motion.div
               className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 max-w-2xl mx-auto px-4"
               variants={itemVariants}
             >
@@ -105,7 +105,7 @@ const CTASection = ({
                   </div>
                   <div className="text-left min-w-0">
                     <h4 className="font-semibold text-white mb-1 text-sm sm:text-base">Call Us Now</h4>
-                    <a 
+                    <a
                       href="tel:+919876543210"
                       className="text-[#C9A635] hover:text-white transition-colors duration-200 text-sm sm:text-base truncate block"
                     >
@@ -122,7 +122,7 @@ const CTASection = ({
                   </div>
                   <div className="text-left min-w-0">
                     <h4 className="font-semibold text-white mb-1 text-sm sm:text-base">Email Us</h4>
-                    <a 
+                    <a
                       href="mailto:info@ariawealth.com"
                       className="text-[#C9A635] hover:text-white transition-colors duration-200 text-sm sm:text-base truncate block"
                     >
@@ -134,7 +134,7 @@ const CTASection = ({
             </motion.div>
 
             {/* Trust Indicators */}
-            <motion.div 
+            <motion.div
               className="mt-8 sm:mt-12 grid grid-cols-2 sm:flex sm:flex-row items-center justify-center gap-3 sm:gap-8 text-gray-300 px-4"
               variants={itemVariants}
             >
@@ -144,7 +144,7 @@ const CTASection = ({
               </div>
               <div className="flex items-center space-x-2">
                 <div className="w-2 h-2 bg-[#C9A635] rounded-full flex-shrink-0"></div>
-                <span className="text-xs sm:text-sm">2000+ Clients</span>
+                <span className="text-xs sm:text-sm">200+ Clients</span>
               </div>
               <div className="flex items-center space-x-2">
                 <div className="w-2 h-2 bg-[#C9A635] rounded-full flex-shrink-0"></div>

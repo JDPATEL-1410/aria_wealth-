@@ -326,62 +326,8 @@ const FinancialWisdom = () => {
         </motion.div>
       </section>
 
-      {/* Live Status Bar */}
-      <div className="bg-[#7A1616] text-white py-3 shadow-md relative z-20">
-        <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-[#E7C76A]" />
-            <span className="font-semibold text-sm md:text-base">
-              {liveArticles.length > 0
-                ? `${liveArticles.length} Live Articles from Economic Times`
-                : "Connecting to Financial News Feed..."}
-            </span>
-          </div>
 
-          <button
-            onClick={handleManualRefresh}
-            disabled={refreshing}
-            className="flex items-center gap-2 bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-lg text-sm transition-all"
-          >
-            <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
-            {refreshing ? 'Refreshing...' : 'Refresh Feed'}
-          </button>
-        </div>
-      </div>
 
-      {/* Filters */}
-      <section id="articles" className="sticky top-16 z-30 bg-white shadow-sm border-b py-4">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between gap-4 items-center">
-
-          {/* Category Pills */}
-          <div className="flex flex-wrap gap-2 justify-center">
-            {categories.map(cat => (
-              <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${selectedCategory === cat
-                  ? 'bg-[#7A1616] text-white shadow-md transform scale-105'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-
-          {/* Search */}
-          <div className="relative w-full md:w-64">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search articles..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border rounded-full text-sm focus:outline-none focus:border-[#7A1616]"
-            />
-          </div>
-        </div>
-      </section>
 
       {/* Articles Grid */}
       <section ref={articlesRef} className="py-12 sm:py-16 md:py-20 bg-gradient-to-br from-white via-gray-50 to-white max-w-7xl mx-auto px-4">

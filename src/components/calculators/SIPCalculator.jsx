@@ -1,13 +1,15 @@
 import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import { Calculator, TrendingUp, DollarSign, Target, Info } from 'lucide-react';
+import { Calculator, TrendingUp, IndianRupee, Target, Info } from 'lucide-react';
+import CurrencySelector, { formatCurrency, getCurrencySymbol } from '../CurrencySelector';
 
 const SIPCalculator = () => {
   const [monthlyInvestment, setMonthlyInvestment] = useState(5000);
   const [expectedReturn, setExpectedReturn] = useState(12);
   const [timePeriod, setTimePeriod] = useState(10);
   const [stepUp, setStepUp] = useState(0);
+  const [selectedCurrency, setSelectedCurrency] = useState('INR');
 
   // Calculations
   const results = useMemo(() => {
@@ -17,16 +19,16 @@ const SIPCalculator = () => {
     let futureValue = 0;
     let currentMonthlyAmount = monthlyInvestment;
     const yearlyData = [];
-    
+
     for (let month = 1; month <= totalMonths; month++) {
       // Apply step-up annually
       if (month > 1 && (month - 1) % 12 === 0 && stepUp > 0) {
         currentMonthlyAmount = currentMonthlyAmount * (1 + stepUp / 100);
       }
-      
+
       totalInvested += currentMonthlyAmount;
       futureValue = (futureValue + currentMonthlyAmount) * (1 + monthlyRate);
-      
+
       // Store yearly data for chart
       if (month % 12 === 0) {
         yearlyData.push({
@@ -37,9 +39,9 @@ const SIPCalculator = () => {
         });
       }
     }
-    
+
     const totalReturns = futureValue - totalInvested;
-    
+
     return {
       totalInvested: Math.round(totalInvested),
       futureValue: Math.round(futureValue),
@@ -53,13 +55,7 @@ const SIPCalculator = () => {
     { name: 'Returns', value: results.totalReturns, color: '#C9A635' }
   ];
 
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
-      maximumFractionDigits: 0
-    }).format(amount);
-  };
+
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -82,7 +78,7 @@ const SIPCalculator = () => {
               {/* Monthly Investment */}
               <div>
                 <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
-                  Monthly Investment (₹)
+                  Monthly Investment ({getCurrencySymbol(selectedCurrency)})
                 </label>
                 <input
                   type="number"
@@ -179,6 +175,12 @@ const SIPCalculator = () => {
                   Optional: 0% - 20%
                 </p>
               </div>
+
+              {/* Currency Selector */}
+              <CurrencySelector
+                selectedCurrency={selectedCurrency}
+                onCurrencyChange={setSelectedCurrency}
+              />
             </div>
           </div>
 
@@ -207,10 +209,10 @@ const SIPCalculator = () => {
           <div className="grid md:grid-cols-3 gap-4 sm:gap-6">
             <div className="bg-white rounded-xl shadow-xl border-2 border-gray-100 p-4 sm:p-6 text-center">
               <div className="bg-blue-100 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                <DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
+                <IndianRupee className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
               </div>
               <h3 className="text-xs sm:text-sm font-medium text-gray-600 mb-2">Total Invested</h3>
-              <p className="text-lg sm:text-2xl font-bold text-gray-900">{formatCurrency(results.totalInvested)}</p>
+              <p className="text-lg sm:text-2xl font-bold text-gray-900">{formatCurrency(results.totalInvested, selectedCurrency)}</p>
             </div>
 
             <div className="bg-white rounded-xl shadow-xl border-2 border-gray-100 p-4 sm:p-6 text-center">
@@ -218,7 +220,7 @@ const SIPCalculator = () => {
                 <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
               </div>
               <h3 className="text-xs sm:text-sm font-medium text-gray-600 mb-2">Returns</h3>
-              <p className="text-lg sm:text-2xl font-bold text-green-600">{formatCurrency(results.totalReturns)}</p>
+              <p className="text-lg sm:text-2xl font-bold text-green-600">{formatCurrency(results.totalReturns, selectedCurrency)}</p>
             </div>
 
             <div className="bg-gradient-to-br from-[#7A1616] to-[#8B1A1A] rounded-xl shadow-xl p-4 sm:p-6 text-center text-white">
@@ -226,7 +228,7 @@ const SIPCalculator = () => {
                 <Target className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </div>
               <h3 className="text-xs sm:text-sm font-medium text-white/90 mb-2">Future Value</h3>
-              <p className="text-lg sm:text-2xl font-bold text-white">{formatCurrency(results.futureValue)}</p>
+              <p className="text-lg sm:text-2xl font-bold text-white">{formatCurrency(results.futureValue, selectedCurrency)}</p>
             </div>
           </div>
 
@@ -244,31 +246,31 @@ const SIPCalculator = () => {
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={results.yearlyData}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                      <XAxis 
-                        dataKey="year" 
+                      <XAxis
+                        dataKey="year"
                         stroke="#666"
                         fontSize={12}
                       />
-                      <YAxis 
+                      <YAxis
                         stroke="#666"
                         fontSize={12}
-                        tickFormatter={(value) => `₹${(value / 100000).toFixed(0)}L`}
+                        tickFormatter={(value) => `${getCurrencySymbol(selectedCurrency)}${(value / 100000).toFixed(0)}L`}
                       />
-                      <Tooltip 
-                        formatter={(value, name) => [formatCurrency(value), name]}
+                      <Tooltip
+                        formatter={(value, name) => [formatCurrency(value, selectedCurrency), name]}
                         labelFormatter={(label) => `Year ${label}`}
                       />
-                      <Line 
-                        type="monotone" 
-                        dataKey="invested" 
-                        stroke="#7A1616" 
+                      <Line
+                        type="monotone"
+                        dataKey="invested"
+                        stroke="#7A1616"
                         strokeWidth={2}
                         name="Invested"
                       />
-                      <Line 
-                        type="monotone" 
-                        dataKey="value" 
-                        stroke="#C9A635" 
+                      <Line
+                        type="monotone"
+                        dataKey="value"
+                        stroke="#C9A635"
                         strokeWidth={2}
                         name="Value"
                       />
@@ -302,25 +304,25 @@ const SIPCalculator = () => {
                           <Cell key={`cell-${index}`} fill={entry.color} />
                         ))}
                       </Pie>
-                      <Tooltip formatter={(value) => formatCurrency(value)} />
+                      <Tooltip formatter={(value) => formatCurrency(value, selectedCurrency)} />
                     </PieChart>
                   </ResponsiveContainer>
                 </div>
-                
+
                 <div className="mt-4 space-y-2">
                   <div className="flex items-center justify-between text-sm">
                     <div className="flex items-center space-x-2">
                       <div className="w-3 h-3 bg-[#7A1616] rounded-full"></div>
                       <span className="text-gray-600">Invested</span>
                     </div>
-                    <span className="font-semibold text-gray-900">{formatCurrency(results.totalInvested)}</span>
+                    <span className="font-semibold text-gray-900">{formatCurrency(results.totalInvested, selectedCurrency)}</span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
                     <div className="flex items-center space-x-2">
                       <div className="w-3 h-3 bg-[#C9A635] rounded-full"></div>
                       <span className="text-gray-600">Returns</span>
                     </div>
-                    <span className="font-semibold text-green-600">{formatCurrency(results.totalReturns)}</span>
+                    <span className="font-semibold text-green-600">{formatCurrency(results.totalReturns, selectedCurrency)}</span>
                   </div>
                 </div>
               </div>
@@ -352,13 +354,13 @@ const SIPCalculator = () => {
                           Y{data.year}
                         </td>
                         <td className="px-3 sm:px-6 py-2 sm:py-4 text-right text-gray-900">
-                          {formatCurrency(data.invested)}
+                          {formatCurrency(data.invested, selectedCurrency)}
                         </td>
                         <td className="px-3 sm:px-6 py-2 sm:py-4 text-right text-green-600">
-                          {formatCurrency(data.returns)}
+                          {formatCurrency(data.returns, selectedCurrency)}
                         </td>
                         <td className="px-3 sm:px-6 py-2 sm:py-4 text-right font-semibold text-gray-900">
-                          {formatCurrency(data.value)}
+                          {formatCurrency(data.value, selectedCurrency)}
                         </td>
                       </tr>
                     ))}

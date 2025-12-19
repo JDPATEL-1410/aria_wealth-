@@ -17,7 +17,7 @@ const Contact = () => {
   const heroRef = useRef(null);
   const formRef = useRef(null);
   const contactInfoRef = useRef(null);
-  
+
   const heroInView = useInView(heroRef, { once: true });
   const formInView = useInView(formRef, { once: true, margin: "-100px" });
   const contactInfoInView = useInView(contactInfoRef, { once: true, margin: "-100px" });
@@ -33,20 +33,20 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     try {
-      const mailtoLink = `mailto:info@ariawealth.com?subject=${encodeURIComponent(formData.subject || 'Contact Form Submission')}&body=${encodeURIComponent(
+      const mailtoLink = `mailto:connect@ariawealth.com?subject=${encodeURIComponent(formData.subject || 'Contact Form Submission')}&body=${encodeURIComponent(
         `Name: ${formData.name}\n` +
         `Email: ${formData.email}\n` +
         `Phone: ${formData.phone}\n\n` +
         `Message:\n${formData.message}`
       )}`;
-      
+
       window.location.href = mailtoLink;
-      
+
       setIsSubmitting(false);
       setIsSubmitted(true);
-      
+
       setFormData({
         name: '',
         email: '',
@@ -54,14 +54,14 @@ const Contact = () => {
         subject: '',
         message: ''
       });
-      
+
       setTimeout(() => {
         setIsSubmitted(false);
       }, 5000);
     } catch (error) {
       console.error('Error submitting form:', error);
       setIsSubmitting(false);
-      alert('There was an error submitting your message. Please try again or email us directly at info@ariawealth.com');
+      alert('There was an error submitting your message. Please try again or email us directly at connect@ariawealth.com');
     }
   };
 
@@ -99,8 +99,8 @@ const Contact = () => {
     {
       icon: Mail,
       title: 'Email Us',
-      info: 'info@ariawealth.com',
-      action: 'mailto:info@ariawealth.com',
+      info: 'connect@ariawealth.com',
+      action: 'mailto:connect@ariawealth.com',
       color: 'from-[#C9A635] to-[#E7C76A]'
     },
     {
@@ -113,7 +113,7 @@ const Contact = () => {
     {
       icon: Clock,
       title: 'Office Hours',
-      info: 'Mon-Fri: 9 AM - 6 PM',
+      info: 'Mon-Fri: 10 AM - 6 PM',
       action: null,
       color: 'from-blue-500 to-blue-600'
     }
@@ -145,7 +145,7 @@ const Contact = () => {
             />
           </picture>
           <div className="absolute inset-0 bg-gradient-to-br from-black/75 via-black/65 to-[#7A1616]/50" />
-          
+
           <div className="absolute inset-0 opacity-10 hidden md:block">
             <div className="absolute inset-0" style={{
               backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
@@ -273,7 +273,7 @@ const Contact = () => {
                   whileHover={{ y: -10 }}
                 >
                   {method.action ? (
-                    <a 
+                    <a
                       href={method.action}
                       target={method.action.startsWith('http') ? '_blank' : '_self'}
                       rel={method.action.startsWith('http') ? 'noopener noreferrer' : ''}
@@ -281,7 +281,7 @@ const Contact = () => {
                     >
                       <div className="bg-white rounded-2xl sm:rounded-3xl shadow-xl border-2 border-gray-100 h-full p-5 sm:p-6 md:p-8 text-center group-hover:shadow-2xl group-hover:border-[#C9A635]/40 transition-all duration-500 relative overflow-hidden">
                         <div className="absolute inset-0 bg-gradient-to-br from-[#7A1616]/5 to-[#C9A635]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                        
+
                         <div className="relative z-10">
                           <div className={`inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-gradient-to-r ${method.color} rounded-xl sm:rounded-2xl mb-4 sm:mb-6 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 shadow-2xl`}>
                             <IconComponent className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-10 text-white" />
@@ -329,7 +329,7 @@ const Contact = () => {
                   </span>
                 </h2>
                 <p className="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8">Fill out the form and we'll get back to you within 24 hours.</p>
-                
+
                 {isSubmitted && (
                   <motion.div
                     className="mb-6 p-3 sm:p-4 bg-green-50 border-2 border-green-200 rounded-xl flex items-start space-x-3"
@@ -374,7 +374,7 @@ const Contact = () => {
                       />
                     </div>
                   </div>
-                  
+
                   <div>
                     <label className="block text-xs sm:text-sm font-bold text-gray-700 mb-2">
                       Email Address *
@@ -389,7 +389,7 @@ const Contact = () => {
                       placeholder="your.email@example.com"
                     />
                   </div>
-                  
+
                   <div>
                     <label className="block text-xs sm:text-sm font-bold text-gray-700 mb-2">
                       Subject
@@ -403,7 +403,7 @@ const Contact = () => {
                       placeholder="What can we help you with?"
                     />
                   </div>
-                  
+
                   <div>
                     <label className="block text-xs sm:text-sm font-bold text-gray-700 mb-2">
                       Message *
@@ -418,7 +418,7 @@ const Contact = () => {
                       placeholder="Tell us about your financial goals..."
                     />
                   </div>
-                  
+
                   <button
                     type="submit"
                     disabled={isSubmitting}
@@ -432,16 +432,16 @@ const Contact = () => {
                     ) : (
                       <div className="flex items-center justify-center space-x-2">
                         <Send className="w-4 h-4 sm:w-5 sm:h-5" />
-                        <span className="hidden sm:inline">Send Message to info@ariawealth.com</span>
+                        <span className="hidden sm:inline">Send Message to connect@ariawealth.com</span>
                         <span className="sm:hidden">Send Message</span>
                       </div>
                     )}
                   </button>
-                  
+
                   <p className="text-gray-500 text-xs sm:text-sm text-center">
                     Or email us directly at{' '}
-                    <a href="mailto:info@ariawealth.com" className="text-[#7A1616] font-semibold hover:underline break-all">
-                      info@ariawealth.com
+                    <a href="mailto:connect@ariawealth.com" className="text-[#7A1616] font-semibold hover:underline break-all">
+                      connect@ariawealth.com
                     </a>
                   </p>
                 </form>
@@ -463,7 +463,7 @@ const Contact = () => {
                     Office
                   </span>
                 </h3>
-                
+
                 <div className="space-y-5 sm:space-y-6">
                   <div className="flex items-start space-x-3 sm:space-x-4">
                     <div className="bg-gradient-to-r from-[#7A1616] to-[#A12424] p-2.5 sm:p-3 rounded-lg sm:rounded-xl shadow-lg flex-shrink-0">
@@ -476,7 +476,7 @@ const Contact = () => {
                       </p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-start space-x-3 sm:space-x-4">
                     <div className="bg-gradient-to-r from-[#C9A635] to-[#E7C76A] p-2.5 sm:p-3 rounded-lg sm:rounded-xl shadow-lg flex-shrink-0">
                       <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
@@ -488,7 +488,7 @@ const Contact = () => {
                       </p>
                     </div>
                   </div>
-                  
+
                   <div className="bg-gradient-to-r from-[#7A1616]/10 to-[#C9A635]/10 p-5 sm:p-6 rounded-xl sm:rounded-2xl border-2 border-[#C9A635]/30">
                     <h4 className="font-bold text-[#7A1616] mb-2 sm:mb-3 text-base sm:text-lg">Quick Connect</h4>
                     <p className="text-gray-700 text-xs sm:text-sm mb-3 sm:mb-4 leading-relaxed">
