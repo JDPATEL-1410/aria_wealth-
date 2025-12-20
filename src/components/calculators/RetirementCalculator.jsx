@@ -87,9 +87,9 @@ const RetirementCalculator = () => {
         >
           <div className="bg-white rounded-2xl shadow-xl border-2 border-gray-100 overflow-hidden">
             <div className="bg-gradient-to-r from-[#7A1616] to-[#8B1A1A] text-white p-4 sm:p-6">
-              <h2 className="flex items-center space-x-2 text-lg sm:text-xl font-bold">
-                <Calculator className="w-5 h-5 sm:w-6 sm:h-6" />
-                <span>Retirement Planning</span>
+              <h2 className="flex items-center space-x-2 text-lg sm:text-xl font-bold text-white">
+                <Calculator className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                <span text-white>Retirement Planning</span>
               </h2>
             </div>
             <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">

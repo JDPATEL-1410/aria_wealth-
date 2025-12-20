@@ -126,8 +126,8 @@ const SIPStepUpCalculator = () => {
         >
           <div className="bg-white rounded-2xl shadow-xl border-2 border-gray-100 overflow-hidden">
             <div className="bg-gradient-to-r from-[#7A1616] to-[#A12424] text-white p-4 sm:p-6">
-              <h2 className="flex items-center space-x-2 text-lg sm:text-xl font-bold">
-                <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6" />
+              <h2 className="flex items-center space-x-2 text-lg sm:text-xl font-bold text-white">
+                <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                 <span>SIP Step Up</span>
               </h2>
             </div>
@@ -319,7 +319,7 @@ const SIPStepUpCalculator = () => {
                   <TrendingUp className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-xl sm:text-2xl font-extrabold">Step-Up Benefits</h3>
+                  <h3 className="text-xl sm:text-2xl font-extrabold text-white">Step-Up Benefits</h3>
                   <p className="text-white/80 text-xs sm:text-sm">Extra wealth</p>
                 </div>
               </div>

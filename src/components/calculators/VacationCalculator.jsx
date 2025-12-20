@@ -1,7 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area, PieChart, Pie, Cell } from 'recharts';
-import { Plane, TrendingUp, DollarSign, Target, Info, Calendar, MapPin, Hotel } from 'lucide-react';
+import { Plane, TrendingUp, Target, Info, Calendar, MapPin, Hotel } from 'lucide-react';
+import CurrencySelector, { formatCurrency, getCurrencySymbol } from '../CurrencySelector';
 
 const VacationCalculator = () => {
   const [destination, setDestination] = useState('international');
@@ -16,45 +17,46 @@ const VacationCalculator = () => {
   const [currentSavings, setCurrentSavings] = useState(50000);
   const [expectedReturn, setExpectedReturn] = useState(12);
   const [inflationRate, setInflationRate] = useState(5);
+  const [selectedCurrency, setSelectedCurrency] = useState('INR');
 
   const results = useMemo(() => {
     const totalCurrentCostPerPerson = flights + accommodation + activities + food + shopping + otherExpenses;
     const totalCurrentCost = totalCurrentCostPerPerson * numberOfTravelers;
-    
+
     const futureCostPerPerson = totalCurrentCostPerPerson * Math.pow(1 + inflationRate / 100, travelDate);
     const futureCost = futureCostPerPerson * numberOfTravelers;
-    
+
     const futureFlights = flights * numberOfTravelers * Math.pow(1 + inflationRate / 100, travelDate);
     const futureAccommodation = accommodation * numberOfTravelers * Math.pow(1 + inflationRate / 100, travelDate);
     const futureActivities = activities * numberOfTravelers * Math.pow(1 + inflationRate / 100, travelDate);
     const futureFood = food * numberOfTravelers * Math.pow(1 + inflationRate / 100, travelDate);
     const futureShopping = shopping * numberOfTravelers * Math.pow(1 + inflationRate / 100, travelDate);
     const futureOtherExpenses = otherExpenses * numberOfTravelers * Math.pow(1 + inflationRate / 100, travelDate);
-    
+
     const futureValueSavings = currentSavings * Math.pow(1 + expectedReturn / 100, travelDate);
     const additionalCorpusNeeded = Math.max(0, futureCost - futureValueSavings);
-    
+
     const monthlyReturnRate = expectedReturn / 100 / 12;
     const totalMonths = travelDate * 12;
     const requiredMonthlySIP = totalMonths > 0 && monthlyReturnRate > 0
       ? (additionalCorpusNeeded * monthlyReturnRate) / (Math.pow(1 + monthlyReturnRate, totalMonths) - 1)
       : additionalCorpusNeeded / totalMonths;
-    
+
     const projectionData = [];
     let accumulatedValue = currentSavings;
-    
+
     for (let year = 1; year <= travelDate; year++) {
       const annualSIP = requiredMonthlySIP * 12;
       accumulatedValue = (accumulatedValue + annualSIP) * (1 + expectedReturn / 100);
       const inflatedCost = totalCurrentCost * Math.pow(1 + inflationRate / 100, year);
-      
+
       projectionData.push({
         year: year,
         savings: Math.round(accumulatedValue),
         target: Math.round(inflatedCost)
       });
     }
-    
+
     const expenseBreakdown = [
       { name: 'Flights', value: Math.round(futureFlights), percentage: ((futureFlights / futureCost) * 100).toFixed(1) },
       { name: 'Accommodation', value: Math.round(futureAccommodation), percentage: ((futureAccommodation / futureCost) * 100).toFixed(1) },
@@ -63,7 +65,7 @@ const VacationCalculator = () => {
       { name: 'Shopping', value: Math.round(futureShopping), percentage: ((futureShopping / futureCost) * 100).toFixed(1) },
       { name: 'Other', value: Math.round(futureOtherExpenses), percentage: ((futureOtherExpenses / futureCost) * 100).toFixed(1) }
     ];
-    
+
     return {
       totalCurrentCost: Math.round(totalCurrentCost),
       totalCurrentCostPerPerson: Math.round(totalCurrentCostPerPerson),
@@ -79,13 +81,7 @@ const VacationCalculator = () => {
     };
   }, [travelDate, numberOfTravelers, flights, accommodation, activities, food, shopping, otherExpenses, currentSavings, expectedReturn, inflationRate]);
 
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
-      maximumFractionDigits: 0
-    }).format(amount);
-  };
+
 
   const COLORS = ['#7A1616', '#C9A635', '#A12424', '#E7C76A', '#8B1A1A', '#D4B547'];
 
@@ -118,12 +114,16 @@ const VacationCalculator = () => {
         >
           <div className="bg-white rounded-2xl shadow-xl border-2 border-gray-100 overflow-hidden">
             <div className="bg-gradient-to-r from-[#7A1616] to-[#A12424] text-white p-4 sm:p-6">
-              <h2 className="flex items-center space-x-2 text-lg sm:text-xl font-bold">
-                <Plane className="w-5 h-5 sm:w-6 sm:h-6" />
-                <span>Vacation Planning</span>
+              <h2 className="flex items-center space-x-2 text-lg sm:text-xl font-bold text-white">
+                <Plane className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                <span text-white>Vacation Planning</span>
               </h2>
             </div>
             <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
+              <CurrencySelector
+                selectedCurrency={selectedCurrency}
+                onCurrencyChange={setSelectedCurrency}
+              />
               {/* Destination Type */}
               <div>
                 <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2 sm:mb-3">
@@ -134,11 +134,10 @@ const VacationCalculator = () => {
                     <button
                       key={type}
                       onClick={() => handleDestinationChange(type)}
-                      className={`px-2 sm:px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
-                        destination === type
-                          ? 'bg-gradient-to-r from-[#7A1616] to-[#A12424] text-white'
-                          : 'bg-gray-100 text-gray-700'
-                      }`}
+                      className={`px-2 sm:px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all ${destination === type
+                        ? 'bg-gradient-to-r from-[#7A1616] to-[#A12424] text-white'
+                        : 'bg-gray-100 text-gray-700'
+                        }`}
                     >
                       {type.charAt(0).toUpperCase() + type.slice(1)}
                     </button>
@@ -368,8 +367,8 @@ const VacationCalculator = () => {
                 </div>
                 <div>
                   <h3 className="text-xs sm:text-sm font-semibold text-white/90">Total Cost</h3>
-                  <p className="text-xl sm:text-2xl font-extrabold text-white">{formatCurrency(results.futureCost)}</p>
-                  <p className="text-xs text-white/70">{formatCurrency(results.futureCostPerPerson)}/person</p>
+                  <p className="text-xl sm:text-2xl font-extrabold text-white">{formatCurrency(results.futureCost, selectedCurrency)}</p>
+                  <p className="text-xs text-white/70">{formatCurrency(results.futureCostPerPerson, selectedCurrency)}/person</p>
                 </div>
               </div>
             </div>
@@ -381,7 +380,7 @@ const VacationCalculator = () => {
                 </div>
                 <div>
                   <h3 className="text-xs sm:text-sm font-semibold text-gray-600">Monthly SIP</h3>
-                  <p className="text-xl sm:text-2xl font-extrabold text-[#C9A635]">{formatCurrency(results.requiredMonthlySIP)}</p>
+                  <p className="text-xl sm:text-2xl font-extrabold text-[#C9A635]">{formatCurrency(results.requiredMonthlySIP, selectedCurrency)}</p>
                 </div>
               </div>
             </div>
@@ -412,7 +411,7 @@ const VacationCalculator = () => {
                           <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                         ))}
                       </Pie>
-                      <Tooltip formatter={(value) => formatCurrency(value)} />
+                      <Tooltip formatter={(value) => formatCurrency(value, selectedCurrency)} />
                     </PieChart>
                   </ResponsiveContainer>
                 </div>
@@ -420,14 +419,14 @@ const VacationCalculator = () => {
                   {results.expenseBreakdown.map((item, index) => (
                     <div key={index} className="flex items-center justify-between p-2 sm:p-3 bg-gray-50 rounded-lg sm:rounded-xl border border-gray-200">
                       <div className="flex items-center gap-2 sm:gap-3">
-                        <div 
-                          className="w-3 h-3 sm:w-4 sm:h-4 rounded-full flex-shrink-0" 
+                        <div
+                          className="w-3 h-3 sm:w-4 sm:h-4 rounded-full flex-shrink-0"
                           style={{ backgroundColor: COLORS[index % COLORS.length] }}
                         />
                         <span className="text-xs sm:text-sm font-semibold text-gray-700">{item.name}</span>
                       </div>
                       <div className="text-right">
-                        <p className="text-xs sm:text-sm font-bold text-gray-900">{formatCurrency(item.value)}</p>
+                        <p className="text-xs sm:text-sm font-bold text-gray-900">{formatCurrency(item.value, selectedCurrency)}</p>
                         <p className="text-xs text-gray-500">{item.percentage}%</p>
                       </div>
                     </div>
@@ -451,7 +450,7 @@ const VacationCalculator = () => {
                     <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                     <XAxis dataKey="year" stroke="#666" fontSize={12} />
                     <YAxis stroke="#666" fontSize={12} tickFormatter={(value) => `₹${(value / 100000).toFixed(0)}L`} />
-                    <Tooltip formatter={(value) => formatCurrency(value)} />
+                    <Tooltip formatter={(value) => formatCurrency(value, selectedCurrency)} />
                     <Area type="monotone" dataKey="savings" stroke="#C9A635" fill="#C9A635" fillOpacity={0.3} />
                     <Line type="monotone" dataKey="target" stroke="#7A1616" strokeWidth={3} strokeDasharray="5 5" />
                   </AreaChart>
@@ -469,22 +468,22 @@ const VacationCalculator = () => {
               <div className="p-4 sm:p-6 space-y-3 sm:space-y-4">
                 <div className="flex justify-between items-center p-3 sm:p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl border border-blue-200">
                   <span className="text-xs sm:text-sm font-semibold text-gray-700">Current</span>
-                  <span className="text-sm sm:text-base font-extrabold text-gray-900">{formatCurrency(currentSavings)}</span>
+                  <span className="text-sm sm:text-base font-extrabold text-gray-900">{formatCurrency(currentSavings, selectedCurrency)}</span>
                 </div>
-                
+
                 <div className="flex justify-between items-center p-3 sm:p-4 bg-gradient-to-r from-green-50 to-green-100 rounded-xl border border-green-200">
                   <span className="text-xs sm:text-sm font-semibold text-gray-700">Future</span>
-                  <span className="text-sm sm:text-base font-extrabold text-green-600">{formatCurrency(results.futureValueSavings)}</span>
+                  <span className="text-sm sm:text-base font-extrabold text-green-600">{formatCurrency(results.futureValueSavings, selectedCurrency)}</span>
                 </div>
-                
+
                 <div className="flex justify-between items-center p-3 sm:p-4 bg-gradient-to-r from-red-50 to-red-100 rounded-xl border border-red-200">
                   <span className="text-xs sm:text-sm font-semibold text-gray-700">Additional</span>
-                  <span className="text-sm sm:text-base font-extrabold text-red-600">{formatCurrency(results.additionalCorpusNeeded)}</span>
+                  <span className="text-sm sm:text-base font-extrabold text-red-600">{formatCurrency(results.additionalCorpusNeeded, selectedCurrency)}</span>
                 </div>
-                
+
                 <div className="flex justify-between items-center p-3 sm:p-4 bg-gradient-to-r from-[#C9A635]/20 to-[#E7C76A]/20 rounded-xl border-2 border-[#C9A635]/30">
                   <span className="text-xs sm:text-sm font-semibold text-gray-700">Monthly SIP</span>
-                  <span className="text-sm sm:text-base font-extrabold text-[#7A1616]">{formatCurrency(results.requiredMonthlySIP)}</span>
+                  <span className="text-sm sm:text-base font-extrabold text-[#7A1616]">{formatCurrency(results.requiredMonthlySIP, selectedCurrency)}</span>
                 </div>
               </div>
             </div>
@@ -498,15 +497,15 @@ const VacationCalculator = () => {
                   <div className="space-y-2 text-xs sm:text-sm">
                     <p className="flex justify-between">
                       <span className="font-semibold">Per Person:</span>
-                      <span className="font-bold text-[#7A1616]">{formatCurrency(results.futureCostPerPerson)}</span>
+                      <span className="font-bold text-[#7A1616]">{formatCurrency(results.futureCostPerPerson, selectedCurrency)}</span>
                     </p>
                     <p className="flex justify-between">
                       <span className="font-semibold">Total:</span>
-                      <span className="font-bold text-[#C9A635]">{formatCurrency(results.futureCost)}</span>
+                      <span className="font-bold text-[#C9A635]">{formatCurrency(results.futureCost, selectedCurrency)}</span>
                     </p>
                   </div>
                 </div>
-                
+
                 {results.requiredMonthlySIP > 0 && (
                   <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-300 rounded-xl p-3 sm:p-4">
                     <h4 className="font-bold text-orange-800 mb-2 flex items-center gap-2 text-sm sm:text-base">
@@ -514,11 +513,11 @@ const VacationCalculator = () => {
                       Action Plan
                     </h4>
                     <p className="text-orange-700 text-xs sm:text-sm">
-                      Save <strong>{formatCurrency(results.requiredMonthlySIP)}</strong> monthly!
+                      Save <strong>{formatCurrency(results.requiredMonthlySIP, selectedCurrency)}</strong> monthly!
                     </p>
                   </div>
                 )}
-                
+
                 {results.additionalCorpusNeeded <= 0 && (
                   <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300 rounded-xl p-3 sm:p-4">
                     <h4 className="font-bold text-green-800 mb-2 text-sm sm:text-base">Ready to Travel!</h4>

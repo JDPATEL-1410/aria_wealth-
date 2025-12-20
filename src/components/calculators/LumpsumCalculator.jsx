@@ -63,9 +63,9 @@ const LumpsumCalculator = () => {
         >
           <div className="bg-white rounded-2xl shadow-xl border-2 border-gray-100 overflow-hidden">
             <div className="bg-gradient-to-r from-[#7A1616] to-[#8B1A1A] text-white p-4 sm:p-6">
-              <h2 className="flex items-center space-x-2 text-lg sm:text-xl font-bold">
+              <h2 className="flex items-center space-x-2 text-lg sm:text-xl font-bold text-white">
                 <Calculator className="w-5 h-5 sm:w-6 sm:h-6" />
-                <span>Investment Details</span>
+                <span text-white>Investment Details</span>
               </h2>
             </div>
             <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
@@ -308,8 +308,8 @@ const LumpsumCalculator = () => {
                   const returns = futureValue - investment;
                   return (
                     <div key={rate} className={`p-3 sm:p-4 rounded-lg border-2 ${rate === expectedReturn
-                        ? 'border-[#7A1616] bg-[#7A1616]/5'
-                        : 'border-gray-200 bg-gray-50'
+                      ? 'border-[#7A1616] bg-[#7A1616]/5'
+                      : 'border-gray-200 bg-gray-50'
                       }`}>
                       <div className="text-center">
                         <h4 className="text-base sm:text-lg font-bold text-gray-900 mb-2">{rate}%</h4>

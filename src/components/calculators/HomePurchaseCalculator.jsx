@@ -1,7 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from 'recharts';
-import { Home, TrendingUp, DollarSign, Target, Info, Calendar } from 'lucide-react';
+import { Home, TrendingUp, Target, Info, Calendar } from 'lucide-react';
+import CurrencySelector, { formatCurrency, getCurrencySymbol } from '../CurrencySelector';
 
 const HomePurchaseCalculator = () => {
   const [targetPrice, setTargetPrice] = useState(5000000);
@@ -10,49 +11,50 @@ const HomePurchaseCalculator = () => {
   const [yearsToGoal, setYearsToGoal] = useState(5);
   const [expectedReturn, setExpectedReturn] = useState(12);
   const [priceAppreciation, setPriceAppreciation] = useState(8);
+  const [selectedCurrency, setSelectedCurrency] = useState('INR');
 
   const results = useMemo(() => {
     // Future home price with appreciation
     const futureHomePrice = targetPrice * Math.pow(1 + priceAppreciation / 100, yearsToGoal);
-    
+
     // Required down payment amount
     const requiredDownPayment = (futureHomePrice * downPayment) / 100;
-    
+
     // Future value of current savings
     const futureValueSavings = currentSavings * Math.pow(1 + expectedReturn / 100, yearsToGoal);
-    
+
     // Additional corpus needed
     const additionalCorpusNeeded = Math.max(0, requiredDownPayment - futureValueSavings);
-    
+
     // Required monthly SIP
     const monthlyReturnRate = expectedReturn / 100 / 12;
     const totalMonths = yearsToGoal * 12;
     const requiredMonthlySIP = totalMonths > 0 && monthlyReturnRate > 0
       ? (additionalCorpusNeeded * monthlyReturnRate) / (Math.pow(1 + monthlyReturnRate, totalMonths) - 1)
       : additionalCorpusNeeded / totalMonths;
-    
+
     // Loan details
     const loanAmount = futureHomePrice - requiredDownPayment;
     const loanPercentage = 100 - downPayment;
-    
+
     // EMI calculation (assuming 8.5% interest for 20 years)
     const loanInterestRate = 8.5 / 100 / 12;
     const loanTenureMonths = 20 * 12;
-    const emi = loanAmount > 0 
-      ? (loanAmount * loanInterestRate * Math.pow(1 + loanInterestRate, loanTenureMonths)) / 
-        (Math.pow(1 + loanInterestRate, loanTenureMonths) - 1)
+    const emi = loanAmount > 0
+      ? (loanAmount * loanInterestRate * Math.pow(1 + loanInterestRate, loanTenureMonths)) /
+      (Math.pow(1 + loanInterestRate, loanTenureMonths) - 1)
       : 0;
-    
+
     // Year-wise projection
     const projectionData = [];
     let accumulatedValue = currentSavings;
-    
+
     for (let year = 1; year <= yearsToGoal; year++) {
       const annualSIP = requiredMonthlySIP * 12;
       accumulatedValue = (accumulatedValue + annualSIP) * (1 + expectedReturn / 100);
       const appreciatedPrice = targetPrice * Math.pow(1 + priceAppreciation / 100, year);
       const targetDownPayment = (appreciatedPrice * downPayment) / 100;
-      
+
       projectionData.push({
         year: year,
         savings: Math.round(accumulatedValue),
@@ -60,7 +62,7 @@ const HomePurchaseCalculator = () => {
         homePrice: Math.round(appreciatedPrice)
       });
     }
-    
+
     return {
       futureHomePrice: Math.round(futureHomePrice),
       requiredDownPayment: Math.round(requiredDownPayment),
@@ -76,13 +78,7 @@ const HomePurchaseCalculator = () => {
     };
   }, [targetPrice, downPayment, currentSavings, yearsToGoal, expectedReturn, priceAppreciation]);
 
-  const formatCurrency = (amount) => {
-    return new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
-      maximumFractionDigits: 0
-    }).format(amount);
-  };
+
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -102,6 +98,10 @@ const HomePurchaseCalculator = () => {
               </h2>
             </div>
             <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
+              <CurrencySelector
+                selectedCurrency={selectedCurrency}
+                onCurrencyChange={setSelectedCurrency}
+              />
               {/* Target Home Price */}
               <div>
                 <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
@@ -302,7 +302,7 @@ const HomePurchaseCalculator = () => {
                 <div>
                   <h3 className="text-xs sm:text-sm font-semibold text-gray-600">Future Price</h3>
                   <p className="text-lg sm:text-2xl font-extrabold text-green-600">
-                    {formatCurrency(results.futureHomePrice)}
+                    {formatCurrency(results.futureHomePrice, selectedCurrency)}
                   </p>
                 </div>
               </div>
@@ -316,7 +316,7 @@ const HomePurchaseCalculator = () => {
                 <div>
                   <h3 className="text-xs sm:text-sm font-semibold text-white/90">Down Payment</h3>
                   <p className="text-lg sm:text-2xl font-extrabold text-white">
-                    {formatCurrency(results.requiredDownPayment)}
+                    {formatCurrency(results.requiredDownPayment, selectedCurrency)}
                   </p>
                   <p className="text-xs text-white/70 mt-1">{downPayment}% needed</p>
                 </div>
@@ -331,7 +331,7 @@ const HomePurchaseCalculator = () => {
                 <div>
                   <h3 className="text-xs sm:text-sm font-semibold text-gray-600">Monthly SIP</h3>
                   <p className="text-lg sm:text-2xl font-extrabold text-[#C9A635]">
-                    {formatCurrency(results.requiredMonthlySIP)}
+                    {formatCurrency(results.requiredMonthlySIP, selectedCurrency)}
                   </p>
                 </div>
               </div>
@@ -341,23 +341,23 @@ const HomePurchaseCalculator = () => {
           {/* Loan Details Card */}
           <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl shadow-xl border-2 border-blue-200 p-4 sm:p-6">
             <h3 className="text-base sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4 flex items-center gap-2">
-              <DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
+              {getCurrencySymbol(selectedCurrency, "w-5 h-5 sm:w-6 sm:h-6 text-blue-600")}
               Loan Details
             </h3>
             <div className="grid md:grid-cols-3 gap-3 sm:gap-4">
               <div className="bg-white rounded-xl p-3 sm:p-4 border border-blue-200">
                 <p className="text-xs sm:text-sm text-gray-600 mb-1">Loan Amount</p>
-                <p className="text-base sm:text-xl font-extrabold text-blue-600">{formatCurrency(results.loanAmount)}</p>
+                <p className="text-base sm:text-xl font-extrabold text-blue-600">{formatCurrency(results.loanAmount, selectedCurrency)}</p>
                 <p className="text-xs text-gray-500 mt-1">{results.loanPercentage}%</p>
               </div>
               <div className="bg-white rounded-xl p-3 sm:p-4 border border-blue-200">
                 <p className="text-xs sm:text-sm text-gray-600 mb-1">EMI</p>
-                <p className="text-base sm:text-xl font-extrabold text-orange-600">{formatCurrency(results.emi)}</p>
+                <p className="text-base sm:text-xl font-extrabold text-orange-600">{formatCurrency(results.emi, selectedCurrency)}</p>
                 <p className="text-xs text-gray-500 mt-1">@ 8.5%</p>
               </div>
               <div className="bg-white rounded-xl p-3 sm:p-4 border border-blue-200">
                 <p className="text-xs sm:text-sm text-gray-600 mb-1">Your Part</p>
-                <p className="text-base sm:text-xl font-extrabold text-green-600">{formatCurrency(results.requiredDownPayment)}</p>
+                <p className="text-base sm:text-xl font-extrabold text-green-600">{formatCurrency(results.requiredDownPayment, selectedCurrency)}</p>
               </div>
             </div>
           </div>
@@ -374,41 +374,41 @@ const HomePurchaseCalculator = () => {
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={results.projectionData}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                    <XAxis 
-                      dataKey="year" 
+                    <XAxis
+                      dataKey="year"
                       stroke="#666"
                       fontSize={12}
                       label={{ value: 'Year', position: 'insideBottom', offset: -5 }}
                     />
-                    <YAxis 
+                    <YAxis
                       stroke="#666"
                       fontSize={12}
                       tickFormatter={(value) => `₹${(value / 100000).toFixed(0)}L`}
                     />
-                    <Tooltip 
+                    <Tooltip
                       formatter={(value, name) => {
                         const labels = {
                           savings: 'Your Savings',
                           target: 'Down Payment',
                           homePrice: 'Home Price'
                         };
-                        return [formatCurrency(value), labels[name] || name];
+                        return [formatCurrency(value, selectedCurrency), labels[name] || name];
                       }}
                       labelFormatter={(label) => `Year ${label}`}
                     />
-                    <Area 
-                      type="monotone" 
-                      dataKey="savings" 
+                    <Area
+                      type="monotone"
+                      dataKey="savings"
                       stackId="1"
-                      stroke="#C9A635" 
+                      stroke="#C9A635"
                       fill="#C9A635"
                       fillOpacity={0.3}
                       strokeWidth={2}
                     />
-                    <Line 
-                      type="monotone" 
-                      dataKey="target" 
-                      stroke="#7A1616" 
+                    <Line
+                      type="monotone"
+                      dataKey="target"
+                      stroke="#7A1616"
                       strokeWidth={3}
                       strokeDasharray="5 5"
                     />
@@ -427,22 +427,22 @@ const HomePurchaseCalculator = () => {
               <div className="p-4 sm:p-6 space-y-3 sm:space-y-4">
                 <div className="flex justify-between items-center p-3 sm:p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl border border-blue-200">
                   <span className="text-xs sm:text-sm font-semibold text-gray-700">Current Savings</span>
-                  <span className="text-sm sm:text-base font-extrabold text-gray-900">{formatCurrency(currentSavings)}</span>
+                  <span className="text-sm sm:text-base font-extrabold text-gray-900">{formatCurrency(currentSavings, selectedCurrency)}</span>
                 </div>
-                
+
                 <div className="flex justify-between items-center p-3 sm:p-4 bg-gradient-to-r from-green-50 to-green-100 rounded-xl border border-green-200">
                   <span className="text-xs sm:text-sm font-semibold text-gray-700">Future Value</span>
-                  <span className="text-sm sm:text-base font-extrabold text-green-600">{formatCurrency(results.futureValueSavings)}</span>
+                  <span className="text-sm sm:text-base font-extrabold text-green-600">{formatCurrency(results.futureValueSavings, selectedCurrency)}</span>
                 </div>
-                
+
                 <div className="flex justify-between items-center p-3 sm:p-4 bg-gradient-to-r from-red-50 to-red-100 rounded-xl border border-red-200">
                   <span className="text-xs sm:text-sm font-semibold text-gray-700">Additional Needed</span>
-                  <span className="text-sm sm:text-base font-extrabold text-red-600">{formatCurrency(results.additionalCorpusNeeded)}</span>
+                  <span className="text-sm sm:text-base font-extrabold text-red-600">{formatCurrency(results.additionalCorpusNeeded, selectedCurrency)}</span>
                 </div>
-                
+
                 <div className="flex justify-between items-center p-3 sm:p-4 bg-gradient-to-r from-[#C9A635]/20 to-[#E7C76A]/20 rounded-xl border-2 border-[#C9A635]/30">
                   <span className="text-xs sm:text-sm font-semibold text-gray-700">Monthly SIP</span>
-                  <span className="text-sm sm:text-base font-extrabold text-[#7A1616]">{formatCurrency(results.requiredMonthlySIP)}</span>
+                  <span className="text-sm sm:text-base font-extrabold text-[#7A1616]">{formatCurrency(results.requiredMonthlySIP, selectedCurrency)}</span>
                 </div>
               </div>
             </div>
@@ -456,11 +456,11 @@ const HomePurchaseCalculator = () => {
                   <div className="space-y-2 text-xs sm:text-sm">
                     <p className="flex justify-between">
                       <span className="font-semibold">Total Investment:</span>
-                      <span className="font-bold text-[#7A1616]">{formatCurrency(results.totalInvestment)}</span>
+                      <span className="font-bold text-[#7A1616]">{formatCurrency(results.totalInvestment, selectedCurrency)}</span>
                     </p>
                     <p className="flex justify-between">
                       <span className="font-semibold">Returns:</span>
-                      <span className="font-bold text-green-600">{formatCurrency(results.totalReturns)}</span>
+                      <span className="font-bold text-green-600">{formatCurrency(results.totalReturns, selectedCurrency)}</span>
                     </p>
                     <p className="flex justify-between">
                       <span className="font-semibold">Appreciation:</span>
@@ -468,7 +468,7 @@ const HomePurchaseCalculator = () => {
                     </p>
                   </div>
                 </div>
-                
+
                 {results.requiredMonthlySIP > 0 && (
                   <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-300 rounded-xl p-3 sm:p-4">
                     <h4 className="font-bold text-orange-800 mb-2 flex items-center gap-2 text-sm sm:text-base">
@@ -476,11 +476,11 @@ const HomePurchaseCalculator = () => {
                       Action Plan
                     </h4>
                     <p className="text-orange-700 text-xs sm:text-sm leading-relaxed">
-                      Save <strong className="text-[#7A1616]">{formatCurrency(results.requiredMonthlySIP)}</strong> monthly!
+                      Save <strong className="text-[#7A1616]">{formatCurrency(results.requiredMonthlySIP, selectedCurrency)}</strong> monthly!
                     </p>
                   </div>
                 )}
-                
+
                 {results.additionalCorpusNeeded <= 0 && (
                   <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300 rounded-xl p-3 sm:p-4">
                     <h4 className="font-bold text-green-800 mb-2 text-sm sm:text-base">Ready to Buy!</h4>
