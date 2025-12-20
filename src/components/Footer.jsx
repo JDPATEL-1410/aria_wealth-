@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Phone, Mail, MapPin, Linkedin, Instagram, Youtube } from "lucide-react";
+import { Phone, Mail, MapPin, Linkedin, Instagram, Facebook } from "lucide-react";
 import { contactInfo, socialLinks } from "../data/mock";
 import logo from "../assets/logo.png";
 
@@ -34,10 +34,10 @@ const Footer = () => {
         "hover:bg-gradient-to-br hover:from-[#F58529] hover:via-[#DD2A7B] hover:to-[#8134AF] hover:border-pink-500",
     },
     {
-      icon: Youtube,
-      href: socialLinks.youtube,
-      label: "YouTube",
-      hoverColor: "hover:bg-[#FF0000] hover:border-[#FF0000]",
+      icon: Facebook,
+      href: socialLinks.facebook,
+      label: "Facebook",
+      hoverColor: "hover:bg-[#1877F2] hover:border-[#1877F2]",
     },
   ];
 
@@ -199,6 +199,21 @@ const Footer = () => {
                       <Icon className="w-5 h-5" />
                     </motion.a>
                   ))}
+
+                  {/* X (Twitter) */}
+                  <motion.a
+                    href={socialLinks.twitter}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="border-2 border-[#000000] p-3 rounded-lg text-[#000000] bg-white hover:bg-[#000000] hover:text-white transition-all duration-300 transform hover:scale-110"
+                    whileHover={{ y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    aria-label="X (Twitter)"
+                  >
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg>
+                  </motion.a>
 
                   {/* WhatsApp */}
                   <motion.a

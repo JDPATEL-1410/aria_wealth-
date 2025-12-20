@@ -214,6 +214,7 @@ export const complianceData = {
 export const socialLinks = {
   linkedin: 'https://linkedin.com/company/ariawealth',
   instagram: 'https://instagram.com/ariawealth',
-  youtube: 'https://youtube.com/c/ariawealth',
+  twitter: 'https://twitter.com/ariawealth',
+  facebook: 'https://facebook.com/ariawealth',
   whatsapp: 'https://wa.me/919876543210'
 };
